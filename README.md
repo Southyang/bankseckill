@@ -1,5 +1,13 @@
 # bankseckill
 
+
+
+## 项目简介
+
+-  2022年服务外包创新创业大赛 三湘银行选题
+- 前端采用vue搭建
+
+
 ## Project setup
 ```
 npm install
