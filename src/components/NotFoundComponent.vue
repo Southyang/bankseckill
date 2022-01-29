@@ -1,5 +1,6 @@
+// 固定组件
 <template>
-	<div>
+	<div class="notfound">
 		<h1>网络连接好像出了些问题</h1>
 		<h1>请检查您的网络连接哦</h1>
 	</div>
@@ -11,7 +12,10 @@ export default {
 }
 </script>
 
-<style>
+<style scope>
+.notfound{
+	margin-top: 30vh;
+}
 h1{
 	text-align: center;
 	color: skyblue;
