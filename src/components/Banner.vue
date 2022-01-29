@@ -17,10 +17,10 @@ export default {
 <style scoped>
 .banner {
   /* 顶部导航栏 */
-  z-index: 9999;
+  z-index: 9998;
   position: absolute;
-  width: 1440px;
-  height: 109px;
+  width: 100%;
+  height: 100px;
   left: 0px;
   top: -2px;
 }
@@ -28,7 +28,7 @@ export default {
 .bannerRectangle {
   position: absolute;
   width: 100vw;
-  height: 109px;
+  height: 100px;
   left: 0px;
   top: -2px;
   background: #ffffff;

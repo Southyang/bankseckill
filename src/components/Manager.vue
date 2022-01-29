@@ -2,6 +2,7 @@
   <div>
     <Banner />
 		<button class="gotoother" @click="gotouser">用户端</button>
+		<router-view></router-view>
   </div>
 </template>
 

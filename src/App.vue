@@ -13,15 +13,16 @@ export default {
 </script>
 
 <style>
-.gotoother{
-	position: fixed;
-    top: 1vh;
-    right: 1vh;
-    text-decoration:none;
-    background-color: deepskyblue;
-    border-radius: 15px;
-    padding: 5px 5px;
-    cursor: pointer;
-    color: black;
+.gotoother {
+  z-index: 9999;
+  position: absolute;
+  top: 1vh;
+  right: 1vh;
+  text-decoration: none;
+  background-color: deepskyblue;
+  border-radius: 15px;
+  padding: 5px 5px;
+  cursor: pointer;
+  color: black;
 }
 </style>
