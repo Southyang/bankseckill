@@ -7,14 +7,14 @@ import Manager from '../components/Manager'
 
 //引入路由组件
 import UserLogin from '../pages/user/UserLogin'
+import Userregister from '../pages/user/Userregister'
 import ManagerLogin from '../pages/manager/ManagerLogin'
-
 
 //创建并暴露路由
 export default new VueRouter({
 	mode: 'history',
 	routes: [
-		{
+		{ //整体的默认路由
 			path: '',
 			redirect: '/bankuser'
 		},
@@ -22,13 +22,17 @@ export default new VueRouter({
 			path: '/bankuser',
 			component: User,
 			children: [
+				{ //bankuser的默认路由
+					path: '',
+					component: UserLogin
+				},
 				{
 					path: 'login',
 					component: UserLogin
 				},
 				{
-					path: '',
-					component: UserLogin
+					path:'register',
+					component: Userregister
 				}
 			]
 		},
@@ -36,17 +40,17 @@ export default new VueRouter({
 			path: '/bankmanager',
 			component: Manager,
 			children: [
-				{
-					path: 'login',
+				{ //bankmanager的默认路由
+					path: '',
 					component: ManagerLogin
 				},
 				{
-					path: '',
+					path: 'login',
 					component: ManagerLogin
 				}
 			]
 		},
-		{
+		{ //整体的错误提示路由
 			path: '*',
 			component: NotFoundComponent
 		}

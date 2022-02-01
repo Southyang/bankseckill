@@ -25,4 +25,7 @@ export default {
   cursor: pointer;
   color: black;
 }
+a{
+  text-decoration: none;
+}
 </style>

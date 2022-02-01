@@ -12,7 +12,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .notfound{
 	margin-top: 30vh;
 }

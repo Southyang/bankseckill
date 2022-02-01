@@ -1,39 +1,38 @@
 <template>
-  <div class="login">
-    <div class="logininfo">
-      <img class="userloginimg"
-           src="../../assets/image/userloginimg.png">
-      <div class="userloginbox">
-        <div class="userlogincontext">
-          用户网上银行登录
+  <div class="userlogin">
+    <button class="gotoother" @click="gotomanager">管理端</button>
+    <img class="userloginimg"
+         src="../../assets/image/userloginimg.png">
+    <div class="userloginbox">
+      <div class="userlogincontext">
+        用户网上银行登录
+      </div>
+      <div class="userloginline">
+      </div>
+      <div class="userlogininputbox">
+        <div class="userlogininput username">
+          <img src="../../assets/image/usernameicon.png"
+               class="usericon">
+          <input class="userinput"
+                 placeholder="输入手机号/身份证号"
+                 v-model="username">
         </div>
-        <div class="userloginline">
+        <div class="userlogininput password">
+          <img src="../../assets/image/passwordicon.png"
+               class="usericon">
+          <input class="userinput"
+                 placeholder="输入密码"
+                 v-model="password"
+                 type="password">
         </div>
-        <div class="userlogininputbox">
-          <div class="userlogininput username">
-            <img src="../../assets/image/usernameicon.png"
-                 class="usericon">
-            <input class="userinput"
-                   placeholder="输入手机号/身份证号"
-                   v-model="username">
-          </div>
-          <div class="userlogininput password">
-            <img src="../../assets/image/passwordicon.png"
-                 class="usericon">
-            <input class="userinput"
-                   placeholder="输入密码"
-                   v-model="password"
-                   type="password">
-          </div>
-        </div>
-        <div class="userloginforget"
-             @click="modifyuserpassowrd"> 忘记密码 </div>
-        <div class="userloginbuttonbox">
-          <button class="userloginbutton userbutton"
-                  @click="userlogin">登录</button>
-          <button class="userregisterbutton userbutton"
-                  @click="userregister">注册</button>
-        </div>
+      </div>
+      <div class="userloginforget"
+           @click="modifyuserpassowrd"> 忘记密码 </div>
+      <div class="userloginbuttonbox">
+        <button class="userlogin userloginbutton"
+                @click="userlogin">登录</button>
+        <button class="userregister userloginbutton"
+                @click="userregister">注册</button>
       </div>
     </div>
   </div>
@@ -49,6 +48,10 @@ export default {
     }
   },
   methods: {
+    gotomanager(){
+			this.$router.replace('/bankmanager');
+      console.log('跳转到manager')
+		},
     modifyuserpassowrd () {
       console.log("用户忘记密码，与后端交互修改密码")
     },
@@ -56,28 +59,20 @@ export default {
       console.log("用户登录，与后端交互验证信息正误")
       if (!this.username.trim() || !this.password.trim())
         return alert("用户名和密码不能为空")
-			
+
       console.log("用户名:" + this.username + " 密码:" + this.password)
       this.password = ''
     },
     userregister () {
-      console.log("用户注册，与后端交互录入用户信息")
+      this.$router.push('/bankuser/register')
+      console.log('跳转到用户注册界面')
     }
   }
 }
 </script>
 
-<style scope>
-.login {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #f2f2f2;
-}
-
-.logininfo {
+<style scoped>
+.userlogin {
   margin-top: 100px;
 }
 
@@ -94,8 +89,8 @@ export default {
   width: 528px;
   height: 543px;
   right: 100px;
-  /* top: 150px; */
-  bottom: 10vh;
+  top: 150px;
+  /* bottom: 10vh; */
   background: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
 }
@@ -186,17 +181,17 @@ export default {
   margin-top: 5%;
 }
 
-.userloginbutton {
+.userlogin {
   background: #ea0437;
   color: #ffffff;
 }
 
-.userregisterbutton {
+.userregister {
   background: #ffffff;
   color: #858585;
 }
 
-.userbutton {
+.userloginbutton {
   width: 418px;
   height: 51px;
   margin-left: 55px;

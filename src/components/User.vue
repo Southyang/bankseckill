@@ -1,7 +1,6 @@
 <template>
-  <div>
+  <div class="login">
     <Banner />
-		<button class="gotoother" @click="gotomanager">管理端</button>
 		<router-view></router-view>
   </div>
 </template>
@@ -11,16 +10,17 @@ import Banner from './Banner.vue'
 export default {
   name: 'User',
   components: { Banner },
-	methods:{
-		gotomanager(){
-			this.$router.replace('/bankmanager');
-      console.log('跳转到manager')
-		}
-	}
 }
 </script>
 
-<style>
-
+<style scoped>
+.login {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f2f2f2;
+}
 
 </style>

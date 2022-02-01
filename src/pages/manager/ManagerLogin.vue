@@ -1,37 +1,37 @@
 <template>
-  <div class="login">
-    <div class="logininfo">
-      <img class="managerloginimg"
-           src="../../assets/image/userloginimg.png">
-      <div class="managerloginbox">
-        <div class="managerlogincontext">
-          秒杀管理系统登录
+  <div class="managerlogin">
+    <button class="gotoother"
+            @click="gotouser">用户端</button>
+    <img class="managerloginimg"
+         src="../../assets/image/userloginimg.png">
+    <div class="managerloginbox">
+      <div class="managerlogincontext">
+        秒杀管理系统登录
+      </div>
+      <div class="managerloginline">
+      </div>
+      <div class="managerlogininputbox">
+        <div class="managerlogininput managername">
+          <img src="../../assets/image/usernameicon.png"
+               class="managericon">
+          <input class="managerinput"
+                 placeholder="输入账号"
+                 v-model="username">
         </div>
-        <div class="managerloginline">
+        <div class="managerlogininput password">
+          <img src="../../assets/image/passwordicon.png"
+               class="managericon">
+          <input class="managerinput"
+                 placeholder="输入密码"
+                 v-model="password"
+                 type="password">
         </div>
-        <div class="managerlogininputbox">
-          <div class="managerlogininput managername">
-            <img src="../../assets/image/usernameicon.png"
-                 class="managericon">
-            <input class="managerinput"
-                   placeholder="输入账号"
-                   v-model="username">
-          </div>
-          <div class="managerlogininput password">
-            <img src="../../assets/image/passwordicon.png"
-                 class="managericon">
-            <input class="managerinput"
-                   placeholder="输入密码"
-                   v-model="password"
-                   type="password">
-          </div>
-        </div>
-        <div class="managerloginforget"
-             @click="modifymanagerpassowrd"> 忘记密码 </div>
-        <div class="managerloginbuttonbox">
-          <button class="managerloginbutton managerbutton"
-                  @click="managerlogin">登录</button>
-        </div>
+      </div>
+      <div class="managerloginforget"
+           @click="modifymanagerpassowrd"> 忘记密码 </div>
+      <div class="managerloginbuttonbox">
+        <button class="managerloginbutton managerbutton"
+                @click="managerlogin">登录</button>
       </div>
     </div>
   </div>
@@ -47,6 +47,10 @@ export default {
     }
   },
   methods: {
+    gotouser () {
+      this.$router.replace('/bankuser');
+      console.log('跳转到user')
+    },
     modifymanagerpassowrd () {
       console.log("管理员忘记密码，与后端交互修改密码")
     },
@@ -64,17 +68,8 @@ export default {
 }
 </script>
 
-<style scope>
-.login {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #f2f2f2;
-}
-
-.logininfo {
+<style scoped>
+.managerlogin {
   margin-top: 100px;
 }
 
@@ -91,8 +86,8 @@ export default {
   width: 528px;
   height: 500px;
   right: 100px;
-  /* top: 150px; */
-  bottom: 10vh;
+  top: 150px;
+  /* bottom: 10vh; */
   background: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
 }
