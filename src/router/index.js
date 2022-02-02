@@ -8,6 +8,7 @@ import Manager from '../components/Manager'
 //引入路由组件
 import UserLogin from '../pages/user/UserLogin'
 import Userregister from '../pages/user/Userregister'
+import Userforget from '../pages/user/Userforget'
 import ManagerLogin from '../pages/manager/ManagerLogin'
 
 //创建并暴露路由
@@ -33,6 +34,10 @@ export default new VueRouter({
 				{
 					path:'register',
 					component: Userregister
+				},
+				{
+					path:'forget',
+					component: Userforget
 				}
 			]
 		},

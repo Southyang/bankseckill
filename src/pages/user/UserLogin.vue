@@ -53,7 +53,8 @@ export default {
       console.log('跳转到manager')
 		},
     modifyuserpassowrd () {
-      console.log("用户忘记密码，与后端交互修改密码")
+      this.$router.push('/bankuser/forget')
+      console.log('跳转到用户修改密码界面')
     },
     userlogin () {
       console.log("用户登录，与后端交互验证信息正误")

@@ -1,74 +1,54 @@
 <template>
-  <div class="userregister">
-    <div class="userregisterbox">
-      <div class="userregisterbanner">
+  <div class="userforget">
+    <div class="userforgetbox">
+      <div class="userforgetbanner">
         <img class="icon"
              src="../../assets/image/userregistericon.png" />
-        <div class="registercontext"> 注册 </div>
+        <div class="forgetcontext"> 忘记密码 </div>
       </div>
-      <div class="userregisterline">
+      <div class="userforgetline">
       </div>
-      <div class="userregisterinputbox">
+      <div class="userforgetinputbox">
         <div class="inputbox">
-          <div class="userregisterinput">客户姓名</div>
-          <input class="userinput"
-                 placeholder="请输入客户姓名"
-                 v-model="username" />
-        </div>
-        <div class="inputbox">
-          <span class="userregisterinput">证件类型</span>
-          <select class="userinput usercardkind"
-                  v-model="selected">
-            <option value="第二代居民身份证"
-                    style="font-size:15px">第二代居民身份证</option>
-            <option value="第二代居民身份证1"
-                    style="font-size:15px">第二代居民身份证1</option>
-            <option value="第二代居民身份证2"
-                    style="font-size:15px">第二代居民身份证2</option>
-            <option value="第二代居民身份证3"
-                    style="font-size:15px">第二代居民身份证3</option>
-          </select>
-        </div>
-        <div class="inputbox">
-          <span class="userregisterinput">证件号码</span>
-          <input class="userinput"
-                 placeholder="请输入证件号码"
-                 v-model="cardid" />
-        </div>
-        <div class="inputbox">
-          <span class="userregisterinput">账(卡)号</span>
-          <input class="userinput"
-                 placeholder="请输入绑定卡卡号"
-                 v-model="bankcard" />
-        </div>
-        <div class="inputbox">
-          <span class="userregisterinput">手机号码</span>
+          <span class="userforgetinput">手机号码</span>
           <input class="userinput"
                  placeholder="请输入手机号码"
                  v-model="phone" />
         </div>
         <div class="inputbox">
-          <span class="userregisterinput">短信验证码</span>
+          <span class="userforgetinput">短信验证码</span>
           <input class="userinput vcode"
                  placeholder="请输入手机验证码"
                  v-model="vcode" />
           <button class="getvcode"
                   @click="getvcode"> 获取验证码 </button>
         </div>
-      </div>
-      <div class="userregisterconfirmbox">
-        <input type="checkbox"
-               v-model="checked"
-               class="userregisterconfirm" />
-        <span class=""> 阅读并同意
-          <a style="color: #0578FF;"
-             href="#">《三湘银行个人网银开户协议》</a></span>
+        <div class="inputbox">
+          <span class="userforgetinput">新密码</span>
+          <form>
+            <input class="userinput"
+                   placeholder="请输入新密码"
+                   type="password"
+                   v-model="password"
+                   autocomplete="off" />
+          </form>
+        </div>
+        <div class="inputbox">
+          <span class="userforgetinput">再次输入</span>
+          <form>
+            <input class="userinput"
+                   placeholder="请再次输入新密码"
+                   type="password"
+                   v-model="repassword"
+                   autocomplete="off" />
+          </form>
+        </div>
       </div>
 
-      <span class="userregisterbuttonbox">
-        <button class="userconfirm userregisterbutton"
+      <span class="userforgetbuttonbox">
+        <button class="userconfirm userforgetbutton"
                 @click="confirm"> 确认 </button>
-        <button class="usergoback userregisterbutton"
+        <button class="usergoback userforgetbutton"
                 @click="goback"> 返回 </button>
       </span>
     </div>
@@ -77,59 +57,57 @@
 
 <script>
 export default {
-  name: 'Userregister',
+  name: 'Userforget',
   data () {
     return {
-      checked: false,
-      username: '',
-      selected: '第二代居民身份证',
-      cardid: '',
-      bankcard: '',
+      repassword: '',
+      password: '',
       phone: '',
       vcode: ''
     }
   },
   methods: {
     getvcode () {
-      console.log("用户注册获取验证码")
+      console.log("用户修改密码获取验证码")
     },
     confirm () {
-      console.log("用户注册确认")
+      console.log("用户修改密码确认,与后端交互")
       let temp = true
       if (temp === true) {
-        this.$bus.$emit('Toast',"注册成功")
+        this.$bus.$emit('Toast',"修改成功")
       }
 			else{
-				this.$bus.$emit('Toast',"注册失败")
+				this.$bus.$emit('Toast',"修改失败")
 			}
     },
     goback () {
-      console.log("用户注册返回")
+      console.log("用户修改密码返回")
       this.$router.replace('/bankuser')
-    }
+    },
+
   }
 }
 </script>
 
 <style scoped>
-.userregister {
+.userforget {
   margin-top: 100px;
 }
-.userregisterbox {
+.userforgetbox {
   position: absolute;
   width: 80vw;
   min-width: 1000px;
-  height: 80vh;
-  min-height: 600px;
+  height: 65vh;
+  min-height: 500px;
   left: 10vw;
   right: 10vw;
-  top: 125px;
+  top: 150px;
 
   background: #ffffff;
   border-radius: 5px;
 }
 
-.userregisterbanner {
+.userforgetbanner {
   margin-top: 15px;
 }
 
@@ -140,7 +118,7 @@ export default {
   float: left;
 }
 
-.registercontext {
+.forgetcontext {
   float: left;
   /* position: absolute; */
   font-family: Roboto;
@@ -154,7 +132,7 @@ export default {
   color: #ea0437;
 }
 
-.userregisterline {
+.userforgetline {
   width: 95%;
   height: 0px;
   margin-left: 2.5%;
@@ -164,7 +142,7 @@ export default {
   background-color: #858585;
 }
 
-.userregisterinputbox {
+.userforgetinputbox {
   margin-top: 20px;
   font-family: Roboto;
   font-style: normal;
@@ -173,15 +151,16 @@ export default {
   line-height: 15px;
   /* or 61% */
   margin-left: 26%;
+  margin-bottom: 35px;
 }
 
 .inputbox {
-  margin-top: 25px;
+  margin-top: 35px;
   width: 560px;
   height: 40px;
 }
 
-.userregisterinput {
+.userforgetinput {
   line-height: 40px;
   color: #858585;
   height: 29px;
@@ -231,30 +210,11 @@ export default {
   margin-left: 15px;
 }
 
-input[type='checkbox'] {
-  height: 26px;
-  width: 26px;
-  vertical-align: middle;
-}
-
-.userregisterconfirmbox {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 24px;
-  line-height: 15px;
-  /* or 61% */
-  text-align: center;
-  color: #858585;
-  margin-top: 30px;
-  margin-bottom: 15px;
-}
-
-.userregisterbuttonbox {
+.userforgetbuttonbox {
   margin-left: 35%;
 }
 
-.userregisterbutton {
+.userforgetbutton {
   width: 171px;
   height: 50px;
   font-family: Arial;
