@@ -1,6 +1,7 @@
 <template>
   <div class="userlogin">
-    <button class="gotoother" @click="gotomanager">管理端</button>
+    <button class="gotoother"
+            @click="gotomanager">管理端</button>
     <img class="userloginimg"
          src="../../assets/image/userloginimg.png">
     <div class="userloginbox">
@@ -20,10 +21,13 @@
         <div class="userlogininput password">
           <img src="../../assets/image/passwordicon.png"
                class="usericon">
-          <input class="userinput"
-                 placeholder="输入密码"
-                 v-model="password"
-                 type="password">
+          <form>
+            <input class="userinput"
+                   placeholder="输入密码"
+                   v-model="password"
+                   type="password"
+                   autocomplete="off" >
+          </form>
         </div>
       </div>
       <div class="userloginforget"
@@ -48,10 +52,10 @@ export default {
     }
   },
   methods: {
-    gotomanager(){
-			this.$router.replace('/bankmanager');
+    gotomanager () {
+      this.$router.replace('/bankmanager');
       console.log('跳转到manager')
-		},
+    },
     modifyuserpassowrd () {
       this.$router.push('/bankuser/forget')
       console.log('跳转到用户修改密码界面')
@@ -63,6 +67,7 @@ export default {
 
       console.log("用户名:" + this.username + " 密码:" + this.password)
       this.password = ''
+      this.$router.push('/bankuser/interface')
     },
     userregister () {
       this.$router.push('/bankuser/register')

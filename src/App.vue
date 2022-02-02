@@ -9,10 +9,28 @@
 export default {
   name: 'App',
   methods: {
-    Toast (msg) {
+    Toast (msg, kind) {
       var m = document.createElement('div');
       m.innerHTML = msg;
-      m.style.cssText = "width:20vw; min-width:150px; background:#000; opacity:0.5; height:40px; color:#fff; line-height:40px; text-align:center; border-radius:5px; position:fixed; top:40%; left:40vw; z-index:999999; font-weight:bold;";
+      if (kind === "failed") {
+        m.style.cssText = "width:20vw; min-width:150px; background:#f1dddd; opacity:0.5;" +
+          "height: 40px; color:#000; line-height: 40px; text-align: center; border-radius: 5px; " +
+          "position: fixed; top: 40vh; left: 40vw; z-index: 999999; font-weight: bold; ";
+        console.log("failed kind是" + kind)
+      }
+      else if (kind === "success") {
+        m.style.cssText = "width:20vw; min-width:150px; background:#dff0d8; opacity:0.5;" +
+          "height: 40px; color:#000; line-height: 40px; text-align: center; border-radius: 5px; " +
+          "position: fixed; top: 40vh; left: 40vw; z-index: 999999; font-weight: bold; ";
+        console.log("success kind是" + kind)
+      }
+      else if (kind === "info") {
+        m.style.cssText = "width:20vw; min-width:150px; background:#d8edf7; opacity:0.5;" +
+          "height: 40px; color:#000; line-height: 40px; text-align: center; border-radius: 5px; " +
+          "position: fixed; top: 40vh; left: 40vw; z-index: 999999; font-weight: bold; ";
+        console.log("info kind是" + kind)
+      }
+
       document.body.appendChild(m);
       setTimeout(function () {
         var d = 0.5;

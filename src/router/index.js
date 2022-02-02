@@ -9,6 +9,11 @@ import Manager from '../components/Manager'
 import UserLogin from '../pages/user/UserLogin'
 import Userregister from '../pages/user/Userregister'
 import Userforget from '../pages/user/Userforget'
+import Userinterface from '../pages/user/Userinterface'
+import Useraccount from '../pages/user/Useraccount'
+import Userhome from '../pages/user/Userhome'
+import Userorder from '../pages/user/Userorder'
+import Usersetting from '../pages/user/Usersetting'
 import ManagerLogin from '../pages/manager/ManagerLogin'
 
 //创建并暴露路由
@@ -32,12 +37,38 @@ export default new VueRouter({
 					component: UserLogin
 				},
 				{
-					path:'register',
+					path: 'register',
 					component: Userregister
 				},
 				{
-					path:'forget',
+					path: 'forget',
 					component: Userforget
+				},
+				{
+					path: 'interface',
+					component: Userinterface,
+					children: [
+						{ //interface的默认路由
+							path: '',
+							component: Useraccount
+						},
+						{
+							path: 'account',
+							component: Useraccount
+						},
+						{
+							path: 'home',
+							component: Userhome
+						},
+						{
+							path: 'order',
+							component: Userorder
+						},
+						{
+							path: 'setting',
+							component: Usersetting
+						}
+					]
 				}
 			]
 		},

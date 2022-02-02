@@ -97,11 +97,11 @@ export default {
       console.log("用户注册确认")
       let temp = true
       if (temp === true) {
-        this.$bus.$emit('Toast',"注册成功")
+        this.$bus.$emit('Toast', "注册成功", "success")
       }
-			else{
-				this.$bus.$emit('Toast',"注册失败")
-			}
+      else {
+        this.$bus.$emit('Toast', "注册失败", "failed")
+      }
     },
     goback () {
       console.log("用户注册返回")

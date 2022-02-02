@@ -74,10 +74,10 @@ export default {
       console.log("用户修改密码确认,与后端交互")
       let temp = true
       if (temp === true) {
-        this.$bus.$emit('Toast',"修改成功")
+        this.$bus.$emit('Toast',"修改成功" , "success")
       }
 			else{
-				this.$bus.$emit('Toast',"修改失败")
+				this.$bus.$emit('Toast',"修改失败" , "failed")
 			}
     },
     goback () {
