@@ -26,7 +26,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .userinterface {
   margin-top: 96px;
   background-color: #ffffff;

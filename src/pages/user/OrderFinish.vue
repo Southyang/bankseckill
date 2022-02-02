@@ -1,12 +1,12 @@
 <template>
-	<div class="userorder">
-		<h1> 用户订单 </h1>
+	<div class="orderfinish">
+		<h1> 完成订单 </h1>
 	</div>
 </template>
 
 <script>
 export default {
-	name:'Userorder'
+ name:'OrderFinish'
 }
 </script>
 

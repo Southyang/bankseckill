@@ -1,14 +1,15 @@
 <template>
-  <div class="userhome">
-    <h1>用户主页</h1>
-  </div>
+	<div class="orderbook">
+		<h1> 预定订单 </h1>
+	</div>
 </template>
 
 <script>
 export default {
-  name: 'Userhome'
+ name:'Orderbook'
 }
 </script>
 
 <style>
+
 </style>

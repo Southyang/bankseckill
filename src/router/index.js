@@ -10,10 +10,16 @@ import UserLogin from '../pages/user/UserLogin'
 import Userregister from '../pages/user/Userregister'
 import Userforget from '../pages/user/Userforget'
 import Userinterface from '../pages/user/Userinterface'
-import Useraccount from '../pages/user/Useraccount'
-import Userhome from '../pages/user/Userhome'
-import Userorder from '../pages/user/Userorder'
-import Usersetting from '../pages/user/Usersetting'
+import InterfaceAccount from '../pages/user/InterfaceAccount'
+import InterfaceHome from '../pages/user/InterfaceHome'
+import InterfaceOrder from '../pages/user/InterfaceOrder'
+import OrderAll from '../pages/user/OrderAll'
+import OrderBook from '../pages/user/OrderBook'
+import OrderFinish from '../pages/user/OrderFinish'
+import InterfaceSetting from '../pages/user/InterfaceSetting'
+import SettingPerson from '../pages/user/SettingPerson'
+import SettingAccount from '../pages/user/SettingAccount'
+import SettingArticle from '../pages/user/SettingArticle'
 import ManagerLogin from '../pages/manager/ManagerLogin'
 
 //创建并暴露路由
@@ -50,23 +56,59 @@ export default new VueRouter({
 					children: [
 						{ //interface的默认路由
 							path: '',
-							component: Useraccount
+							component: InterfaceAccount
 						},
 						{
 							path: 'account',
-							component: Useraccount
+							component: InterfaceAccount
 						},
 						{
 							path: 'home',
-							component: Userhome
+							component: InterfaceHome
 						},
 						{
 							path: 'order',
-							component: Userorder
+							component: InterfaceOrder,
+							children: [
+								{ //order的默认路由
+									path: '',
+									component: OrderAll
+								},
+								{
+									path: 'orderall',
+									component: OrderAll
+								},
+								{
+									path: 'orderbook',
+									component: OrderBook
+								},
+								{
+									path: 'orderfinish',
+									component: OrderFinish
+								}
+							]
 						},
 						{
 							path: 'setting',
-							component: Usersetting
+							component: InterfaceSetting,
+							children: [
+								{ //setting的默认路由
+									path: '',
+									component: SettingPerson
+								},
+								{
+									path: 'settingperson',
+									component: SettingPerson
+								},
+								{
+									path: 'settingaccount',
+									component: SettingAccount
+								},
+								{
+									path: 'settingarticle',
+									component: SettingArticle
+								}
+							]
 						}
 					]
 				}
@@ -92,44 +134,3 @@ export default new VueRouter({
 		}
 	]
 })
-
-
-/* //用于创建整个应用的路由
-import VueRouter from "vue-router"
-//引入组件
-import NotFoundComponent from '../components/NotFoundComponent'
-import About from '../pages/About'
-import Home from '../pages/Home'
-
-//创建并暴露路由
-export default new VueRouter({
-	mode: 'history',
-	routes: [
-		{
-			path:'',
-			redirect:'/home'
-		},
-		{
-			path: '/about',
-			component: About
-		},
-		{
-			path: '/home',
-			component: Home,
-			children:[
-				{
-					path:'news',
-					component:News,
-				},
-				{
-					path:'message',
-					component:Message,
-				},
-				{
-					path:'',
-					component:Message
-				}
-			]
-		}
-	]
-}) */

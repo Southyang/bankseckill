@@ -1,12 +1,12 @@
 <template>
-  <div class="usersetting">
-    <h1> 用户设置 </h1>
+  <div class="interfacehome">
+    <h1>用户主页</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Usersetting'
+  name: 'InterfaceHome'
 }
 </script>
 
