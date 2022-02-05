@@ -69,10 +69,10 @@ export default {
 <style scoped>
 .accountbox {
   position: absolute;
-  width: 60vw;
+  width: 70vw;
   min-width: 800px;
   height: 550px;
-  left: 20vw;
+  left: 15vw;
   top: 170px;
 
   background: #ea0437;
@@ -103,7 +103,7 @@ export default {
   height: 70px;
   border-radius: 50%;
   margin-left: 50px;
-  margin-right: 10px;
+  margin-right: 20px;
   overflow: hidden;
   float: left;
 }

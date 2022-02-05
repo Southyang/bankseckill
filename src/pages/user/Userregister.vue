@@ -207,6 +207,7 @@ export default {
 
 .usercardkind {
   font-size: 18px;
+  color: #858585;
 }
 
 .vcode {
@@ -229,6 +230,7 @@ export default {
   box-sizing: border-box;
   color: #ea0437;
   margin-left: 15px;
+  cursor: pointer;
 }
 
 input[type='checkbox'] {

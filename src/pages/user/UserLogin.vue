@@ -10,13 +10,14 @@
       </div>
       <div class="userloginline">
       </div>
-      <div class="userlogininputbox">
+      <div v-if="status === true"
+           class="userlogininputbox">
         <div class="userlogininput username">
           <img src="../../assets/image/usernameicon.png"
                class="usericon">
           <input class="userinput"
                  placeholder="输入手机号/身份证号"
-                 v-model="username">
+                 v-model.number="username">
         </div>
         <div class="userlogininput password">
           <img src="../../assets/image/passwordicon.png"
@@ -26,12 +27,37 @@
                    placeholder="输入密码"
                    v-model="password"
                    type="password"
-                   autocomplete="off" >
+                   autocomplete="off">
           </form>
         </div>
       </div>
-      <div class="userloginforget"
-           @click="modifyuserpassowrd"> 忘记密码 </div>
+      <div v-else
+           class="userlogininputbox">
+        <div class="userlogininput username">
+          <img src="../../assets/image/usernameicon.png"
+               class="usericon">
+          <input class="userinput"
+                 placeholder="输入手机号"
+                 v-model.number="username">
+        </div>
+        <div class="flex1">
+          <div class="userlogininput vcode">
+            <img src="../../assets/image/passwordicon.png"
+                 class="usericon">
+            <input class="userinput vcode"
+                   placeholder="输入验证码"
+                   v-model="code">
+          </div>
+          <button class="getvcode"
+                  @click="getvcode"> 获取验证码 </button>
+        </div>
+      </div>
+      <div class="userlogininfotext">
+        <div class="usephonevcode"
+             @click="usephonevcode"> {{text}} </div>
+        <div class="userloginforget"
+             @click="modifyuserpassowrd"> 忘记密码 </div>
+      </div>
       <div class="userloginbuttonbox">
         <button class="userlogin userloginbutton"
                 @click="userlogin">登录</button>
@@ -43,12 +69,17 @@
 </template>
 
 <script>
+import axios from 'axios'
+import md5 from '../../assets/js/md5.min.js'
 export default {
   name: 'UserLogin',
   data () {
     return {
       username: '',
-      password: ''
+      password: '',
+      code: '',
+      status: true,
+      text: '验证码登录'
     }
   },
   methods: {
@@ -56,18 +87,114 @@ export default {
       this.$router.replace('/bankmanager');
       console.log('跳转到manager')
     },
+    usephonevcode () {
+      if (this.status === true) {
+        console.log('使用验证码登录')
+        this.text = '密码登录'
+        this.status = false
+      }
+      else {
+        console.log('使用密码登录')
+        this.text = '验证码登录'
+        this.status = true
+      }
+    },
+    getvcode () {
+      if (!this.username === "")
+        return alert("用户名不能为空")
+      console.log("用户" + this.username + "登录获取验证码")
+      let data = {
+        phone: this.username,
+      }
+      axios.get("http://localhost:8080/user/sendCode", data).then(
+        response => {
+          console.log(data)
+          console.log('请求成功了', response.data)
+          if (response.data.code === 200) {
+            this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+          }
+          else {
+            this.$bus.$emit('Toast', "该手机未注册", "info")
+          }
+        },
+        error => {
+          console.log('请求失败了', error.message)
+          this.$bus.$emit('Toast', "网络错误", "failed")
+        }
+      )
+    },
     modifyuserpassowrd () {
       this.$router.push('/bankuser/forget')
       console.log('跳转到用户修改密码界面')
     },
     userlogin () {
       console.log("用户登录，与后端交互验证信息正误")
-      if (!this.username.trim() || !this.password.trim())
-        return alert("用户名和密码不能为空")
 
-      console.log("用户名:" + this.username + " 密码:" + this.password)
-      this.password = ''
-      this.$router.push('/bankuser/interface')
+      sessionStorage.setItem("username",this.username)
+      if (this.status === true) { //账号密码登录
+        if (!this.username === "" || !this.password.trim())
+          return alert("用户名和密码不能为空")
+
+        console.log("用户名:" + this.username + " 密码:" + this.password)
+        let salt = "1a2b3c4d"
+        let inputPass = this.password
+        let str = "" + salt.charAt(0) + salt.charAt(2) + inputPass + salt.charAt(5) + salt.charAt(4);
+        let passwordsalt = md5(str);
+        let data = {
+          mobile: this.username,
+          password: passwordsalt
+        }
+        //发送post请求登录
+        /* axios.post('http://localhost:8080/user/toLogin1', data).then(
+          response => {
+            console.log(data)
+            console.log('请求成功了', response.data)
+            if (response.data.code !== 200) {
+              this.$bus.$emit('Toast', "账号或密码错误", "failed")
+            }
+            else {
+              this.$bus.$emit('Toast', "登录成功", "success")
+              this.$router.push('/bankuser/interface')
+            }
+          },
+          error => {
+            console.log('请求失败了', error.message)
+            this.$bus.$emit('Toast', "网络错误", "info")
+          }
+        ) */
+        this.password = ''
+        this.$router.push('/bankuser/interface')
+      }
+      else { //验证码登录
+        if (!this.username === "" || !this.code.trim())
+          return alert("用户名和验证码不能为空")
+
+        console.log("用户名:" + this.username + " 验证码:" + this.code)
+        let data = {
+          id: this.username,
+          code: this.code
+        }
+        //发送post请求登录
+        /* axios.post('http://localhost:8080/user/toLogin2', data).then(
+          response => {
+            console.log(data)
+            console.log('请求成功了', response.data)
+            if (response.data.code !== 200) {
+              this.$bus.$emit('Toast', "验证码错误", "failed")
+            }
+            else {
+              this.$bus.$emit('Toast', "登录成功", "success")
+              this.$router.push('/bankuser/interface')
+            }
+          },
+          error => {
+            console.log('请求失败了', error.message)
+            this.$bus.$emit('Toast', "网络错误", "info")
+          }
+        ) */
+        this.code = ''
+        this.$router.push('/bankuser/interface')
+      }
     },
     userregister () {
       this.$router.push('/bankuser/register')
@@ -164,12 +291,35 @@ export default {
   box-shadow: 1px 1px 1px 1px #f2f2f2;
 }
 
-.userloginforget {
-  width: 76px;
-  height: 20px;
-  margin-left: 75%;
-  margin-top: 3%;
+.vcode {
+  width: 54%;
+}
 
+.flex1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.getvcode {
+  width: 120px;
+  height: 51px;
+  font-family: Arial;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 15px;
+  /* or 67% */
+  background: #ffffff;
+  border: 1px solid #ea0437;
+  box-sizing: border-box;
+  color: #ea0437;
+  margin-left: 15px;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+.userlogininfotext {
   font-family: Arial;
   font-style: normal;
   font-weight: normal;
@@ -181,6 +331,20 @@ export default {
 
   color: #858585;
   cursor: pointer;
+  margin-top: 3%;
+}
+
+.usephonevcode {
+  width: 95px;
+  height: 20px;
+  margin-left: 11%;
+  float: left;
+}
+
+.userloginforget {
+  width: 76px;
+  height: 20px;
+  margin-left: 75%;
 }
 
 .userloginbuttonbox {
