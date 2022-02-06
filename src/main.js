@@ -12,6 +12,8 @@ import store from './store'
 import axios from 'axios'
 axios.defaults.baseURL = 'http://localhost:8080/' //定义根路径
 Vue.prototype.$http = axios //在原型链上给$http赋值为axios对象
+//引入element-ui
+import {elemessage} from './assets/js/message'
 
 //关闭Vue的生产提示
 Vue.config.productionTip = false
@@ -22,9 +24,9 @@ Vue.use(VueRouter)
 new Vue({
   el: '#app',
   render: h => h(App),
-  beforeCreate() {
-		Vue.prototype.$bus = this //安装全局事件总线
-	},
+  beforeCreate () {
+    Vue.prototype.$bus = this //安装全局事件总线
+  },
   router,
   store
 })

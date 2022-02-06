@@ -17,7 +17,7 @@ export default {
 <style scoped>
 .banner {
   /* 顶部导航栏 */
-  z-index: 9998;
+  /* z-index: 1; */
   position: absolute;
   width: 100%;
   height: 100px;
