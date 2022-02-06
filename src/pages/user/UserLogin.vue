@@ -16,8 +16,9 @@
           <img src="../../assets/image/usernameicon.png"
                class="usericon">
           <input class="userinput"
+                 type="text"
                  placeholder="输入手机号/身份证号"
-                 v-model.number="username">
+                 v-model="username">
         </div>
         <div class="userlogininput password">
           <img src="../../assets/image/passwordicon.png"
@@ -37,8 +38,9 @@
           <img src="../../assets/image/usernameicon.png"
                class="usericon">
           <input class="userinput"
+                 type="text"
                  placeholder="输入手机号"
-                 v-model.number="username">
+                 v-model="username">
         </div>
         <div class="flex1">
           <div class="userlogininput vcode">
@@ -69,7 +71,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import qs from 'qs'
 import md5 from '../../assets/js/md5.min.js'
 export default {
   name: 'UserLogin',
@@ -103,25 +105,26 @@ export default {
       if (!this.username === "")
         return alert("用户名不能为空")
       console.log("用户" + this.username + "登录获取验证码")
-      let data = {
-        phone: this.username,
-      }
-      axios.get("http://localhost:8080/user/sendCode", data).then(
-        response => {
-          console.log(data)
-          console.log('请求成功了', response.data)
-          if (response.data.code === 200) {
-            this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+      this.$http.get("user/sendCode",
+        {
+          params: {
+            id: this.username
           }
-          else {
-            this.$bus.$emit('Toast', "该手机未注册", "info")
+        }).then(
+          response => {
+            console.log('请求成功了', response.data)
+            if (response.data.code === 200) {
+              this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+            }
+            else {
+              this.$bus.$emit('Toast', "该手机未注册", "info")
+            }
+          },
+          error => {
+            console.log('请求失败了', error.message)
+            this.$bus.$emit('Toast', "网络错误", "failed")
           }
-        },
-        error => {
-          console.log('请求失败了', error.message)
-          this.$bus.$emit('Toast', "网络错误", "failed")
-        }
-      )
+        )
     },
     modifyuserpassowrd () {
       this.$router.push('/bankuser/forget')
@@ -130,7 +133,7 @@ export default {
     userlogin () {
       console.log("用户登录，与后端交互验证信息正误")
 
-      sessionStorage.setItem("username",this.username)
+      sessionStorage.setItem("username", this.username)
       if (this.status === true) { //账号密码登录
         if (!this.username === "" || !this.password.trim())
           return alert("用户名和密码不能为空")
@@ -145,9 +148,10 @@ export default {
           password: passwordsalt
         }
         //发送post请求登录
-        /* axios.post('http://localhost:8080/user/toLogin1', data).then(
+        /* this.$http.post('user/toLogin1', qs.stringify(data)).then(
           response => {
             console.log(data)
+            this.password = ''
             console.log('请求成功了', response.data)
             if (response.data.code !== 200) {
               this.$bus.$emit('Toast', "账号或密码错误", "failed")
@@ -169,18 +173,19 @@ export default {
         if (!this.username === "" || !this.code.trim())
           return alert("用户名和验证码不能为空")
 
-        console.log("用户名:" + this.username + " 验证码:" + this.code)
         let data = {
           id: this.username,
           code: this.code
         }
+        console.log("用户名:" + this.username + " 验证码:" + this.code)
         //发送post请求登录
-        /* axios.post('http://localhost:8080/user/toLogin2', data).then(
+        /* this.$http.post('user/toLogin2', qs.stringify(data)).then(
           response => {
             console.log(data)
+            this.code = ''
             console.log('请求成功了', response.data)
             if (response.data.code !== 200) {
-              this.$bus.$emit('Toast', "验证码错误", "failed")
+              this.$bus.$emit('Toast', response.data.message, "failed")
             }
             else {
               this.$bus.$emit('Toast', "登录成功", "success")

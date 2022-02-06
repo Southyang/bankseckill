@@ -8,6 +8,10 @@ import VueRouter from 'vue-router'
 import router from './router'
 //引入store
 import store from './store'
+//引入axios
+import axios from 'axios'
+axios.defaults.baseURL = 'http://localhost:8080/' //定义根路径
+Vue.prototype.$http = axios //在原型链上给$http赋值为axios对象
 
 //关闭Vue的生产提示
 Vue.config.productionTip = false
