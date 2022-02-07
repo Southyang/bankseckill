@@ -21,6 +21,7 @@ import SettingPerson from '../pages/user/SettingPerson'
 import SettingAccount from '../pages/user/SettingAccount'
 import SettingArticle from '../pages/user/SettingArticle'
 import ManagerLogin from '../pages/manager/ManagerLogin'
+import ManagerInterface from '../pages/manager/ManagerInterface'
 
 //创建并暴露路由
 export default new VueRouter({
@@ -125,6 +126,10 @@ export default new VueRouter({
 				{
 					path: 'login',
 					component: ManagerLogin
+				},
+				{
+					path: 'interface',
+					component: ManagerInterface
 				}
 			]
 		},
