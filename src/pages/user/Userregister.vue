@@ -60,7 +60,7 @@
         <input type="checkbox"
                v-model="checked"
                class="userregisterconfirm" />
-        <span class=""> 阅读并同意
+        <span> 阅读并同意
           <a style="color: #0578FF;"
              href="#">《三湘银行个人网银开户协议》</a></span>
       </div>
@@ -147,7 +147,6 @@ export default {
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
-  line-height: 15px;
   /* or 74% */
   margin-left: 5px;
   line-height: 30px;

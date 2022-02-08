@@ -28,6 +28,7 @@ import InterfaceConfigure from '../pages/manager/InterfaceConfigure'
 import InterfaceAdd from '../pages/manager/InterfaceAdd'
 import InterfaceModify from '../pages/manager/InterfaceModify'
 import InterfaceDelete from '../pages/manager/InterfaceDelete'
+import InterfaceCheckseckill from '../pages/manager/InterfaceCheckseckill'
 import InterfaceAddseckill from '../pages/manager/InterfaceAddseckill'
 import InterfaceModifyseckill from '../pages/manager/InterfaceModifyseckill'
 import InterfaceDeleteseckill from '../pages/manager/InterfaceDeleteseckill'
@@ -167,6 +168,10 @@ export default new VueRouter({
 						{
 							path:'deletegoods',
 							component:InterfaceDelete
+						},
+						{
+							path:'checkseckillgoods',
+							component:InterfaceCheckseckill
 						},
 						{
 							path:'addseckillgoods',

@@ -1,6 +1,6 @@
 <template>
 	<div class="interfacemodify">
-		<h1> 添加商品 </h1>
+		<h1> 修改商品信息 </h1>
 	</div>
 </template>
 

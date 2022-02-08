@@ -37,6 +37,11 @@
         <div class="list-group-item">
           <router-link class="routerlink"
                        active-class="active"
+                       to="/bankmanager/interface/checkseckillgoods">查看秒杀商品</router-link>
+        </div>
+        <div class="list-group-item">
+          <router-link class="routerlink"
+                       active-class="active"
                        to="/bankmanager/interface/addseckillgoods">添加秒杀商品</router-link>
         </div>
         <div class="list-group-item">
