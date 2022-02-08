@@ -22,6 +22,15 @@ import SettingAccount from '../pages/user/SettingAccount'
 import SettingArticle from '../pages/user/SettingArticle'
 import ManagerLogin from '../pages/manager/ManagerLogin'
 import ManagerInterface from '../pages/manager/ManagerInterface'
+import InterfaceCheck from '../pages/manager/InterfaceCheck'
+import InterfaceGet from '../pages/manager/InterfaceGet'
+import InterfaceConfigure from '../pages/manager/InterfaceConfigure'
+import InterfaceAdd from '../pages/manager/InterfaceAdd'
+import InterfaceModify from '../pages/manager/InterfaceModify'
+import InterfaceDelete from '../pages/manager/InterfaceDelete'
+import InterfaceAddseckill from '../pages/manager/InterfaceAddseckill'
+import InterfaceModifyseckill from '../pages/manager/InterfaceModifyseckill'
+import InterfaceDeleteseckill from '../pages/manager/InterfaceDeleteseckill'
 
 //创建并暴露路由
 export default new VueRouter({
@@ -129,7 +138,49 @@ export default new VueRouter({
 				},
 				{
 					path: 'interface',
-					component: ManagerInterface
+					component: ManagerInterface,
+					children:[
+						{ //interface的默认路由
+							path: '',
+							component: InterfaceCheck
+						},
+						{
+							path:'checkapplication',
+							component:InterfaceCheck
+						},
+						{
+							path:'getresult',
+							component:InterfaceGet
+						},
+						{
+							path:'configurerule',
+							component:InterfaceConfigure
+						},
+						{
+							path:'addgoods',
+							component:InterfaceAdd
+						},
+						{
+							path:'modifygoods',
+							component:InterfaceModify
+						},
+						{
+							path:'deletegoods',
+							component:InterfaceDelete
+						},
+						{
+							path:'addseckillgoods',
+							component:InterfaceAddseckill
+						},
+						{
+							path:'modifyseckillgoods',
+							component:InterfaceModifyseckill
+						},
+						{
+							path:'deleteseckillgoods',
+							component:InterfaceDeleteseckill
+						}
+					]
 				}
 			]
 		},

@@ -20,7 +20,7 @@ export default {
   /* z-index: 1; */
   position: absolute;
   width: 100%;
-  height: 100px;
+  height: 70px;
   left: 0px;
   top: -2px;
 }
@@ -28,7 +28,7 @@ export default {
 .bannerRectangle {
   position: absolute;
   width: 100vw;
-  height: 100px;
+  height: 70px;
   left: 0px;
   top: -2px;
   background: #ffffff;
@@ -39,6 +39,6 @@ export default {
   width: 234px;
   height: 65px;
   left: 37px;
-  top: 20px;
+  top: 5px;
 }
 </style>

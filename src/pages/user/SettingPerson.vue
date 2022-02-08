@@ -12,14 +12,6 @@ export default {
 
 <style>
 .settingperson {
-  z-index: 9999;
-  position: absolute;
-  width: 1536px;
-  height:790px;
-  left: 0px;
-  top: 0px;
-
-  background: #111010;
-  border-radius: 5px;
+  
 }
 </style>

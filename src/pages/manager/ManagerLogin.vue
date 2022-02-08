@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     gotomanager () {
-      this.$router.replace('/bankmanager');
+      this.$router.replace('/bankuser');
       console.log('跳转到manager')
     },
     usephonevcode () {
@@ -214,7 +214,7 @@ export default {
 
 <style scoped>
 .managerlogin {
-  margin-top: 100px;
+  margin-top: 70px;
 }
 
 .managerloginimg {

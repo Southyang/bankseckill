@@ -28,7 +28,7 @@ export default {
 
 <style scoped>
 .userinterface {
-  margin-top: 96px;
+  margin-top: 66px;
   background-color: #ffffff;
   height: 50px;
 }

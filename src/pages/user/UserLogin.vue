@@ -151,7 +151,7 @@ export default {
           password: passwordsalt
         }
         //发送post请求登录
-        this.$http.post('user/toLogin1', qs.stringify(data)).then(
+        /* this.$http.post('user/toLogin1', qs.stringify(data)).then(
           response => {
             console.log(data)
             this.password = ''
@@ -171,9 +171,9 @@ export default {
             // this.$bus.$emit('Toast', "网络错误", "info")
             this.$message.error("网络错误")
           }
-        )
+        ) */
         this.password = ''
-        // this.$router.push('/bankuser/interface')
+        this.$router.push('/bankuser/interface')
       }
       else { //验证码登录
         if (!this.username === "" || !this.code.trim())
@@ -185,7 +185,7 @@ export default {
         }
         console.log("用户名:" + this.username + " 验证码:" + this.code)
         //发送post请求登录
-        this.$http.post('user/toLogin2', qs.stringify(data)).then(
+        /* this.$http.post('user/toLogin2', qs.stringify(data)).then(
           response => {
             console.log(data)
             this.code = ''
@@ -205,9 +205,9 @@ export default {
             // this.$bus.$emit('Toast', "网络错误", "info")
             this.$message.error("网络错误")
           }
-        )
-        // this.code = ''
-        // this.$router.push('/bankuser/interface')
+        ) */
+        this.code = ''
+        this.$router.push('/bankuser/interface')
       }
     },
     userregister () {
