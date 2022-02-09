@@ -32,6 +32,7 @@ import InterfaceCheckseckill from '../pages/manager/InterfaceCheckseckill'
 import InterfaceAddseckill from '../pages/manager/InterfaceAddseckill'
 import InterfaceModifyseckill from '../pages/manager/InterfaceModifyseckill'
 import InterfaceDeleteseckill from '../pages/manager/InterfaceDeleteseckill'
+import SeckillGoodsDetail from '../pages/manager/SeckillGoodsDetail'
 
 //创建并暴露路由
 export default new VueRouter({
@@ -140,50 +141,55 @@ export default new VueRouter({
 				{
 					path: 'interface',
 					component: ManagerInterface,
-					children:[
+					children: [
 						{ //interface的默认路由
 							path: '',
 							component: InterfaceCheck
 						},
 						{
-							path:'checkapplication',
-							component:InterfaceCheck
+							path: 'checkapplication',
+							component: InterfaceCheck
 						},
 						{
-							path:'getresult',
-							component:InterfaceGet
+							path: 'getresult',
+							component: InterfaceGet
 						},
 						{
-							path:'configurerule',
-							component:InterfaceConfigure
+							path: 'configurerule',
+							component: InterfaceConfigure
 						},
 						{
-							path:'addgoods',
-							component:InterfaceAdd
+							path: 'addgoods',
+							component: InterfaceAdd
 						},
 						{
-							path:'modifygoods',
-							component:InterfaceModify
+							path: 'modifygoods',
+							component: InterfaceModify
 						},
 						{
-							path:'deletegoods',
-							component:InterfaceDelete
+							path: 'deletegoods',
+							component: InterfaceDelete
 						},
 						{
-							path:'checkseckillgoods',
-							component:InterfaceCheckseckill
+							path: 'checkseckillgoods',
+							component: InterfaceCheckseckill
 						},
 						{
-							path:'addseckillgoods',
-							component:InterfaceAddseckill
+							name: 'seckillgoodsdetail',
+							path: 'seckillgoodsdetail',
+							component: SeckillGoodsDetail
 						},
 						{
-							path:'modifyseckillgoods',
-							component:InterfaceModifyseckill
+							path: 'addseckillgoods',
+							component: InterfaceAddseckill
 						},
 						{
-							path:'deleteseckillgoods',
-							component:InterfaceDeleteseckill
+							path: 'modifyseckillgoods',
+							component: InterfaceModifyseckill
+						},
+						{
+							path: 'deleteseckillgoods',
+							component: InterfaceDeleteseckill
 						}
 					]
 				}

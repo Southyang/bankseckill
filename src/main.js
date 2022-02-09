@@ -14,6 +14,8 @@ axios.defaults.baseURL = 'http://localhost:8080/' //定义根路径
 Vue.prototype.$http = axios //在原型链上给$http赋值为axios对象
 //引入element-ui
 import {elemessage} from './assets/js/message'
+import {DatePicker} from 'element-ui'
+Vue.component('el-date-picker', DatePicker);
 
 //关闭Vue的生产提示
 Vue.config.productionTip = false
