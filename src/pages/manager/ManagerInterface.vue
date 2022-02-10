@@ -64,7 +64,13 @@
 
 <script>
 export default {
-
+  name: 'Managerinterface',
+  mounted () {
+    if (!sessionStorage.getItem('managername')) {
+      this.$message.info("请先登录")
+      this.$router.replace("/bankmanager/login")
+    }
+  }
 }
 </script>
 
@@ -81,7 +87,7 @@ export default {
   transform: rotate(0deg);
 }
 
-.managerinterfacelist{
+.managerinterfacelist {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;

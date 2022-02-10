@@ -22,7 +22,13 @@
 
 <script>
 export default {
-  name: 'Userinterface'
+  name: 'Userinterface',
+  mounted () {
+    if (!sessionStorage.getItem('username')) {
+      this.$message.info("请先登录")
+      this.$router.replace("/bankuser/login")
+    }
+  }
 }
 </script>
 
@@ -58,7 +64,7 @@ export default {
   margin: 0 5vw;
 }
 
-.active{
-	color: #EA0437;
+.active {
+  color: #ea0437;
 }
 </style>

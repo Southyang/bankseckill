@@ -1,8 +1,8 @@
 <template>
   <div class="login">
     <Banner />
-		
-		<router-view></router-view>
+
+    <router-view></router-view>
   </div>
 </template>
 
@@ -10,7 +10,7 @@
 import Banner from './Banner.vue'
 export default {
   name: 'Manager',
-  components: { Banner },
+  components: { Banner }
 }
 </script>
 
