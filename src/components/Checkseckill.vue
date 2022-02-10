@@ -1,5 +1,5 @@
 <template>
-  <div class="interfacecheckseckill">
+  <div class="checkseckill">
     <div class="checkseckillheader">
       秒杀商品列表
     </div>
@@ -45,7 +45,7 @@
 
 <script>
 export default {
-  name: 'InterfaceCheckseckill',
+  name: 'Checkseckill',
   data () {
     return {
       detail: '详情',
@@ -104,7 +104,7 @@ export default {
 </script>
 
 <style scoped>
-.interfacecheckseckill {
+.checkseckill {
   /* 登录背景栏 */
   margin-top: 45px;
   margin-left: 55px;

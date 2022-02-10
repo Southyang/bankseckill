@@ -36,7 +36,7 @@ export default {
 .list-group {
   background-color: #ffffff;
   height: 100vh;
-  width: 240px;
+  width: 220px;
 }
 
 .list-group-item {

@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .orderall{
 	width: 100%;
 	height: 100%;

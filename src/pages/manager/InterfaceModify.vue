@@ -74,7 +74,7 @@ export default {
 }
 </script>
 
-<style scpoed>
+<style scoped>
 .interfacemodify {
   /* 登录背景栏 */
   margin-top: 45px;

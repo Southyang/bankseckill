@@ -4,6 +4,9 @@ import VueRouter from "vue-router"
 import NotFoundComponent from '../components/NotFoundComponent'
 import User from '../components/User'
 import Manager from '../components/Manager'
+import CheckGoods from '../components/CheckGoods'
+import Checkseckill from '../components/Checkseckill'
+import SeckillGoodsDetail from '../components/SeckillGoodsDetail'
 
 //引入路由组件
 import UserLogin from '../pages/user/UserLogin'
@@ -28,11 +31,9 @@ import InterfaceConfigure from '../pages/manager/InterfaceConfigure'
 import InterfaceAdd from '../pages/manager/InterfaceAdd'
 import InterfaceModify from '../pages/manager/InterfaceModify'
 import InterfaceDelete from '../pages/manager/InterfaceDelete'
-import InterfaceCheckseckill from '../pages/manager/InterfaceCheckseckill'
 import InterfaceAddseckill from '../pages/manager/InterfaceAddseckill'
 import InterfaceModifyseckill from '../pages/manager/InterfaceModifyseckill'
 import InterfaceDeleteseckill from '../pages/manager/InterfaceDeleteseckill'
-import SeckillGoodsDetail from '../pages/manager/SeckillGoodsDetail'
 
 //创建并暴露路由
 export default new VueRouter({
@@ -76,7 +77,26 @@ export default new VueRouter({
 						},
 						{
 							path: 'home',
-							component: InterfaceHome
+							component: InterfaceHome,
+							children: [
+								{
+									path: '',
+									component: Checkseckill
+								},
+								{
+									path: 'checkgoods',
+									component: CheckGoods
+								},
+								{
+									path: 'checkseckillgoods',
+									component: Checkseckill
+								},
+								{
+									name: 'seckillgoodsdetail',
+									path: 'seckillgoodsdetail',
+									component: SeckillGoodsDetail
+								},
+							]
 						},
 						{
 							path: 'order',
@@ -172,7 +192,7 @@ export default new VueRouter({
 						},
 						{
 							path: 'checkseckillgoods',
-							component: InterfaceCheckseckill
+							component: Checkseckill
 						},
 						{
 							name: 'seckillgoodsdetail',

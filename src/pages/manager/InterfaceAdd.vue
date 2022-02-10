@@ -70,7 +70,7 @@ export default {
 }
 </script>
 
-<style scpoed>
+<style scoped>
 .interfaceadd {
   /* 登录背景栏 */
   margin-top: 45px;
