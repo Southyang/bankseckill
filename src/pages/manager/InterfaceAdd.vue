@@ -6,11 +6,13 @@
     <div class="addbody">
       <div class="addinfo">
         <div class="infoword">商品名称</div>
-        <input class="infoinput" />
+        <input class="infoinput"
+               v-model="goodsName" />
       </div>
       <div class="addinfo">
         <div class="infoword">商品标题</div>
-        <input class="infoinput" />
+        <input class="infoinput"
+               v-model="goodsTile" />
       </div>
       <div class="addinfo">
         <div class="infoword">商品图片</div>
@@ -25,19 +27,23 @@
       </div>
       <div class="addinfo">
         <div class="infoword">商品描述</div>
-        <input class="infoinput longinput" />
+        <textarea class="infoinput longinput"
+               v-model="goodsDetail" />
       </div>
       <div class="addinfo">
         <div class="infoword">商品价格</div>
-        <input class="infoinput shortinput" />
+        <input class="infoinput shortinput"
+               v-model="goodsPrice" />
       </div>
       <div class="addinfo">
         <div class="infoword">商品库存</div>
-        <input class="infoinput shortinput" />
+        <input class="infoinput shortinput"
+               v-model="goodsStock" />
       </div>
     </div>
     <div class="addfooter">
-      <button class="addbutton">提交</button>
+      <button class="addbutton"
+              @click="submit">提交</button>
     </div>
   </div>
 </template>
@@ -48,7 +54,13 @@ export default {
   name: 'InterfaceAdd',
   data () {
     return {
-      imgurl: defaultpicture
+      goodsName: '',
+      goodsTile: '',
+      goodsDetail: '',
+      goodsPrice: '',
+      goodsStock: '',
+      imgurl: defaultpicture,
+      file: ''
     }
   },
   methods: {
@@ -59,12 +71,42 @@ export default {
     filePreview (e) {
       let _this = this
       var files = e.target.files[0]
+      this.file = files
       if (!e || !window.FileReader) return  // 判断是否支持FileReader
       let reader = new FileReader()
       reader.readAsDataURL(files) // 文件转换
       reader.onloadend = function () {
         _this.imgurl = this.result
       }
+    },
+    submit () {
+      console.log("添加商品");
+      this.$http.get("manage/addGoods",
+        {
+          file: this.file,
+          goodsName: this.goodsName,
+          goodsTile: this.goodsTile,
+          goodsDetail: this.goodsDetail,
+          goodsPrice: this.goodsPrice,
+          goodsStock: this.goodsStock,
+        }).then(
+          response => {
+            console.log('请求成功了', response.data)
+            if (response.data.code === 200) {
+              // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+              this.$message.info("增加商品成功")
+            }
+            else {
+              // this.$bus.$emit('Toast', "该手机未注册", "info")
+              this.$message.warning("增加商品失败")
+            }
+          },
+          error => {
+            console.log('请求失败了', error.message)
+            // this.$bus.$emit('Toast', "网络错误", "failed")
+            this.$message.error("网络错误")
+          }
+        )
     }
   }
 }

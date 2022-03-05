@@ -23,6 +23,8 @@ import InterfaceSetting from '../pages/user/InterfaceSetting'
 import SettingPerson from '../pages/user/SettingPerson'
 import SettingAccount from '../pages/user/SettingAccount'
 import SettingArticle from '../pages/user/SettingArticle'
+import HomeActivity from '../pages/user/HomeActivity'
+
 import ManagerLogin from '../pages/manager/ManagerLogin'
 import ManagerInterface from '../pages/manager/ManagerInterface'
 import InterfaceCheck from '../pages/manager/InterfaceCheck'
@@ -79,20 +81,24 @@ export default new VueRouter({
 							path: 'home',
 							component: InterfaceHome,
 							children: [
-								{
+								{ //InterfaceHome的默认路由
 									path: '',
-									component: Checkseckill
+									component: HomeActivity
 								},
 								{
 									path: 'checkgoods',
 									component: CheckGoods
 								},
 								{
+									path: 'homeactivity',
+									component: HomeActivity
+								},
+								{
 									path: 'checkseckillgoods',
 									component: Checkseckill
 								},
 								{
-									name: 'seckillgoodsdetail',
+									name: 'userseckillgoodsdetail',
 									path: 'seckillgoodsdetail',
 									component: SeckillGoodsDetail
 								},
@@ -195,7 +201,7 @@ export default new VueRouter({
 							component: Checkseckill
 						},
 						{
-							name: 'seckillgoodsdetail',
+							name: 'managerseckillgoodsdetail',
 							path: 'seckillgoodsdetail',
 							component: SeckillGoodsDetail
 						},

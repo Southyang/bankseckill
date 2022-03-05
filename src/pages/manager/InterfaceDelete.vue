@@ -5,11 +5,13 @@
     </div>
     <div class="deletebody">
       <div class="deleteword">商品ID</div>
-			<div class="line"></div>
-      <input class="deleteinput" v-model="GoodsID"/>
+      <div class="line"></div>
+      <input class="deleteinput"
+             v-model="GoodsID" />
     </div>
     <div class="deletefooter">
-      <button class="deletebutton" @click="deletegoods">删除</button>
+      <button class="deletebutton"
+              @click="deletegoods">删除</button>
     </div>
   </div>
 </template>
@@ -17,17 +19,38 @@
 <script>
 export default {
   name: 'InterfaceDelete',
-	data(){
-		return{
-			GoodsID:''
-		}
-	},
-	methods:{
-		deletegoods(){
-			console.log("删除商品ID为:" + this.GoodsID)
-			this.GoodsID = ''
-		}
-	}
+  data () {
+    return {
+      GoodsID: ''
+    }
+  },
+  methods: {
+    deletegoods () {
+      console.log("删除商品ID为:" + this.GoodsID)
+      this.GoodsID = ''
+      this.$http.get("manage/deleteGoods",
+        {
+          id: this.GoodsID
+        }).then(
+          response => {
+            console.log('请求成功了', response.data)
+            if (response.data.code === 200) {
+              // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+              this.$message.info("删除商品成功")
+            }
+            else {
+              // this.$bus.$emit('Toast', "该手机未注册", "info")
+              this.$message.warning("删除商品失败")
+            }
+          },
+          error => {
+            console.log('请求失败了', error.message)
+            // this.$bus.$emit('Toast', "网络错误", "failed")
+            this.$message.error("网络错误")
+          }
+        )
+    }
+  }
 }
 </script>
 
@@ -73,11 +96,11 @@ export default {
   letter-spacing: 0.055em;
 }
 
-.line{
-	height: 49px;
-	width:1px;
-	background-color: #494949;
-	float: left;
+.line {
+  height: 49px;
+  width: 1px;
+  background-color: #494949;
+  float: left;
 }
 
 .deleteinput {
@@ -88,9 +111,9 @@ export default {
   border-radius: 0px 5px 5px 0px;
   font-size: 22px;
   width: 259px;
-	padding-left: 15px;
-	outline: none;
-	border: none;
+  padding-left: 15px;
+  outline: none;
+  border: none;
 }
 
 .deletefooter {
@@ -112,6 +135,6 @@ export default {
   line-height: 15px;
   letter-spacing: 0.055em;
   color: #ea0437;
-	cursor: pointer;
+  cursor: pointer;
 }
 </style>

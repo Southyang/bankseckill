@@ -26,6 +26,27 @@ export default {
 		deleteseckillgoods(){
 			console.log("删除秒杀商品ID为:" + this.GoodsID)
 			this.GoodsID = ''
+      this.$http.get("manage/deleteSeckillGoods",
+        {
+          id: this.GoodsID
+        }).then(
+          response => {
+            console.log('请求成功了', response.data)
+            if (response.data.code === 200) {
+              // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+              this.$message.info("删除秒杀商品成功")
+            }
+            else {
+              // this.$bus.$emit('Toast', "该手机未注册", "info")
+              this.$message.warning("删除秒杀商品失败")
+            }
+          },
+          error => {
+            console.log('请求失败了', error.message)
+            // this.$bus.$emit('Toast', "网络错误", "failed")
+            this.$message.error("网络错误")
+          }
+        )
 		}
 	}
 }

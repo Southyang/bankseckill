@@ -102,8 +102,10 @@ export default {
       }
     },
     getvcode () {
-      if (!this.username === "")
-        return alert("用户名不能为空")
+      if (!this.username.trim()) {
+        this.$message.warning("用户名不能为空");
+        return false;
+      }
       console.log("用户" + this.username + "登录获取验证码")
       this.$http.get("user/sendCode",
         {
@@ -136,7 +138,6 @@ export default {
     userlogin () {
       console.log("用户登录，与后端交互验证信息正误")
 
-      sessionStorage.setItem("username", this.username)
       if (this.status === true) { //账号密码登录
         if (!this.username === "" || !this.password.trim())
           return alert("用户名和密码不能为空")
@@ -151,7 +152,7 @@ export default {
           password: passwordsalt
         }
         //发送post请求登录
-        /* this.$http.post('user/toLogin1', qs.stringify(data)).then(
+        this.$http.post('user/toLogin1', qs.stringify(data)).then(
           response => {
             console.log(data)
             this.password = ''
@@ -162,6 +163,7 @@ export default {
             }
             else {
               // this.$bus.$emit('Toast', "登录成功", "success")
+              sessionStorage.setItem("username", this.username)
               this.$message.success("登录成功")
               this.$router.push('/bankuser/interface')
             }
@@ -171,9 +173,9 @@ export default {
             // this.$bus.$emit('Toast', "网络错误", "info")
             this.$message.error("网络错误")
           }
-        ) */
-        this.password = ''
-        this.$router.push('/bankuser/interface')
+        )
+        /* this.password = ''
+        this.$router.push('/bankuser/interface') */
       }
       else { //验证码登录
         if (!this.username === "" || !this.code.trim())
@@ -185,7 +187,7 @@ export default {
         }
         console.log("用户名:" + this.username + " 验证码:" + this.code)
         //发送post请求登录
-        /* this.$http.post('user/toLogin2', qs.stringify(data)).then(
+        this.$http.post('user/toLogin2', qs.stringify(data)).then(
           response => {
             console.log(data)
             this.code = ''
@@ -196,6 +198,7 @@ export default {
             }
             else {
               // this.$bus.$emit('Toast', "登录成功", "success")
+              sessionStorage.setItem("username", this.username)
               this.$message.success("登录成功")
               this.$router.push('/bankuser/interface')
             }
@@ -205,9 +208,9 @@ export default {
             // this.$bus.$emit('Toast', "网络错误", "info")
             this.$message.error("网络错误")
           }
-        ) */
-        this.code = ''
-        this.$router.push('/bankuser/interface')
+        )
+        /* this.code = ''
+        this.$router.push('/bankuser/interface') */
       }
     },
     userregister () {

@@ -43,15 +43,51 @@ export default {
   name: 'InterfaceConfigure',
   data () {
     return {
-      delaynumber: false,
-      workstatus: false,
-      truststatus: false,
-      oldcondition: false
+      delaynumber: true,
+      workstatus: true,
+      truststatus: true,
+      oldcondition: true
     }
   },
   methods: {
     commit () {
-      console.log("提交规则为: 逾期次数:" + this.delaynumber + " 工作状态:" + this.workstatus + " 信任状态:" + this.truststatus + " 年龄条件:" + this.oldcondition)
+      let res = '';
+      if (this.delaynumber === true) {
+        res += '0';
+      }
+      if (this.workstatus === true) {
+        res += '1';
+      }
+      if (this.truststatus === true) {
+        res += '2';
+      }
+      if (this.oldcondition === true) {
+        res += '3';
+      }
+      console.log(res);
+      this.$http.get("manage/rules",
+        {
+          params: {
+            id: res
+          }
+        }).then(
+          response => {
+            console.log('请求成功了', response.data)
+            if (response.data.code === 200) {
+              // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+              this.$message.info("配置成功")
+            }
+            else {
+              // this.$bus.$emit('Toast', "该手机未注册", "info")
+              this.$message.warning("配置失败")
+            }
+          },
+          error => {
+            console.log('请求失败了', error.message)
+            // this.$bus.$emit('Toast', "网络错误", "failed")
+            this.$message.error("网络错误")
+          }
+        )
     }
   }
 }

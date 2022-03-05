@@ -11,6 +11,7 @@ import store from './store'
 //引入axios
 import axios from 'axios'
 axios.defaults.baseURL = 'http://localhost:8080/' //定义根路径
+axios.defaults.withCredentials = true //允许后端写入cookie
 Vue.prototype.$http = axios //在原型链上给$http赋值为axios对象
 //引入element-ui
 import {elemessage} from './assets/js/message'

@@ -16,6 +16,19 @@
                  v-model="username" />
         </div>
         <div class="inputbox">
+          <div class="userregisterinput">客户昵称</div>
+          <input class="userinput"
+                 placeholder="请输入昵称"
+                 v-model="nickname" />
+        </div>
+        <div class="inputbox">
+          <div class="userregisterinput">账号密码</div>
+          <input class="userinput"
+                 type="password"
+                 placeholder="请输入密码"
+                 v-model="password" />
+        </div>
+        <div class="inputbox">
           <span class="userregisterinput">证件类型</span>
           <select class="userinput usercardkind"
                   v-model="selected">
@@ -35,26 +48,26 @@
                  placeholder="请输入证件号码"
                  v-model="cardid" />
         </div>
-        <div class="inputbox">
+        <!-- <div class="inputbox">
           <span class="userregisterinput">账(卡)号</span>
           <input class="userinput"
                  placeholder="请输入绑定卡卡号"
                  v-model="bankcard" />
-        </div>
+        </div> -->
         <div class="inputbox">
           <span class="userregisterinput">手机号码</span>
           <input class="userinput"
                  placeholder="请输入手机号码"
                  v-model="phone" />
         </div>
-        <div class="inputbox">
+        <!-- <div class="inputbox">
           <span class="userregisterinput">短信验证码</span>
           <input class="userinput vcode"
                  placeholder="请输入手机验证码"
                  v-model="vcode" />
           <button class="getvcode"
                   @click="getvcode"> 获取验证码 </button>
-        </div>
+        </div> -->
       </div>
       <div class="userregisterconfirmbox">
         <input type="checkbox"
@@ -76,17 +89,21 @@
 </template>
 
 <script>
+import qs from 'qs'
+import md5 from '../../assets/js/md5.min.js'
 export default {
   name: 'Userregister',
   data () {
     return {
       checked: false,
       username: '',
+      nickname: '',
+      password: '',
       selected: '第二代居民身份证',
       cardid: '',
-      bankcard: '',
+      // bankcard: '',
       phone: '',
-      vcode: ''
+      // vcode: ''
     }
   },
   methods: {
@@ -95,13 +112,53 @@ export default {
     },
     confirm () {
       console.log("用户注册确认")
-      let temp = true
-      if (temp === true) {
-        this.$bus.$emit('Toast', "注册成功", "success")
+
+      if(this.checked === false){
+        this.$message.warning("请勾选协议框");
+        return false;
+      }
+      if(!this.username.trim() || !this.nickname.trim() || !this.password.trim() || !this.cardid.trim() || !this.phone.trim()){
+        this.$message.warning("输入不能为空");
+        return false;
+      }
+
+      let salt = "1a2b3c4d"
+      let password = this.password
+      let str = "" + salt.charAt(0) + salt.charAt(2) + password + salt.charAt(5) + salt.charAt(4)
+      let passwordsalt = md5(str)
+      let data = {
+        id: this.phone,
+        nickname: this.nickname,
+        password: passwordsalt,
+        name: this.username,
+        idNumber: this.cardid
+      }
+      //发送post请求
+      this.$http.post('user/toRegister', qs.stringify(data)).then(
+        response => {
+          console.log(data)
+          console.log(response.data)
+          if(response.data.code !== 200){
+            this.$message.warning(response.data.message)
+          }
+          else{
+            this.$message.success("注册成功")
+            this.$router.push('/bankuser/')
+          }
+        },
+        error => {
+          console.log('请求失败了',error.message)
+          this.$message.error("网络错误")
+        }
+      )
+      /* if (temp === true) {
+        // this.$bus.$emit('Toast', "注册成功", "success")
+        this.$message.success("注册成功")
       }
       else {
-        this.$bus.$emit('Toast', "注册失败", "failed")
-      }
+        // this.$bus.$emit('Toast', "注册失败", "failed")
+        this.$message.error("注册失败")
+      } */
     },
     goback () {
       console.log("用户注册返回")
@@ -120,10 +177,10 @@ export default {
   width: 80vw;
   min-width: 1000px;
   height: 80vh;
-  min-height: 600px;
+  min-height: 660px;
   left: 10vw;
   right: 10vw;
-  top: 125px;
+  top: 100px;
 
   background: #ffffff;
   border-radius: 5px;
@@ -164,7 +221,7 @@ export default {
 }
 
 .userregisterinputbox {
-  margin-top: 20px;
+  margin-top: 50px;
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;

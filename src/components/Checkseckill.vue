@@ -71,12 +71,26 @@ export default {
     checkdetail (e) {
       let id = e.currentTarget.parentElement.firstElementChild.innerHTML
       console.log("查看ID为" + e.currentTarget.parentElement.firstElementChild.innerHTML + "的商品详情")
-      this.$router.push({
-        name: 'seckillgoodsdetail',
-        params: {
-          id: id
+      let nowname = sessionStorage.getItem("username")
+      if (!nowname) {
+        nowname = sessionStorage.getItem("managername")
+        if (nowname) {
+          this.$router.push({
+            name: 'managerseckillgoodsdetail',
+            params: {
+              id: id
+            }
+          })
         }
-      })
+      }
+      else {
+        this.$router.push({
+          name: 'userseckillgoodsdetail',
+          params: {
+            id: id
+          }
+        })
+      }
     },
     beforepage () {
       console.log("上一页")
@@ -99,6 +113,27 @@ export default {
       }
       return temp
     }
+  },
+  mounted () {
+    console.log("获取商品列表")
+    this.$http.get("goods/toList").then(
+      response => {
+        console.log('请求成功了', response.data)
+        if (response.data.code === 200) {
+          // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+          this.$message.info("成功获取秒杀商品")
+        }
+        else {
+          // this.$bus.$emit('Toast', "该手机未注册", "info")
+          this.$message.warning("获取秒杀商品失败")
+        }
+      },
+      error => {
+        console.log('请求失败了', error.message)
+        // this.$bus.$emit('Toast', "网络错误", "failed")
+        this.$message.error("网络错误")
+      }
+    )
   }
 }
 </script>

@@ -62,6 +62,23 @@ export default {
     changeimage () {
       console.log("用户修改图片")
     }
+  },
+  mounted () {
+    this.$http.post('user/info').then(
+      response => {
+        console.log(response.data)
+        if (response.data.code !== 200) {
+          this.$message.warning(response.data.message)
+        }
+        else {
+          this.$message.success("信息获取成功")
+        }
+      },
+      error => {
+        console.log('请求失败了', error.message)
+        this.$message.error("网络错误")
+      }
+    )
   }
 }
 </script>

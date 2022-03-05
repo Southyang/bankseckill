@@ -4,17 +4,21 @@
       修改商品信息
     </div>
     <div class="modifybody">
-			<div class="modifyinfo">
+      <div class="modifyinfo">
         <div class="infoword">商品ID</div>
-        <input class="infoinput" style="width:280px"/>
+        <input class="infoinput"
+               style="width:280px"
+               v-model="id" />
       </div>
       <div class="modifyinfo">
         <div class="infoword">商品名称</div>
-        <input class="infoinput" />
+        <input class="infoinput"
+               v-model="goodsName" />
       </div>
       <div class="modifyinfo">
         <div class="infoword">商品标题</div>
-        <input class="infoinput" />
+        <input class="infoinput"
+               v-model="goodsTile" />
       </div>
       <div class="modifyinfo">
         <div class="infoword">商品图片</div>
@@ -29,19 +33,23 @@
       </div>
       <div class="modifyinfo">
         <div class="infoword">商品描述</div>
-        <input class="infoinput longinput" />
+        <textarea class="infoinput longinput"
+                  v-model="goodsDetail" />
       </div>
       <div class="modifyinfo">
         <div class="infoword">商品价格</div>
-        <input class="infoinput shortinput" />
+        <input class="infoinput shortinput"
+               v-model="goodsPrice" />
       </div>
       <div class="modifyinfo">
         <div class="infoword">商品库存</div>
-        <input class="infoinput shortinput" />
+        <input class="infoinput shortinput"
+               v-model="goodsStock" />
       </div>
     </div>
     <div class="modifyfooter">
-      <button class="modifybutton">提交</button>
+      <button class="modifybutton"
+              @click="modify">提交</button>
     </div>
   </div>
 </template>
@@ -52,7 +60,14 @@ export default {
   name: 'InterfaceModify',
   data () {
     return {
-      imgurl: defaultpicture
+      id: '',
+      goodsName: '',
+      goodsTile: '',
+      goodsDetail: '',
+      goodsPrice: '',
+      goodsStock: '',
+      imgurl: defaultpicture,
+      file: ''
     }
   },
   methods: {
@@ -63,12 +78,43 @@ export default {
     filePreview (e) {
       let _this = this
       var files = e.target.files[0]
+      this.file = files
       if (!e || !window.FileReader) return  // 判断是否支持FileReader
       let reader = new FileReader()
       reader.readAsDataURL(files) // 文件转换
       reader.onloadend = function () {
         _this.imgurl = this.result
       }
+    },
+    modify () {
+      console.log("修改商品信息")
+      this.$http.get("manage/updateGoods",
+        {
+          file: this.file,
+          id: this.id,
+          goodsName: this.goodsName,
+          goodsTile: this.goodsTile,
+          goodsDetail: this.goodsDetail,
+          goodsPrice: this.goodsPrice,
+          goodsStock: this.goodsStock,
+        }).then(
+          response => {
+            console.log('请求成功了', response.data)
+            if (response.data.code === 200) {
+              // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+              this.$message.info("修改商品信息成功")
+            }
+            else {
+              // this.$bus.$emit('Toast', "该手机未注册", "info")
+              this.$message.warning("修改商品信息失败")
+            }
+          },
+          error => {
+            console.log('请求失败了', error.message)
+            // this.$bus.$emit('Toast', "网络错误", "failed")
+            this.$message.error("网络错误")
+          }
+        )
     }
   }
 }
@@ -112,7 +158,7 @@ export default {
   width: 800px;
   height: 550px;
   margin-left: 200px;
-	margin-top: 35px;
+  margin-top: 35px;
 }
 
 .modifyinfo {
@@ -124,7 +170,7 @@ export default {
   text-align: center;
   line-height: 35px;
   width: 100px;
-	text-align: left;
+  text-align: left;
 }
 
 .infoinput {
@@ -179,7 +225,7 @@ export default {
 
 .modifybutton {
   width: 120px;
-	height: 40px;
+  height: 40px;
   background: #ea0437;
   border-radius: 5px;
   border: none;
