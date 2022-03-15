@@ -197,15 +197,6 @@ export default new VueRouter({
 							component: InterfaceDelete
 						},
 						{
-							path: 'checkseckillgoods',
-							component: Checkseckill
-						},
-						{
-							name: 'managerseckillgoodsdetail',
-							path: 'seckillgoodsdetail',
-							component: SeckillGoodsDetail
-						},
-						{
 							path: 'addseckillgoods',
 							component: InterfaceAddseckill
 						},

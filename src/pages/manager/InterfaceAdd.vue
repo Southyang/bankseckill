@@ -4,42 +4,56 @@
       添加商品
     </div>
     <div class="addbody">
-      <div class="addinfo">
-        <div class="infoword">商品名称</div>
-        <input class="infoinput"
-               v-model="goodsName" />
-      </div>
-      <div class="addinfo">
-        <div class="infoword">商品标题</div>
-        <input class="infoinput"
-               v-model="goodsTile" />
-      </div>
-      <div class="addinfo">
-        <div class="infoword">商品图片</div>
-        <input type="file"
-               id="filed"
-               hidden=""
-               @change="filePreview">
-        <button class="choosebutton"
-                @click="choosepicture">选择文件</button>
-        <img class="choosepicture"
-             :src="imgurl">
-      </div>
-      <div class="addinfo">
-        <div class="infoword">商品描述</div>
-        <textarea class="infoinput longinput"
-               v-model="goodsDetail" />
-      </div>
-      <div class="addinfo">
-        <div class="infoword">商品价格</div>
-        <input class="infoinput shortinput"
-               v-model="goodsPrice" />
-      </div>
-      <div class="addinfo">
-        <div class="infoword">商品库存</div>
-        <input class="infoinput shortinput"
-               v-model="goodsStock" />
-      </div>
+      <form id="goods" enctype="multipart/form-data">
+        <div class="addinfo">
+          <div class="infoword">商品名称</div>
+          <input class="infoinput"
+                 type="text"
+                 name="goodsName"
+                 v-model="goodsName" />
+        </div>
+        <div class="addinfo">
+          <div class="infoword">商品标题</div>
+          <input class="infoinput"
+                 type="text"
+                 name="goodsTitle"
+                 v-model="goodsTile" />
+        </div>
+        <div class="addinfo">
+          <div class="infoword">商品图片</div>
+          <a href="javascript:;"
+             class="choosebutton"
+             @click="choosepicture">选择文件
+            <input type="file"
+                   id="file"
+                   name="file"
+                   @change="filePreview">
+          </a>
+          <img class="choosepicture"
+               :src="imgurl">
+        </div>
+        <div class="addinfo">
+          <div class="infoword">商品描述</div>
+          <textarea class="infoinput longinput"
+                    v-model="goodsDetail"
+                    type="text"
+                    name="goodsDetail" />
+        </div>
+        <div class="addinfo">
+          <div class="infoword">商品价格</div>
+          <input class="infoinput shortinput"
+                 v-model="goodsPrice"
+                 type="text"
+                 name="goodsPrice" />
+        </div>
+        <div class="addinfo">
+          <div class="infoword">商品库存</div>
+          <input class="infoinput shortinput"
+                 v-model="goodsStock"
+                 type="text"
+                 name="goodsStock" />
+        </div>
+      </form>
     </div>
     <div class="addfooter">
       <button class="addbutton"
@@ -49,6 +63,7 @@
 </template>
 
 <script>
+import $ from 'jquery'
 import defaultpicture from '../../assets/image/choosegoodspicture.png'
 export default {
   name: 'InterfaceAdd',
@@ -66,7 +81,7 @@ export default {
   methods: {
     choosepicture (e) {
       console.log("选择文件")
-      document.getElementById('filed').click()
+      document.getElementById('file').click()
     },
     filePreview (e) {
       let _this = this
@@ -81,32 +96,36 @@ export default {
     },
     submit () {
       console.log("添加商品");
-      this.$http.get("manage/addGoods",
-        {
-          file: this.file,
-          goodsName: this.goodsName,
-          goodsTile: this.goodsTile,
-          goodsDetail: this.goodsDetail,
-          goodsPrice: this.goodsPrice,
-          goodsStock: this.goodsStock,
-        }).then(
-          response => {
-            console.log('请求成功了', response.data)
-            if (response.data.code === 200) {
-              // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
-              this.$message.info("增加商品成功")
-            }
-            else {
-              // this.$bus.$emit('Toast', "该手机未注册", "info")
-              this.$message.warning("增加商品失败")
-            }
-          },
-          error => {
-            console.log('请求失败了', error.message)
-            // this.$bus.$emit('Toast', "网络错误", "failed")
-            this.$message.error("网络错误")
+      let formData = new FormData($("#goods")[0]);
+      this.$http({
+        headers: {
+          dataType: 'json',
+          contentType: false, //必须
+          processData: false, //必须
+          async: false,
+          cache: false,
+        },
+        method: 'post',
+        url: '/manage/addGoods',
+        data: formData
+      }).then(
+        response => {
+          console.log('请求成功了', response.data)
+          if (response.data.code === 200) {
+            // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+            this.$message.success("增加商品成功")
           }
-        )
+          else {
+            // this.$bus.$emit('Toast', "该手机未注册", "info")
+            this.$message.warning("增加商品失败")
+          }
+        },
+        error => {
+          console.log('请求失败了', error.message)
+          // this.$bus.$emit('Toast', "网络错误", "failed")
+          this.$message.error("网络错误")
+        }
+      )
     }
   }
 }
@@ -185,6 +204,8 @@ export default {
 }
 
 .choosebutton {
+  display: flex;
+  justify-content: center;
   margin-left: 25px;
   width: 120px;
   height: 40px;
@@ -200,6 +221,14 @@ export default {
   cursor: pointer;
   float: left;
   margin-right: 25px;
+}
+
+.choosebutton input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
 }
 
 .choosepicture {

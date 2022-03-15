@@ -13,9 +13,12 @@ import axios from 'axios'
 axios.defaults.baseURL = 'http://localhost:8080/' //定义根路径
 axios.defaults.withCredentials = true //允许后端写入cookie
 Vue.prototype.$http = axios //在原型链上给$http赋值为axios对象
+//引入qs
+import qs from 'qs';
+Vue.prototype.$qs = qs;  //其中$xx为新命的名。
 //引入element-ui
-import {elemessage} from './assets/js/message'
-import {DatePicker} from 'element-ui'
+import './assets/js/message'
+import { DatePicker } from 'element-ui'
 Vue.component('el-date-picker', DatePicker);
 
 //关闭Vue的生产提示

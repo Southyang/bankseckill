@@ -68,14 +68,15 @@ export default {
       this.$http.get("manage/rules",
         {
           params: {
-            id: res
+            id: sessionStorage.getItem('managername'),
+            rules:res
           }
         }).then(
           response => {
             console.log('请求成功了', response.data)
             if (response.data.code === 200) {
               // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
-              this.$message.info("配置成功")
+              this.$message.success("配置成功")
             }
             else {
               // this.$bus.$emit('Toast', "该手机未注册", "info")

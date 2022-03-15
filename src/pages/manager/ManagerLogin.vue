@@ -55,8 +55,8 @@
         </div>
       </div>
       <div class="managerlogininfotext">
-        <div class="usephonevcode"
-             @click="usephonevcode"> {{text}} </div>
+        <!-- <div class="usephonevcode"
+             @click="usephonevcode"> {{text}} </div> -->
         <div class="managerloginforget"
              @click="modifymanagerpassowrd"> 忘记密码 </div>
       </div>
@@ -144,11 +144,11 @@ export default {
         let str = "" + salt.charAt(0) + salt.charAt(2) + inputPass + salt.charAt(5) + salt.charAt(4);
         let passwordsalt = md5(str);
         let data = {
-          mobile: this.managername,
+          id: this.managername,
           password: passwordsalt
         }
         //发送post请求登录
-        this.$http.post('user/toLogin1', qs.stringify(data)).then(
+        this.$http.post('manage/toLogin', qs.stringify(data)).then(
           response => {
             console.log(data)
             this.password = ''

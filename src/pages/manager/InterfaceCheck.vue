@@ -26,28 +26,29 @@
         <span class="spancontent"> 记录编号 </span>
         <span class="spancontent"> 客户姓名 </span>
         <span class="spancontent"> 申请时间 </span>
-        <span class="spancontent"> 申请结果 </span>
+        <span class="spancontent"> 初筛结果 </span>
       </div>
       <div class="checkresult"
            v-for="(log,index) in filchecklogs"
            :key="index">
         <div class="resultcontent">
-          <span class="spancontent"> {{log.number}} </span>
+          <span class="spancontent"> {{log.id}} </span>
           <span class="spancontent"> {{log.name}} </span>
-          <span class="spancontent"> {{log.applydate}} </span>
-          <span class="spancontent"> {{log.applyresult}} </span>
+          <span class="spancontent"> {{log.applyDate}} </span>
+          <span class="spancontent"> {{log.applyResult}} </span>
         </div>
         <div class="resultline">
         </div>
       </div>
+      <div v-show="isloading">加载中……</div>
     </div>
     <div class="checkfooter">
       <span @click="beforepage"
-            class="spanbutton"> 上一页&nbsp;&nbsp; </span>  
+            class="spanbutton"> 上一页&nbsp;&nbsp; </span>
       <span v-for="index in pages"
             :key="index"
             @click="changepage"
-            class="spanbutton"> {{index}}&nbsp;&nbsp; </span>  
+            class="spanbutton"> {{index}}&nbsp;&nbsp; </span>
       <span @click="afterpage"
             class="spanbutton"> 下一页 </span>
     </div>
@@ -55,6 +56,7 @@
 </template>
 
 <script>
+import  '../../assets/js/dateformat'
 export default {
   name: 'InterfaceCheck',
   data () {
@@ -63,27 +65,30 @@ export default {
       inputdate: '',
       checkname: '',
       checkdate: '',
-      nowpage:'1',
-      checklogs: [
-        {
-          number: '20220201024735',
-          name: '王某某',
-          applydate: '2022-02-01',
-          applyresult: '已通过'
-        },
-        {
-          number: '20220203024735',
-          name: '李某某',
-          applydate: '2022-02-03',
-          applyresult: '审核中'
-        },
-        {
-          number: '20220203024735',
-          name: '王某某',
-          applydate: '2022-02-03',
-          applyresult: '审核中'
-        }
-      ]
+      nowpage: '1',
+      checklogs: [],
+      filchecklogs: [],
+      isloading: true
+      /* checklogs: [
+  {
+    number: '20220201024735',
+    name: '王某某',
+    applydate: '2022-02-01',
+    applyresult: '已通过'
+  },
+  {
+    number: '20220203024735',
+    name: '李某某',
+    applydate: '2022-02-03',
+    applyresult: '审核中'
+  },
+  {
+    number: '20220203024735',
+    name: '王某某',
+    applydate: '2022-02-03',
+    applyresult: '审核中'
+  }
+] */
     }
   },
   methods: {
@@ -91,6 +96,9 @@ export default {
       console.log("查询申请记录 " + this.inputname + " " + this.inputdate)
       this.checkname = this.inputname
       this.checkdate = this.inputdate
+      this.filchecklogs = this.checklogs.filter((log) => {
+        return (log.name.indexOf(this.checkname) !== -1 && log.applyDate.indexOf(this.checkdate) !== -1)
+      })
     },
     beforepage () {
       console.log("上一页")
@@ -103,11 +111,12 @@ export default {
     }
   },
   computed: {
-    filchecklogs () {
+    /* filchecklogs () {
+      console.log(this.checklogs)
       return this.checklogs.filter((log) => {
-        return (log.name.indexOf(this.checkname) !== -1 && log.applydate.indexOf(this.checkdate) !== -1)
+        return (log.name.indexOf(this.checkname) !== -1 && log.applyDate.indexOf(this.checkdate) !== -1)
       })
-    },
+    }, */
     pagenumber () {
       return Math.ceil(this.checklogs.length / 15)
     },
@@ -119,25 +128,45 @@ export default {
       return temp
     }
   },
-  mounted(){
-    this.$http.get("manage/showRecords").then(
-      response => {
-        console.log('请求成功了', response.data)
-        if (response.data.code === 200) {
-          // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
-          this.$message.info("成功获取申请记录")
+  created () {
+    this.$http.get("manage/showAllRecords",
+      {
+        params: {
+          id: sessionStorage.getItem('managername')
         }
-        else {
-          // this.$bus.$emit('Toast', "该手机未注册", "info")
-          this.$message.warning("获取申请记录失败")
+      }).then(
+        response => {
+          if (response.data.code === 200) {
+            // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+            this.$message.success("成功获取申请记录")
+            this.isloading = false
+            this.checklogs = response.data.obj
+            for (let i = 0; i < this.checklogs.length; i++) {
+              if(this.checklogs[i].applyResult === 1){
+                this.checklogs[i].applyResult = "成功"
+              }else{
+                this.checklogs[i].applyResult = "失败"
+              }
+
+              this.checklogs[i].applyDate = new Date(this.checklogs[i].applyDate).Format("yyyy-MM-dd hh:mm:ss")
+              // this.checklogs[i].applyDate = new Date(this.checklogs[i].applyDate).toLocaleDateString().split('/').join('-')
+            }
+            /* this.checklogs[0].applyDate = 1
+            console.log(this.checklogs[0].applyDate) */
+            this.filchecklogs = this.checklogs
+            // console.log(this.checklogs)
+          }
+          else {
+            // this.$bus.$emit('Toast', "该手机未注册", "info")
+            this.$message.warning("获取申请记录失败")
+          }
+        },
+        error => {
+          console.log('请求失败了', error.message)
+          // this.$bus.$emit('Toast', "网络错误", "failed")
+          this.$message.error("网络错误")
         }
-      },
-      error => {
-        console.log('请求失败了', error.message)
-        // this.$bus.$emit('Toast', "网络错误", "failed")
-        this.$message.error("网络错误")
-      }
-    )
+      )
   }
 }
 </script>
@@ -270,7 +299,7 @@ export default {
   color: #494949;
 }
 
-.spanbutton{
+.spanbutton {
   cursor: pointer;
 }
 </style>

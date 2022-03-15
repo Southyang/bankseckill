@@ -13,14 +13,15 @@
            :key="index">
         <div class="resultcontent">
           <span class="spancontent"> {{log.name}} </span>
-          <span class="spancontent"> {{log.phone}} </span>
-          <span class="spancontent"> {{log.goodsname}} </span>
-          <span class="spancontent"> {{log.goodsprice}} </span>
-          <span class="spancontent"> {{log.purchasequantity}} </span>
+          <span class="spancontent"> {{log.id}} </span>
+          <span class="spancontent"> {{log.goodsName}} </span>
+          <span class="spancontent"> {{log.goodsPrice}} </span>
+          <span class="spancontent"> {{log.goodsCount}} </span>
         </div>
         <div class="resultline">
         </div>
       </div>
+      <div v-show="isloading"> 加载中…… </div>
     </div>
     <div class="getfooter">
       <span @click="beforepage"
@@ -41,43 +42,8 @@ export default {
   data () {
     return {
       nowpage: '1',
-      getlogs: [
-        {
-          name: '王某某',
-          phone: '12345678912',
-          goodsname: 'GOODS1',
-          goodsprice: '50',
-          purchasequantity: '1'
-        },
-        {
-          name: '王某某',
-          phone: '12345678912',
-          goodsname: 'GOODS1',
-          goodsprice: '50',
-          purchasequantity: '1'
-        },
-        {
-          name: '王某某',
-          phone: '12345678912',
-          goodsname: 'GOODS1',
-          goodsprice: '50',
-          purchasequantity: '1'
-        },
-        {
-          name: '王某某',
-          phone: '12345678912',
-          goodsname: 'GOODS1',
-          goodsprice: '50',
-          purchasequantity: '1'
-        },
-        {
-          name: '王某某',
-          phone: '12345678912',
-          goodsname: 'GOODS1',
-          goodsprice: '50',
-          purchasequantity: '1'
-        }
-      ]
+      getlogs: [],
+      isloading: true
     }
   },
   methods: {
@@ -104,24 +70,31 @@ export default {
     }
   },
   mounted () {
-    this.$http.get("manage/result").then(
-      response => {
-        console.log('请求成功了', response.data)
-        if (response.data.code === 200) {
-          // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
-          this.$message.info("成功获取秒杀结果")
+    this.$http.get("manage/result",
+      {
+        params: {
+          id: sessionStorage.getItem('managername')
         }
-        else {
-          // this.$bus.$emit('Toast', "该手机未注册", "info")
-          this.$message.warning("获取秒杀结果失败")
+      }).then(
+        response => {
+          console.log('请求成功了', response.data)
+          if (response.data.code === 200) {
+            // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+            this.$message.success("成功获取秒杀结果")
+            this.isloading = false
+            this.getlogs = response.data.obj
+          }
+          else {
+            // this.$bus.$emit('Toast', "该手机未注册", "info")
+            this.$message.warning("获取秒杀结果失败")
+          }
+        },
+        error => {
+          console.log('请求失败了', error.message)
+          // this.$bus.$emit('Toast', "网络错误", "failed")
+          this.$message.error("网络错误")
         }
-      },
-      error => {
-        console.log('请求失败了', error.message)
-        // this.$bus.$emit('Toast', "网络错误", "failed")
-        this.$message.error("网络错误")
-      }
-    )
+      )
   }
 }
 </script>

@@ -7,6 +7,11 @@
       <div class="modifyseckillinfo">
         <div class="infoword">秒杀商品ID</div>
         <input class="infoinput longinput"
+               v-model="ID" />
+      </div>
+      <div class="modifyseckillinfo">
+        <div class="infoword">商品ID</div>
+        <input class="infoinput longinput"
                v-model="GoodsID" />
       </div>
       <div class="modifyseckillinfo">
@@ -48,6 +53,7 @@ export default {
   name: 'InterfaceModifyseckill',
   data () {
     return {
+      ID:'',
       GoodsID: '',
       Goodsprice: '',
       Goodsnumber: '',
@@ -58,29 +64,62 @@ export default {
   },
   methods: {
     outputtime () {
-			if(this.startdatetime === "" || this.enddatetime === ""){
-				this.$message.info("请输入起始和截止时间")
-				return
-			}
+      if (this.startdatetime === "" || this.enddatetime === "") {
+        this.$message.info("请输入起始和截止时间")
+        return
+      }
 
-      console.log("开始时间为: " + this.startdatetime)
+      // console.log("开始时间为: " + this.startdatetime)
       let datetimeArray = this.startdatetime.toString().split(" ") //日期加时间
       let timeArray = datetimeArray[4].split(":") //时间
-      console.log(datetimeArray[3] + "年" + (this.montharray.indexOf(datetimeArray[1]) + 1) + "月" + datetimeArray[2] + "日")
-      console.log(timeArray[0] + "时" + timeArray[1] + "分" + timeArray[2] + "秒")
-			console.log("-------------------------------------")
-      console.log("结束时间为: " + this.enddatetime)
+      // console.log(datetimeArray[3] + "年" + (this.montharray.indexOf(datetimeArray[1]) + 1) + "月" + datetimeArray[2] + "日")
+      // console.log(timeArray[0] + "时" + timeArray[1] + "分" + timeArray[2] + "秒")
+      let start = datetimeArray[3] + "-" + (this.montharray.indexOf(datetimeArray[1]) + 1) + "-" + datetimeArray[2] + " " +
+        timeArray[0] + ":" + timeArray[1] + ":" + timeArray[2]
+      // console.log(start)
+      // console.log("-------------------------------------")
+      // console.log("结束时间为: " + this.enddatetime)
       datetimeArray = this.enddatetime.toString().split(" ") //日期加时间
       timeArray = datetimeArray[4].split(":") //时间
-      console.log(datetimeArray[3] + "年" + (this.montharray.indexOf(datetimeArray[1]) + 1) + "月" + datetimeArray[2] + "日")
-      console.log(timeArray[0] + "时" + timeArray[1] + "分" + timeArray[2] + "秒")
+      // console.log(datetimeArray[3] + "年" + (this.montharray.indexOf(datetimeArray[1]) + 1) + "月" + datetimeArray[2] + "日")
+      // console.log(timeArray[0] + "时" + timeArray[1] + "分" + timeArray[2] + "秒")
+      let end = datetimeArray[3] + "-" + (this.montharray.indexOf(datetimeArray[1]) + 1) + "-" + datetimeArray[2] + " " +
+        timeArray[0] + ":" + timeArray[1] + ":" + timeArray[2]
+      // console.log(end)
 
-			this.GoodsID = ''
-			this.Goodsprice = ''
-			this.Goodsnumber = ''
-			this.startdatetime = ''
-			this.enddatetime = ''
-			this.$message.success("添加成功")
+      let data = {
+        id: sessionStorage.getItem("managername"),
+        goodsId: this.GoodsID,
+        seckillPrice: this.Goodsprice,
+        stockCount: this.Goodsnumber,
+        start: start,
+        end: end,
+      }
+
+      //发送post请求登录
+      this.$http.post('manage/updateSeckillGoods', this.$qs.stringify(data)).then(
+        response => {
+          console.log(data)
+          console.log('请求成功了', response.data)
+          if (response.data.code !== 200) {
+            this.$message.warning("修改失败")
+          }
+          else {
+            this.$message.success("修改成功")
+          }
+        },
+        error => {
+          console.log('请求失败了', error.message)
+          this.$message.error("网络错误")
+        }
+      )
+
+      /* this.GoodsID = ''
+      this.Goodsprice = ''
+      this.Goodsnumber = ''
+      this.startdatetime = ''
+      this.enddatetime = '' */
+      // this.$message.success("添加成功")
     }
   }
 }
@@ -179,6 +218,6 @@ export default {
   /* or 99% */
 
   color: #ffffff;
-	cursor: pointer;
+  cursor: pointer;
 }
 </style>

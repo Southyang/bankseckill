@@ -25,7 +25,7 @@ export default {
   name: 'Userinterface',
   mounted () {
     if (!sessionStorage.getItem('username')) {
-      this.$message.info("请先登录")
+      this.$message.warning("请先登录")
       this.$router.replace("/bankuser/login")
     }
   }

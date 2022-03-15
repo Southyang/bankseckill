@@ -37,11 +37,6 @@
         <div class="list-group-item">
           <router-link class="routerlink"
                        active-class="active"
-                       to="/bankmanager/interface/checkseckillgoods">查看秒杀商品</router-link>
-        </div>
-        <div class="list-group-item">
-          <router-link class="routerlink"
-                       active-class="active"
                        to="/bankmanager/interface/addseckillgoods">添加秒杀商品</router-link>
         </div>
         <div class="list-group-item">
@@ -66,8 +61,8 @@
 export default {
   name: 'Managerinterface',
   mounted () {
-    if (!sessionStorage.getItem('managername')) {
-      this.$message.info("请先登录")
+    if (!sessionStorage.getItem('managername') || sessionStorage.getItem("managername") === "undefined") {
+      this.$message.warning("请先登录")
       this.$router.replace("/bankmanager/login")
     }
   }
