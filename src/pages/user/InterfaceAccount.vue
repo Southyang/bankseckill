@@ -64,8 +64,13 @@ export default {
     }
   },
   mounted () {
-    this.$http.post('user/info').then(
+    this.$http.post('user/info', {
+      params: {
+        userId: sessionStorage.getItem("username")
+      }
+    }).then(
       response => {
+        console.log("userId: " + sessionStorage.getItem("username")),
         console.log(response.data)
         if (response.data.code !== 200) {
           this.$message.warning(response.data.message)

@@ -89,7 +89,7 @@ export default {
       // console.log(end)
 
       let data = {
-        id: sessionStorage.getItem("managername"),
+        managerId: this.ID,
         goodsId: this.GoodsID,
         seckillPrice: this.Goodsprice,
         stockCount: this.Goodsnumber,

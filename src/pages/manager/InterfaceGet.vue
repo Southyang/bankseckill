@@ -21,53 +21,35 @@
         <div class="resultline">
         </div>
       </div>
-      <div v-show="isloading"> 加载中…… </div>
+      <div v-show="isloading"
+           style="margin: 50px 500px"> 加载中…… </div>
     </div>
     <div class="getfooter">
-      <span @click="beforepage"
-            class="spanbutton"> 上一页&nbsp;&nbsp; </span>
-      <span v-for="index in pages"
-            :key="index"
-            @click="changepage"
-            class="spanbutton"> {{index}}&nbsp;&nbsp; </span>
-      <span @click="afterpage"
-            class="spanbutton"> 下一页 </span>
+      <pager :pageSize="pageSize"
+             v-model="pageNow"
+             @on-jump="jump"></pager>
     </div>
   </div>
 </template>
 
 <script>
+import pager from '../../components/pager.vue'
 export default {
   name: 'InterfaceGet',
+  components: { pager },
   data () {
     return {
-      nowpage: '1',
+      filgetlogs: [],
       getlogs: [],
-      isloading: true
+      isloading: true,
+      pageSize: 30,
+      pageNow: 1
     }
   },
   methods: {
-    beforepage () {
-      console.log("上一页")
+    jump (id) {
+      this.filgetlogs = this.getlogs.slice((id - 1) * 15, id * 15);
     },
-    changepage (e) {
-      console.log("当前页为:" + e.target.innerText)
-    },
-    afterpage () {
-      console.log("下一页")
-    }
-  },
-  computed: {
-    pagenumber () {
-      return Math.ceil(this.getlogs.length / 15)
-    },
-    pages () {
-      let temp = []
-      for (let i = 1; i <= this.pagenumber; i++) {
-        temp.push(i)
-      }
-      return temp
-    }
   },
   mounted () {
     this.$http.get("manage/result",
@@ -77,21 +59,25 @@ export default {
         }
       }).then(
         response => {
-          console.log('请求成功了', response.data)
+          console.log(response.data)
           if (response.data.code === 200) {
-            // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
             this.$message.success("成功获取秒杀结果")
             this.isloading = false
             this.getlogs = response.data.obj
+
+            this.pageSize = Math.ceil(this.getlogs.length / 15);
+            if (this.getlogs.length >= 15) {
+              this.filgetlogs = this.getlogs.slice(0, 15)
+            }else{
+              this.filgetlogs = this.getlogs
+            }
           }
           else {
-            // this.$bus.$emit('Toast', "该手机未注册", "info")
             this.$message.warning("获取秒杀结果失败")
           }
         },
         error => {
           console.log('请求失败了', error.message)
-          // this.$bus.$emit('Toast', "网络错误", "failed")
           this.$message.error("网络错误")
         }
       )

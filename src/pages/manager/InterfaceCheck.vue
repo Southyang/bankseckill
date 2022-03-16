@@ -29,10 +29,10 @@
         <span class="spancontent"> 初筛结果 </span>
       </div>
       <div class="checkresult"
-           v-for="(log,index) in filchecklogs"
+           v-for="(log,index) in showchecklogs"
            :key="index">
         <div class="resultcontent">
-          <span class="spancontent"> {{log.id}} </span>
+          <span class="spancontent"> {{log.id}}</span>
           <span class="spancontent"> {{log.name}} </span>
           <span class="spancontent"> {{log.applyDate}} </span>
           <span class="spancontent"> {{log.applyResult}} </span>
@@ -40,55 +40,35 @@
         <div class="resultline">
         </div>
       </div>
-      <div v-show="isloading">加载中……</div>
+      <div v-show="isloading"
+           style="margin: 50px 500px">加载中……</div>
     </div>
     <div class="checkfooter">
-      <span @click="beforepage"
-            class="spanbutton"> 上一页&nbsp;&nbsp; </span>
-      <span v-for="index in pages"
-            :key="index"
-            @click="changepage"
-            class="spanbutton"> {{index}}&nbsp;&nbsp; </span>
-      <span @click="afterpage"
-            class="spanbutton"> 下一页 </span>
+      <pager :pageSize="pageSize"
+             v-model="pageNow"
+             @on-jump="jump"></pager>
     </div>
   </div>
 </template>
 
 <script>
-import  '../../assets/js/dateformat'
+import '../../assets/js/dateformat'
+import pager from '../../components/pager.vue'
 export default {
   name: 'InterfaceCheck',
+  components: { pager },
   data () {
     return {
       inputname: '',
       inputdate: '',
       checkname: '',
       checkdate: '',
-      nowpage: '1',
       checklogs: [],
       filchecklogs: [],
-      isloading: true
-      /* checklogs: [
-  {
-    number: '20220201024735',
-    name: '王某某',
-    applydate: '2022-02-01',
-    applyresult: '已通过'
-  },
-  {
-    number: '20220203024735',
-    name: '李某某',
-    applydate: '2022-02-03',
-    applyresult: '审核中'
-  },
-  {
-    number: '20220203024735',
-    name: '王某某',
-    applydate: '2022-02-03',
-    applyresult: '审核中'
-  }
-] */
+      showchecklogs: [],
+      isloading: true,
+      pageSize: 30,
+      pageNow: 1
     }
   },
   methods: {
@@ -99,33 +79,19 @@ export default {
       this.filchecklogs = this.checklogs.filter((log) => {
         return (log.name.indexOf(this.checkname) !== -1 && log.applyDate.indexOf(this.checkdate) !== -1)
       })
-    },
-    beforepage () {
-      console.log("上一页")
-    },
-    changepage (e) {
-      console.log("当前页为:" + e.target.innerText)
-    },
-    afterpage () {
-      console.log("下一页")
-    }
-  },
-  computed: {
-    /* filchecklogs () {
-      console.log(this.checklogs)
-      return this.checklogs.filter((log) => {
-        return (log.name.indexOf(this.checkname) !== -1 && log.applyDate.indexOf(this.checkdate) !== -1)
-      })
-    }, */
-    pagenumber () {
-      return Math.ceil(this.checklogs.length / 15)
-    },
-    pages () {
-      let temp = []
-      for (let i = 1; i <= this.pagenumber; i++) {
-        temp.push(i)
+      console.log(this.filchecklogs);
+      if (this.filchecklogs.length >= 15) {
+        this.showchecklogs = this.filchecklogs.slice(0, 15)
+      } else {
+        this.showchecklogs = this.filchecklogs
       }
-      return temp
+      this.computepageSize();
+    },
+    jump (id) {
+      this.showchecklogs = this.filchecklogs.slice((id - 1) * 15, id * 15);
+    },
+    computepageSize () {
+      this.pageSize = Math.ceil(this.filchecklogs.length / 15);
     }
   },
   created () {
@@ -137,33 +103,32 @@ export default {
       }).then(
         response => {
           if (response.data.code === 200) {
-            // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
             this.$message.success("成功获取申请记录")
             this.isloading = false
             this.checklogs = response.data.obj
+            this.filchecklogs = this.checklogs
             for (let i = 0; i < this.checklogs.length; i++) {
-              if(this.checklogs[i].applyResult === 1){
+              if (this.checklogs[i].applyResult === 1) {
                 this.checklogs[i].applyResult = "成功"
-              }else{
+              } else {
                 this.checklogs[i].applyResult = "失败"
               }
-
               this.checklogs[i].applyDate = new Date(this.checklogs[i].applyDate).Format("yyyy-MM-dd hh:mm:ss")
-              // this.checklogs[i].applyDate = new Date(this.checklogs[i].applyDate).toLocaleDateString().split('/').join('-')
             }
-            /* this.checklogs[0].applyDate = 1
-            console.log(this.checklogs[0].applyDate) */
-            this.filchecklogs = this.checklogs
-            // console.log(this.checklogs)
+
+            this.pageSize = Math.ceil(this.filchecklogs.length / 15);
+            if (this.filchecklogs.length >= 15) {
+              this.showchecklogs = this.filchecklogs.slice(0, 15)
+            } else {
+              this.showchecklogs = this.filchecklogs
+            }
           }
           else {
-            // this.$bus.$emit('Toast', "该手机未注册", "info")
             this.$message.warning("获取申请记录失败")
           }
         },
         error => {
           console.log('请求失败了', error.message)
-          // this.$bus.$emit('Toast', "网络错误", "failed")
           this.$message.error("网络错误")
         }
       )
@@ -174,7 +139,7 @@ export default {
 <style scoped>
 .interfacecheck {
   /* 登录背景栏 */
-  margin-top: 45px;
+  margin-top: 35px;
   margin-left: 55px;
   width: 1200px;
   height: 670px;
@@ -293,7 +258,7 @@ export default {
 
 .checkfooter {
   position: absolute;
-  bottom: 10px;
+  bottom: 0px;
   width: 1200px;
   text-align: center;
   color: #494949;

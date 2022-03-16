@@ -12,7 +12,8 @@
                        active-class="active"
                        to="/bankuser/interface/home/homeactivity">活动列表</router-link>
         </div>
-        <div class="list-group-item" v-if="IsAllowed">
+        <div class="list-group-item"
+             v-if="IsAllowed">
           <router-link class="routerlink"
                        active-class="active"
                        to="/bankuser/interface/home/checkseckillgoods">秒杀商品</router-link>
@@ -28,15 +29,42 @@
 <script>
 export default {
   name: 'InterfaceHome',
-  data(){
-    return{
+  data () {
+    return {
       IsAllowed: false
     }
   },
   created () {
+    // 发送get请求
+    this.$http.get("user/apply/toApply",
+      {
+        params: {
+          id: sessionStorage.getItem("username")
+        }
+      }).then(
+        response => {
+          console.log('请求成功了', response.data)
+          if (response.data.code === 200) {
+            // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+            this.$message.success("申请成功")
+            sessionStorage.setItem("userallowed", true)
+          }
+          else if (response.data.code === 500600) {
+            // this.$bus.$emit('Toast', "该手机未注册", "info")
+            this.$message.warning("初筛未通过")
+            sessionStorage.setItem("userallowed", false)
+          }
+        },
+        error => {
+          console.log('请求失败了', error.message)
+          // this.$bus.$emit('Toast', "网络错误", "failed")
+          sessionStorage.setItem("userallowed", false)
+          this.$message.error("网络错误")
+        }
+      )
     const timer = setInterval(() => {
       let temp = sessionStorage.getItem("userallowed")
-      if(temp === "true"){
+      if (temp === "true") {
         this.IsAllowed = true
       }
     }, 1000);

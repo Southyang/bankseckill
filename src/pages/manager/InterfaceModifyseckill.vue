@@ -5,12 +5,12 @@
     </div>
     <div class="modifyseckillbody">
       <div class="modifyseckillinfo">
-        <div class="infoword">秒杀商品ID</div>
+        <div class="infoword">管理员ID</div>
         <input class="infoinput longinput"
                v-model="ID" />
       </div>
       <div class="modifyseckillinfo">
-        <div class="infoword">商品ID</div>
+        <div class="infoword">秒杀商品ID</div>
         <input class="infoinput longinput"
                v-model="GoodsID" />
       </div>
@@ -88,7 +88,7 @@ export default {
       // console.log(end)
 
       let data = {
-        id: sessionStorage.getItem("managername"),
+        managerId: sessionStorage.getItem("managername"),
         goodsId: this.GoodsID,
         seckillPrice: this.Goodsprice,
         stockCount: this.Goodsnumber,
