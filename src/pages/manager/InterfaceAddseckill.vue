@@ -4,12 +4,12 @@
       添加秒杀商品
     </div>
     <div class="addseckillbody">
-       <div class="addseckillinfo">
+      <!-- <div class="addseckillinfo">
         <div class="infoword">秒杀商品编号</div>
         <input class="infoinput longinput"
                v-model="ID" />
-      </div>
-       <div class="addseckillinfo">
+      </div> -->
+      <div class="addseckillinfo">
         <div class="infoword">商品编号</div>
         <input class="infoinput longinput"
                v-model="GoodsID" />
@@ -53,7 +53,7 @@ export default {
   name: 'InterfaceAddseckill',
   data () {
     return {
-      ID:'',
+      ID: '',
       GoodsID: '',
       Goodsprice: '',
       Goodsnumber: '',
@@ -89,7 +89,7 @@ export default {
       // console.log(end)
 
       let data = {
-        managerId: this.ID,
+        managerId: sessionStorage.getItem("managername"),
         goodsId: this.GoodsID,
         seckillPrice: this.Goodsprice,
         stockCount: this.Goodsnumber,

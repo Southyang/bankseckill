@@ -4,20 +4,20 @@
       修改秒杀商品信息
     </div>
     <div class="modifyseckillbody">
-      <div class="modifyseckillinfo">
+      <!-- <div class="modifyseckillinfo">
         <div class="infoword">管理员ID</div>
         <input class="infoinput longinput"
                v-model="ID" />
-      </div>
+      </div> -->
       <div class="modifyseckillinfo">
         <div class="infoword">秒杀商品ID</div>
         <input class="infoinput longinput"
-               v-model="GoodsID" />
+               v-model="SeckillGoodsID" />
       </div>
       <div class="modifyseckillinfo">
         <div class="infoword">秒杀商品价格</div>
         <input class="infoinput"
-               v-model="Goodsprice" />
+               v-model="SeckillGoodsprice" />
       </div>
       <div class="modifyseckillinfo">
         <div class="infoword">秒杀商品库存</div>
@@ -53,9 +53,8 @@ export default {
   name: 'InterfaceModifyseckill',
   data () {
     return {
-      ID:'',
-      GoodsID: '',
-      Goodsprice: '',
+      SeckillGoodsID: '',
+      SeckillGoodsprice: '',
       Goodsnumber: '',
       startdatetime: '',
       enddatetime: '',
@@ -89,8 +88,8 @@ export default {
 
       let data = {
         managerId: sessionStorage.getItem("managername"),
-        goodsId: this.GoodsID,
-        seckillPrice: this.Goodsprice,
+        id: this.SeckillGoodsID,
+        seckillPrice: this.SeckillGoodsprice,
         stockCount: this.Goodsnumber,
         start: start,
         end: end,

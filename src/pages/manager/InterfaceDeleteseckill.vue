@@ -6,7 +6,7 @@
     <div class="deleteseckillbody">
       <div class="deleteseckillword">秒杀商品ID</div>
 			<div class="line"></div>
-      <input class="deleteseckillinput" v-model="GoodsID"/>
+      <input class="deleteseckillinput" v-model="SeckillGoodsId"/>
     </div>
     <div class="deleteseckillfooter">
       <button class="deleteseckillbutton" @click="deleteseckillgoods">删除</button>
@@ -19,7 +19,7 @@ export default {
   name: 'InterfaceDeleteseckill',
 	data(){
 		return{
-			GoodsID:''
+			SeckillGoodsId:''
 		}
 	},
 	methods:{
@@ -27,7 +27,7 @@ export default {
 			console.log("删除秒杀商品ID为:" + this.GoodsID)
 			let data = {
         id: sessionStorage.getItem("managername"),
-        goodsId:this.GoodsID
+        seckillGoodsId:this.SeckillGoodsId
       }
       this.$http.post('manage/deleteSeckillGoods', this.$qs.stringify(data)).then(
           response => {

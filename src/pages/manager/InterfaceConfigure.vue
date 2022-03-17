@@ -30,10 +30,40 @@
                  class="ruleconfirm" />
         </div>
       </div>
+      <div class="detailrule"
+           @click="ShowDiv">
+        详细配置
+      </div>
     </div>
     <div class="configurefooter">
       <button class="footerbutton"
               @click="commit">提交</button>
+    </div>
+    <div id="fade"
+         class="black_overlay"
+         v-show="IsShow">
+    </div>
+    <div id="MyDiv"
+         class="white_content"
+         v-show="IsShow">
+      <div style="text-align: right; cursor: default; height: 40px;">
+        <span style="font-size: 16px; cursor: pointer;"
+              @click="CloseDiv">关闭</span>
+      </div>
+      <div style="display:flex; justify-content: center; flex-direction: column;align-items: center;">
+        <div>
+          <span>逾期次数阈值</span>
+          <input style="width:70px;margin-left:5px"
+                 v-model="number">
+        </div>
+        <div>
+          <span>最小年龄限制</span>
+          <input style="width:70px;margin-left:5px"
+                 v-model="old">
+        </div>
+        <button class="fadebutton"
+                @click="detailcommit">提交</button>
+      </div>
     </div>
   </div>
 </template>
@@ -46,7 +76,10 @@ export default {
       delaynumber: true,
       workstatus: true,
       truststatus: true,
-      oldcondition: true
+      oldcondition: true,
+      IsShow: false,
+      number: '',
+      old: ''
     }
   },
   methods: {
@@ -69,7 +102,41 @@ export default {
         {
           params: {
             id: sessionStorage.getItem('managername'),
-            rules:res
+            rules: res
+          }
+        }).then(
+          response => {
+            console.log('请求成功了', response.data)
+            if (response.data.code === 200) {
+              // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
+              this.$message.success("配置成功")
+            }
+            else {
+              // this.$bus.$emit('Toast', "该手机未注册", "info")
+              this.$message.warning("配置失败")
+            }
+          },
+          error => {
+            console.log('请求失败了', error.message)
+            // this.$bus.$emit('Toast', "网络错误", "failed")
+            this.$message.error("网络错误")
+          }
+        )
+    },
+    ShowDiv () {
+      this.IsShow = true
+    },
+    CloseDiv () {
+      this.IsShow = false
+    },
+    detailcommit () {
+      console.log("细节配置提交")
+      this.$http.get("/manage/limit",
+        {
+          params: {
+            id: sessionStorage.getItem('managername'),
+            overdueNumLimit:this.number,
+            ageLimit:this.old,
           }
         }).then(
           response => {
@@ -124,15 +191,10 @@ export default {
 
 .configurebody {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   margin-top: 100px;
-}
-
-.bodyrule {
-  width: 210px;
-  height: 230px;
 
   font-family: Arial;
   font-style: normal;
@@ -147,6 +209,11 @@ export default {
   color: #858585;
 }
 
+.bodyrule {
+  width: 210px;
+  height: 230px;
+}
+
 .rulecontent {
   margin-bottom: 20px;
 }
@@ -156,6 +223,22 @@ export default {
   float: left;
   line-height: 35px;
   text-align: center;
+}
+
+.detailrule,
+.fadebutton {
+  width: 100px;
+  height: 35px;
+  margin-left: 50px;
+  color: black;
+  border: 2px solid #858585;
+  box-sizing: border-box;
+  border-radius: 10px;
+  font-size: 20px;
+  line-height: 35px;
+  text-align: center;
+  letter-spacing: 0.055em;
+  cursor: pointer;
 }
 
 input[type='checkbox'] {
@@ -189,5 +272,36 @@ input[type='checkbox'] {
   text-align: center;
   letter-spacing: 0.055em;
   color: #ea0437;
+}
+
+.black_overlay {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 1001;
+  -moz-opacity: 0.8;
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+}
+
+.white_content {
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  width: 20%;
+  height: 40%;
+  min-width: 200px;
+  min-height: 300px;
+  border: 16px solid rgb(167, 167, 167);
+  background-color: white;
+  z-index: 1002;
+  overflow: auto;
+}
+
+.fadebutton {
+  margin-left: 0px;
 }
 </style>
