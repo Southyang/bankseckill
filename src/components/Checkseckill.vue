@@ -16,12 +16,12 @@
            v-for="(log,index) in checklogs"
            :key="index">
         <div class="resultcontent">
-          <span class="spancontent"> {{log.ID}} </span>
+          <span class="spancontent"> {{log.goodsName}} </span>
           <img class="spancontent goodspicture"
-               :src="log.Url">
-          <span class="spancontent"> {{log.oldprice}} </span>
-          <span class="spancontent"> {{log.nowprice}} </span>
-          <span class="spancontent"> {{log.number}} </span>
+               :src="log.goodsImg">
+          <span class="spancontent"> {{log.goodsPrice}} </span>
+          <span class="spancontent"> {{log.seckillPrice}} </span>
+          <span class="spancontent"> {{log.stockCount}} </span>
           <span class="spancontent"
                 style="color:#EA0437;cursor:pointer"
                 @click="checkdetail"> {{detail}} </span>
@@ -50,7 +50,7 @@ export default {
     return {
       detail: '详情',
       checklogs: [
-        {
+        /* {
           ID: 'GOODS1',
           Url: 'https://aecpm.alicdn.com/simba/img/TB13xKuLVXXXXcHapXXSutbFXXX.jpg',
           oldprice: '100',
@@ -63,7 +63,7 @@ export default {
           oldprice: '100',
           nowprice: '50',
           number: '20',
-        }
+        } */
       ]
     }
   },
@@ -114,26 +114,29 @@ export default {
       return temp
     }
   },
-  mounted () {
-    console.log("获取商品列表")
-    this.$http.get("goods/toList").then(
-      response => {
-        console.log('请求成功了', response.data)
-        if (response.data.code === 200) {
-          // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
-          this.$message.info("成功获取秒杀商品")
+  created () {
+    // 发送get请求
+    this.$http.get("goods/toSeckillGoodsList",
+      {
+        params: {
+          userId: sessionStorage.getItem("username")
         }
-        else {
-          // this.$bus.$emit('Toast', "该手机未注册", "info")
-          this.$message.warning("获取秒杀商品失败")
+      }).then(
+        response => {
+          console.log('请求成功了', response.data)
+          if (response.data.code === 200) {
+            this.$message.info("成功获取秒杀商品信息")
+            this.checklogs = response.data.obj
+          }
+          else {
+            this.$message.warning("秒杀商品信息获取失败")
+          }
+        },
+        error => {
+          console.log('请求失败了', error.message)
+          this.$message.error("网络错误")
         }
-      },
-      error => {
-        console.log('请求失败了', error.message)
-        // this.$bus.$emit('Toast', "网络错误", "failed")
-        this.$message.error("网络错误")
-      }
-    )
+      )
   }
 }
 </script>

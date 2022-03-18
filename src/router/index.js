@@ -71,7 +71,7 @@ export default new VueRouter({
 					children: [
 						{ //interface的默认路由
 							path: '',
-							component: InterfaceAccount
+							redirect: 'account'
 						},
 						{
 							path: 'account',
@@ -83,7 +83,7 @@ export default new VueRouter({
 							children: [
 								{ //InterfaceHome的默认路由
 									path: '',
-									component: HomeActivity
+									redirect: 'homeactivity'
 								},
 								{
 									path: 'checkgoods',
@@ -110,7 +110,7 @@ export default new VueRouter({
 							children: [
 								{ //order的默认路由
 									path: '',
-									component: OrderAll
+									redirect: 'orderall'
 								},
 								{
 									path: 'orderall',
@@ -132,7 +132,7 @@ export default new VueRouter({
 							children: [
 								{ //setting的默认路由
 									path: '',
-									component: SettingPerson
+									redirect: 'settingperson'
 								},
 								{
 									path: 'settingperson',
@@ -170,7 +170,7 @@ export default new VueRouter({
 					children: [
 						{ //interface的默认路由
 							path: '',
-							component: InterfaceCheck
+							redirect: 'checkapplication'
 						},
 						{
 							path: 'checkapplication',

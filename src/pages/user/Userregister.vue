@@ -130,6 +130,7 @@ export default {
         id: this.phone,
         nickname: this.nickname,
         password: passwordsalt,
+        salt:"",
         name: this.username,
         idNumber: this.cardid
       }

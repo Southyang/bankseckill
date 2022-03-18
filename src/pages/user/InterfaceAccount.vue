@@ -6,14 +6,14 @@
              :style="{backgroundImage: 'url(' + user.imageurl + ')'}"
              @click="changeimage"></div>
         <div>
-          {{user.username}} <br>
-          {{user.userid}}(账户)
+          {{user.nickname}} <br>
+          <!-- {{user.userid}}(账户) -->
         </div>
       </div>
       <div class="accountbox-body">
         <div class="accountboxtitle">
           {{name}} <br>
-          {{sex}} <br>
+          {{nickname}} <br>
           {{cardkind}} <br>
           {{cardnumber}} <br>
           {{phone}}
@@ -21,7 +21,7 @@
         <div class="accountboxline"></div>
         <div class="accountboxcontent">
           {{user.name}} <br>
-          {{user.sex}} <br>
+          {{user.nickname}} <br>
           {{user.cardkind}} <br>
           {{user.cardnumber}} <br>
           {{user.phone}}
@@ -34,12 +34,13 @@
 </template>
 
 <script>
+import qs from 'qs'
 export default {
   name: 'InterfaceAccount',
   data () {
     return {
       name: '姓名',
-      sex: '性别',
+      nickname: '昵称',
       cardkind: '证件类型',
       cardnumber: '证件号码',
       phone: '账号关联手机号',
@@ -47,13 +48,12 @@ export default {
 
       user: {
         imageurl: 'https://mail.csu.edu.cn/coremail/s?func=lp:getImg&org_id=&img_id=logo_001',
-        username: '枏山柟',
-        userid: '3874-2674-2268-3146',
-        name: '南阳',
-        sex: '男',
+        // userid: '3874-2674-2268-3146',
+        name: '',
+        nickname: '',
         cardkind: '第二代居民身份证',
-        cardnumber: '123456789',
-        phone: '123456',
+        cardnumber: '',
+        phone: '',
       }
 
     }
@@ -64,19 +64,23 @@ export default {
     }
   },
   mounted () {
-    this.$http.post('user/info', {
-      params: {
-        userId: sessionStorage.getItem("username")
-      }
-    }).then(
+    let data = {
+      userId: sessionStorage.getItem("username")
+    }
+    // 发送post请求
+    this.$http.post('user/info', qs.stringify(data)).then(
       response => {
-        console.log("userId: " + sessionStorage.getItem("username")),
+        console.log(data)
         console.log(response.data)
         if (response.data.code !== 200) {
           this.$message.warning(response.data.message)
         }
         else {
           this.$message.success("信息获取成功")
+          this.user['name'] = response.data.obj.name
+          this.user.nickname = response.data.obj.nickname
+          this.user.cardnumber =  response.data.obj.idNumber
+          this.user.phone = response.data.obj.id
         }
       },
       error => {
