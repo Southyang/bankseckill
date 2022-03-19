@@ -163,7 +163,7 @@ export default {
           if (response.data.code === 200) {
             this.$message.success("成功获取秒杀商品信息")
             this.goodsName = response.data.obj.GoodsVo.goodsName
-            this.goodsImg = response.data.obj.GoodsVo.goodsImg
+            this.goodsImg = "http://code.southyang.cn:8080/goods/image/" + response.data.obj.GoodsVo.goodsImg
             this.startDate = response.data.obj.GoodsVo.startDate
             this.endDate = response.data.obj.GoodsVo.endDate
             this.goodsPrice = response.data.obj.GoodsVo.goodsPrice

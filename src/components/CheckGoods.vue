@@ -113,6 +113,9 @@ export default {
           if (response.data.code === 200) {
             this.$message.success("成功获取商品信息")
             this.checklogs = response.data.obj
+            for(let i = 0 ; i < this.checklogs.length ; i ++){
+              this.checklogs[i].goodsImg = "http://code.southyang.cn:8080/goods/image/" + this.checklogs[i].goodsImg
+            }
             console.log(response.data.obj)
           }
           else {
