@@ -87,15 +87,48 @@ export default {
       }
       this.computepageSize();
     },
-    jump (id) {
-      this.showchecklogs = this.filchecklogs.slice((id - 1) * 15, id * 15);
+    jump (pageid) {
+      // this.showchecklogs = this.filchecklogs.slice((id - 1) * 15, id * 15);
+      // 获取第一页的内容
+      this.isloading = true
+      this.$http.get("manage/recordPage",
+        {
+          params: {
+            id: sessionStorage.getItem('managername'),
+            pageNo: pageid,
+            pageSize: 15
+          }
+        }).then(
+          response => {
+            console.log(response.data)
+            if (response.data.code === 200) {
+              this.showchecklogs = response.data.obj
+              for (let i = 0; i < this.showchecklogs.length; i++) {
+              if (this.showchecklogs[i].applyResult === 1) {
+                this.showchecklogs[i].applyResult = "成功"
+              } else {
+                this.showchecklogs[i].applyResult = "失败"
+              }
+              this.showchecklogs[i].applyDate = new Date(this.showchecklogs[i].applyDate).Format("yyyy-MM-dd hh:mm:ss")
+            }
+              this.isloading = false
+            }
+            else {
+              this.$message.warning("获取申请记录失败")
+            }
+          },
+          error => {
+            console.log('请求失败了', error.message)
+            this.$message.error("网络错误")
+          }
+        )
     },
     computepageSize () {
       this.pageSize = Math.ceil(this.filchecklogs.length / 15);
     }
   },
   created () {
-    this.$http.get("manage/showAllRecords",
+    /* this.$http.get("manage/showAllRecords",
       {
         params: {
           id: sessionStorage.getItem('managername')
@@ -122,6 +155,60 @@ export default {
             } else {
               this.showchecklogs = this.filchecklogs
             }
+          }
+          else {
+            this.$message.warning("获取申请记录失败")
+          }
+        },
+        error => {
+          console.log('请求失败了', error.message)
+          this.$message.error("网络错误")
+        }
+      ) */
+    // 获取总页数
+    this.$http.get("manage/recordCount",
+      {
+        params: {
+          id: sessionStorage.getItem('managername')
+        }
+      }).then(
+        response => {
+          console.log(response.data)
+          if (response.data.code === 200) {
+            this.pageSize = Math.ceil(response.data.obj / 15)
+          }
+          else {
+            this.$message.warning("获取申请记录失败")
+          }
+        },
+        error => {
+          console.log('请求失败了', error.message)
+          this.$message.error("网络错误")
+        }
+      )
+    // 获取第一页的内容
+    this.$http.get("manage/recordPage",
+      {
+        params: {
+          id: sessionStorage.getItem('managername'),
+          pageNo: this.pageNow,
+          pageSize: 15
+        }
+      }).then(
+        response => {
+          console.log(response.data)
+          if (response.data.code === 200) {
+            this.$message.success("获取申请记录成功")
+            this.showchecklogs = response.data.obj
+            for (let i = 0; i < this.showchecklogs.length; i++) {
+              if (this.showchecklogs[i].applyResult === 1) {
+                this.showchecklogs[i].applyResult = "成功"
+              } else {
+                this.showchecklogs[i].applyResult = "失败"
+              }
+              this.showchecklogs[i].applyDate = new Date(this.showchecklogs[i].applyDate).Format("yyyy-MM-dd hh:mm:ss")
+            }
+            this.isloading = false
           }
           else {
             this.$message.warning("获取申请记录失败")

@@ -47,12 +47,36 @@ export default {
     }
   },
   methods: {
-    jump (id) {
-      this.filgetlogs = this.getlogs.slice((id - 1) * 15, id * 15);
+    jump (pageid) {
+      this.isloading = true
+      // this.filgetlogs = this.getlogs.slice((id - 1) * 15, id * 15);
+      this.$http.get("manage/resultPage",
+        {
+          params: {
+            id: sessionStorage.getItem('managername'),
+            pageNo: pageid,
+            pageSize: 15
+          }
+        }).then(
+          response => {
+            console.log(response.data)
+            if (response.data.code === 200) {
+              this.isloading = false
+              this.getlogs = response.data.obj
+            }
+            else {
+              this.$message.warning("获取秒杀结果失败")
+            }
+          },
+          error => {
+            console.log('请求失败了', error.message)
+            this.$message.error("网络错误")
+          }
+        )
     },
   },
   mounted () {
-    this.$http.get("manage/result",
+    /* this.$http.get("manage/result",
       {
         params: {
           id: sessionStorage.getItem('managername')
@@ -71,6 +95,54 @@ export default {
             }else{
               this.filgetlogs = this.getlogs
             }
+          }
+          else {
+            this.$message.warning("获取秒杀结果失败")
+          }
+        },
+        error => {
+          console.log('请求失败了', error.message)
+          this.$message.error("网络错误")
+        }
+      ) */
+  },
+  created () {
+    // 获取总页数
+    this.$http.get("manage/resultCount",
+      {
+        params: {
+          id: sessionStorage.getItem('managername')
+        }
+      }).then(
+        response => {
+          console.log(response.data)
+          if (response.data.code === 200) {
+            this.pageSize = response.data.obj
+          }
+          else {
+            this.$message.warning("获取秒杀结果失败")
+          }
+        },
+        error => {
+          console.log('请求失败了', error.message)
+          this.$message.error("网络错误")
+        }
+      )
+    // 获取第一页
+    this.$http.get("manage/resultPage",
+      {
+        params: {
+          id: sessionStorage.getItem('managername'),
+          pageNo: 1,
+          pageSize: 15
+        }
+      }).then(
+        response => {
+          console.log(response.data)
+          if (response.data.code === 200) {
+            this.$message.success("获取秒杀结果成功")
+            this.isloading = false
+            this.getlogs = response.data.obj
           }
           else {
             this.$message.warning("获取秒杀结果失败")

@@ -36,6 +36,8 @@ import InterfaceDelete from '../pages/manager/InterfaceDelete'
 import InterfaceAddseckill from '../pages/manager/InterfaceAddseckill'
 import InterfaceModifyseckill from '../pages/manager/InterfaceModifyseckill'
 import InterfaceDeleteseckill from '../pages/manager/InterfaceDeleteseckill'
+import InterfaceAddDetail from '../pages/manager/InterfaceAddDetail'
+import InterfaceModifyDetail from '../pages/manager/InterfaceModifyDetail'
 
 //创建并暴露路由
 export default new VueRouter({
@@ -98,7 +100,7 @@ export default new VueRouter({
 									component: Checkseckill
 								},
 								{
-									name: 'userseckillgoodsdetail',
+									name: 'seckillgoodsdetail',
 									path: 'seckillgoodsdetail',
 									component: SeckillGoodsDetail
 								},
@@ -207,6 +209,14 @@ export default new VueRouter({
 						{
 							path: 'deleteseckillgoods',
 							component: InterfaceDeleteseckill
+						},
+						{
+							path: 'addgoodsdetail',
+							component: InterfaceAddDetail
+						},
+						{
+							path: 'modifygoodsdetail',
+							component: InterfaceModifyDetail
 						}
 					]
 				}

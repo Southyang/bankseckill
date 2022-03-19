@@ -5,6 +5,7 @@
     </div>
     <div class="checkseckillbody">
       <div class="bodybanner">
+        <span class="spancontent"> 商品序号 </span>
         <span class="spancontent"> 商品名称 </span>
         <span class="spancontent"> 商品图片 </span>
         <span class="spancontent"> 商品原价 </span>
@@ -16,6 +17,7 @@
            v-for="(log,index) in checklogs"
            :key="index">
         <div class="resultcontent">
+          <span class="spancontent"> {{log.id}} </span>
           <span class="spancontent"> {{log.goodsName}} </span>
           <img class="spancontent goodspicture"
                :src="log.goodsImg">
@@ -40,6 +42,7 @@
       <span @click="afterpage"
             class="spanbutton"> 下一页 </span>
     </div>
+    <div v-show="isLoading" class="loading">加载中……</div>
   </div>
 </template>
 
@@ -50,21 +53,8 @@ export default {
     return {
       detail: '详情',
       checklogs: [
-        /* {
-          ID: 'GOODS1',
-          Url: 'https://aecpm.alicdn.com/simba/img/TB13xKuLVXXXXcHapXXSutbFXXX.jpg',
-          oldprice: '100',
-          nowprice: '50',
-          number: '20',
-        },
-        {
-          ID: 'GOODS2',
-          Url: 'https://aecpm.alicdn.com/simba/img/TB1X6uHLVXXXXcCXVXXSutbFXXX.jpg',
-          oldprice: '100',
-          nowprice: '50',
-          number: '20',
-        } */
-      ]
+      ],
+      isLoading:true
     }
   },
   methods: {
@@ -73,19 +63,11 @@ export default {
       console.log("查看ID为" + e.currentTarget.parentElement.firstElementChild.innerHTML + "的商品详情")
       let nowname = sessionStorage.getItem("username")
       if (!nowname) {
-        nowname = sessionStorage.getItem("managername")
-        if (nowname) {
-          this.$router.push({
-            name: 'managerseckillgoodsdetail',
-            params: {
-              id: id
-            }
-          })
-        }
+        return
       }
       else {
         this.$router.push({
-          name: 'userseckillgoodsdetail',
+          name: 'seckillgoodsdetail',
           params: {
             id: id
           }
@@ -125,8 +107,9 @@ export default {
         response => {
           console.log('请求成功了', response.data)
           if (response.data.code === 200) {
-            this.$message.info("成功获取秒杀商品信息")
+            this.$message.success("成功获取秒杀商品信息")
             this.checklogs = response.data.obj
+            this.isLoading = false
           }
           else {
             this.$message.warning("秒杀商品信息获取失败")
@@ -186,7 +169,7 @@ export default {
 }
 
 .spancontent {
-  width: 16.6%;
+  width: 14.3%;
   text-align: center;
 }
 
@@ -208,7 +191,7 @@ export default {
 .goodspicture {
   display: inline-block;
   background-size: 200px 100px;
-  width: 200px;
+  width: 170px;
   height: 100px;
   overflow: hidden;
 }
@@ -229,5 +212,11 @@ export default {
 
 .spanbutton {
   cursor: pointer;
+}
+
+.loading{
+  width: 100%;
+  text-align: center;
+  margin-top: 50px;
 }
 </style>

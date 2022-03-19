@@ -35,29 +35,33 @@ export default {
     }
   },
   created () {
-    // 发送get请求
-    this.$http.get("apply/toApply",
-      {
-        params: {
-          userId: sessionStorage.getItem("username")
-        }
-      }).then(
-        response => {
-          console.log('请求成功了', response.data)
-          if (response.data.code === 200) {
-            this.$message.info("申请成功")
-            sessionStorage.setItem("userallowed", "true")
+    // 初筛
+    if (sessionStorage.getItem("userallowed") === false) {
+      // 发送get请求
+      this.$http.get("apply/toApply",
+        {
+          params: {
+            userId: sessionStorage.getItem("username")
           }
-          else {
-            this.$message.warning("初筛未通过")
-            sessionStorage.setItem("userallowed", "false")
+        }).then(
+          response => {
+            console.log('请求成功了', response.data)
+            if (response.data.code === 200) {
+              this.$message.info("申请成功")
+              sessionStorage.setItem("userallowed", "true")
+            }
+            else {
+              this.$message.warning("初筛未通过")
+              sessionStorage.setItem("userallowed", "false")
+            }
+          },
+          error => {
+            console.log('请求失败了', error.message)
+            this.$message.error("网络错误")
           }
-        },
-        error => {
-          console.log('请求失败了', error.message)
-          this.$message.error("网络错误")
-        }
-      )
+        )
+    }
+
     const timer = setInterval(() => {
       let temp = sessionStorage.getItem("userallowed")
       if (temp === "true") {

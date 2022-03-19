@@ -1,12 +1,12 @@
 <template>
-  <div class="seckillgoodsdetail">
-    <div class="seckilldetailheader">
+  <div class="goodsdetail">
+    <div class="detailheader">
       <img @click="goback"
            class="goback"
            src="../assets/image/goback.png" />
       秒杀商品详情
     </div>
-    <div class="seckilldetailbody" v-show="!isLoading">
+    <div class="detailbody" v-show="!isLoading">
       <div class="bodyline">
       </div>
       <div class="bodyinfo">
@@ -62,7 +62,7 @@
           秒杀价
         </div>
         <div class="infoget">
-          {{seckillPrice}}
+          {{Price}}
         </div>
       </div>
       <div class="bodyinfo">
@@ -81,14 +81,14 @@
 <script>
 import '../assets/js/dateformat'
 export default {
-  name: 'SeckillGoodsDetail',
+  name: 'GoodsDetail',
   data () {
     return {
-      seckillGoodsId: '',
+      GoodsId: '',
       goodsName: '',
       goodsImg: 'https://aecpm.alicdn.com/simba/img/TB13xKuLVXXXXcHapXXSutbFXXX.jpg',
       goodsPrice: '',
-      seckillPrice: '',
+      Price: '',
       stockCount: '',
       startDate: '',
       endDate: '',
@@ -104,7 +104,7 @@ export default {
       this.$router.back() //后退
     },
     purchase () {
-      console.log("购买" + this.seckillGoodsId)
+      console.log("购买" + this.GoodsId)
     },
     computevalue () {
       /* let starttime = new Date(this.StartTime).getTime()
@@ -139,14 +139,14 @@ export default {
     })
   },
   mounted () {
-    this.seckillGoodsId = this.$route.params.id
-    if (!this.seckillGoodsId) {
-      this.seckillGoodsId = sessionStorage.getItem("seckillGoodsId")
+    this.GoodsId = this.$route.params.id
+    if (!this.GoodsId) {
+      this.GoodsId = sessionStorage.getItem("GoodsId")
     }
     else {
-      sessionStorage.setItem("seckillGoodsId", this.seckillGoodsId)
+      sessionStorage.setItem("GoodsId", this.GoodsId)
     }
-    if (!this.seckillGoodsId) {
+    if (!this.GoodsId) {
       this.$router.replace("./")
     }
 
@@ -155,20 +155,20 @@ export default {
       {
         params: {
           userId: sessionStorage.getItem("username"),
-          seckillGoodsId: this.seckillGoodsId
+          GoodsId: this.GoodsId
         }
       }).then(
         response => {
           console.log('请求成功了', response.data)
           if (response.data.code === 200) {
             this.$message.success("成功获取秒杀商品信息")
-            this.goodsName = response.data.obj.seckillGoodsVo.goodsName
-            this.goodsImg = response.data.obj.seckillGoodsVo.goodsImg
-            this.startDate = response.data.obj.seckillGoodsVo.startDate
-            this.endDate = response.data.obj.seckillGoodsVo.endDate
-            this.goodsPrice = response.data.obj.seckillGoodsVo.goodsPrice
-            this.seckillPrice = response.data.obj.seckillGoodsVo.seckillPrice
-            this.stockCount = response.data.obj.seckillGoodsVo.stockCount
+            this.goodsName = response.data.obj.GoodsVo.goodsName
+            this.goodsImg = response.data.obj.GoodsVo.goodsImg
+            this.startDate = response.data.obj.GoodsVo.startDate
+            this.endDate = response.data.obj.GoodsVo.endDate
+            this.goodsPrice = response.data.obj.GoodsVo.goodsPrice
+            this.Price = response.data.obj.GoodsVo.Price
+            this.stockCount = response.data.obj.GoodsVo.stockCount
 
             this.showstartDate = new Date(this.startDate).Format("yyyy-MM-dd hh:mm:ss")
             this.showendDate = new Date(this.endDate).Format("yyyy-MM-dd hh:mm:ss")
@@ -191,7 +191,7 @@ export default {
 </script>
 
 <style scoped>
-.seckillgoodsdetail {
+.goodsdetail {
   width: 1200px;
   height: 600px;
   margin-left: 60px;
@@ -207,7 +207,7 @@ export default {
   /* or 82% */
 }
 
-.seckilldetailheader {
+.detailheader {
   background-color: #ea0437;
   height: 40px;
   width: 100%;
@@ -228,7 +228,7 @@ export default {
   cursor: pointer;
 }
 
-.seckilldetailbody {
+.detailbody {
   margin-top: 30px;
   margin-left: 100px;
 }
