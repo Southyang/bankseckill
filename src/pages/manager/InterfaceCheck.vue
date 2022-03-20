@@ -7,7 +7,7 @@
                v-model="inputname" />
       </div>
       <div class="inputbox">
-        <span class="managercheckinput"> 日期 </span>
+        <span class="managercheckinput"> 几天前 </span>
         <input class="managerinput"
                v-model="inputdate" />
       </div>
@@ -29,8 +29,22 @@
         <span class="spancontent"> 初筛结果 </span>
       </div>
       <div class="checkresult"
+           v-show="!isprecheck"
            v-for="(log,index) in showchecklogs"
            :key="index">
+        <div class="resultcontent">
+          <span class="spancontent"> {{log.id}}</span>
+          <span class="spancontent"> {{log.name}} </span>
+          <span class="spancontent"> {{log.applyDate}} </span>
+          <span class="spancontent"> {{log.applyResult}} </span>
+        </div>
+        <div class="resultline">
+        </div>
+      </div>
+      <div class="checkresult"
+           v-show="isprecheck"
+           v-for="(log,index) in filprechecklogs"
+           :key="'第' + index + '条'">
         <div class="resultcontent">
           <span class="spancontent"> {{log.id}}</span>
           <span class="spancontent"> {{log.name}} </span>
@@ -63,108 +77,112 @@ export default {
       inputdate: '',
       checkname: '',
       checkdate: '',
-      checklogs: [],
-      filchecklogs: [],
+      prechecklogs: [],
+      filprechecklogs: [],
       showchecklogs: [],
       isloading: true,
+      allpageSize: 30,
       pageSize: 30,
-      pageNow: 1
+      pageNow: 1,
+      isprecheck: false
     }
   },
   methods: {
     check () {
-      console.log("查询申请记录 " + this.inputname + " " + this.inputdate)
-      this.checkname = this.inputname
-      this.checkdate = this.inputdate
-      this.filchecklogs = this.checklogs.filter((log) => {
-        return (log.name.indexOf(this.checkname) !== -1 && log.applyDate.indexOf(this.checkdate) !== -1)
-      })
-      console.log(this.filchecklogs);
-      if (this.filchecklogs.length >= 15) {
-        this.showchecklogs = this.filchecklogs.slice(0, 15)
-      } else {
-        this.showchecklogs = this.filchecklogs
+      console.log("查询申请记录 " + this.inputname + " " + this.inputdate + "天前")
+      if (this.inputname.trim() && this.inputdate.trim()) {
+        this.isprecheck = true
+        this.isloading = true
+        this.$http.get("manage/showRecords",
+          {
+            params: {
+              id: sessionStorage.getItem('managername'),
+              name: this.inputname,
+              daysAgo: this.inputdate
+            }
+          }).then(
+            response => {
+              console.log(response.data)
+              if (response.data.code === 200) {
+                this.prechecklogs = response.data.obj
+                for (let i = 0; i < this.prechecklogs.length; i++) {
+                  if (this.prechecklogs[i].applyResult === 1) {
+                    this.prechecklogs[i].applyResult = "成功"
+                  } else {
+                    this.prechecklogs[i].applyResult = "失败"
+                  }
+                  this.prechecklogs[i].applyDate = new Date(this.prechecklogs[i].applyDate).Format("yyyy-MM-dd hh:mm:ss")
+                }
+                this.pageSize = Math.ceil(this.prechecklogs.length / 15);
+                if (this.prechecklogs.length >= 15) {
+                  this.filprechecklogs = this.prechecklogs.slice(0, 15)
+                } else {
+                  this.filprechecklogs = this.prechecklogs
+                }
+                this.isloading = false
+              }
+              else {
+                this.$message.warning("获取申请记录失败")
+              }
+            },
+            error => {
+              console.log('请求失败了', error.message)
+              this.$message.error("网络错误")
+            }
+          )
       }
-      this.computepageSize();
+      else {
+        this.isprecheck = false
+        this.computepageSize()
+      }
+
     },
     jump (pageid) {
-      // this.showchecklogs = this.filchecklogs.slice((id - 1) * 15, id * 15);
-      // 获取第一页的内容
+      // 获取当前页的内容
       this.isloading = true
-      this.$http.get("manage/recordPage",
-        {
-          params: {
-            id: sessionStorage.getItem('managername'),
-            pageNo: pageid,
-            pageSize: 15
-          }
-        }).then(
-          response => {
-            console.log(response.data)
-            if (response.data.code === 200) {
-              this.showchecklogs = response.data.obj
-              for (let i = 0; i < this.showchecklogs.length; i++) {
-              if (this.showchecklogs[i].applyResult === 1) {
-                this.showchecklogs[i].applyResult = "成功"
-              } else {
-                this.showchecklogs[i].applyResult = "失败"
+      if (this.isprecheck === true) {
+        this.filprechecklogs = this.prechecklogs.slice((pageid - 1) * 15 , pageid * 15)
+        this.isloading = false
+      }
+      else {
+        this.$http.get("manage/recordPage",
+          {
+            params: {
+              id: sessionStorage.getItem('managername'),
+              pageNo: pageid,
+              pageSize: 15
+            }
+          }).then(
+            response => {
+              console.log(response.data)
+              if (response.data.code === 200) {
+                this.showchecklogs = response.data.obj
+                for (let i = 0; i < this.showchecklogs.length; i++) {
+                  if (this.showchecklogs[i].applyResult === 1) {
+                    this.showchecklogs[i].applyResult = "成功"
+                  } else {
+                    this.showchecklogs[i].applyResult = "失败"
+                  }
+                  this.showchecklogs[i].applyDate = new Date(this.showchecklogs[i].applyDate).Format("yyyy-MM-dd hh:mm:ss")
+                }
+                this.isloading = false
               }
-              this.showchecklogs[i].applyDate = new Date(this.showchecklogs[i].applyDate).Format("yyyy-MM-dd hh:mm:ss")
+              else {
+                this.$message.warning("获取申请记录失败")
+              }
+            },
+            error => {
+              console.log('请求失败了', error.message)
+              this.$message.error("网络错误")
             }
-              this.isloading = false
-            }
-            else {
-              this.$message.warning("获取申请记录失败")
-            }
-          },
-          error => {
-            console.log('请求失败了', error.message)
-            this.$message.error("网络错误")
-          }
-        )
+          )
+      }
     },
     computepageSize () {
-      this.pageSize = Math.ceil(this.filchecklogs.length / 15);
+      this.pageSize = this.allpageSize
     }
   },
   created () {
-    /* this.$http.get("manage/showAllRecords",
-      {
-        params: {
-          id: sessionStorage.getItem('managername')
-        }
-      }).then(
-        response => {
-          if (response.data.code === 200) {
-            this.$message.success("成功获取申请记录")
-            this.isloading = false
-            this.checklogs = response.data.obj
-            this.filchecklogs = this.checklogs
-            for (let i = 0; i < this.checklogs.length; i++) {
-              if (this.checklogs[i].applyResult === 1) {
-                this.checklogs[i].applyResult = "成功"
-              } else {
-                this.checklogs[i].applyResult = "失败"
-              }
-              this.checklogs[i].applyDate = new Date(this.checklogs[i].applyDate).Format("yyyy-MM-dd hh:mm:ss")
-            }
-
-            this.pageSize = Math.ceil(this.filchecklogs.length / 15);
-            if (this.filchecklogs.length >= 15) {
-              this.showchecklogs = this.filchecklogs.slice(0, 15)
-            } else {
-              this.showchecklogs = this.filchecklogs
-            }
-          }
-          else {
-            this.$message.warning("获取申请记录失败")
-          }
-        },
-        error => {
-          console.log('请求失败了', error.message)
-          this.$message.error("网络错误")
-        }
-      ) */
     // 获取总页数
     this.$http.get("manage/recordCount",
       {
@@ -175,7 +193,8 @@ export default {
         response => {
           console.log(response.data)
           if (response.data.code === 200) {
-            this.pageSize = Math.ceil(response.data.obj / 15)
+            this.allpageSize = Math.ceil(response.data.obj / 15)
+            this.pageSize = this.allpageSize
           }
           else {
             this.$message.warning("获取申请记录失败")

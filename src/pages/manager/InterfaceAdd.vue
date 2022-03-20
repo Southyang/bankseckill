@@ -225,7 +225,7 @@ export default {
 
 .choosebutton input {
     position: absolute;
-    font-size: 100px;
+    font-size: 0px;
     right: 0;
     top: 0;
     opacity: 0;

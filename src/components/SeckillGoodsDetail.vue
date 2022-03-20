@@ -163,7 +163,7 @@ export default {
           if (response.data.code === 200) {
             this.$message.success("成功获取秒杀商品信息")
             this.goodsName = response.data.obj.seckillGoodsVo.goodsName
-            this.goodsImg = response.data.obj.seckillGoodsVo.goodsImg
+            this.goodsImg = "http://code.southyang.cn:8080/goods/image/" + response.data.obj.seckillGoodsVo.goodsImg
             this.startDate = response.data.obj.seckillGoodsVo.startDate
             this.endDate = response.data.obj.seckillGoodsVo.endDate
             this.goodsPrice = response.data.obj.seckillGoodsVo.goodsPrice
@@ -185,7 +185,7 @@ export default {
         }
       )
 
-    console.log("与后端交互得到商品信息")
+    console.log("与后端交互得到秒杀商品信息")
   }
 }
 </script>

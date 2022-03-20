@@ -4,9 +4,10 @@
       <img @click="goback"
            class="goback"
            src="../assets/image/goback.png" />
-      秒杀商品详情
+      商品详情
     </div>
-    <div class="detailbody" v-show="!isLoading">
+    <div class="detailbody"
+         v-show="!isLoading">
       <div class="bodyline">
       </div>
       <div class="bodyinfo">
@@ -26,32 +27,7 @@
       </div>
       <div class="bodyinfo">
         <div class="infoword">
-          秒杀开始时间
-        </div>
-        <span class="infoget"
-              style="margin-right:25px">
-          {{showstartDate}}
-        </span>
-        <span v-if="!isSale"
-              style="color: #FFC700;margin-right:25px">{{infomessage}}</span>
-        <span v-if="isSale"
-              class="purchase"
-              @click="purchase">立即秒杀</span>
-        <span v-if="!isSale"
-              class="purchase outpurchase">立即秒杀</span>
-      </div>
-      <div class="bodyinfo">
-        <div class="infoword">
-          秒杀结束时间
-        </div>
-        <span class="infoget"
-              style="margin-right:25px">
-          {{showendDate}}
-        </span>
-      </div>
-      <div class="bodyinfo">
-        <div class="infoword">
-          商品原价
+          商品简介
         </div>
         <div class="infoget">
           {{goodsPrice}}
@@ -59,10 +35,42 @@
       </div>
       <div class="bodyinfo">
         <div class="infoword">
-          秒杀价
+          商品价格
         </div>
         <div class="infoget">
-          {{Price}}
+          {{goodsPrice}}
+        </div>
+      </div>
+      <div class="bodyinfo">
+        <div class="infoword">
+          起存金额
+        </div>
+        <div class="infoget">
+          {{goodsPrice}}
+        </div>
+      </div>
+      <div class="bodyinfo">
+        <div class="infoword">
+          存款年限
+        </div>
+        <div class="infoget">
+          {{goodsPrice}}
+        </div>
+      </div>
+      <div class="bodyinfo">
+        <div class="infoword">
+          商品利率
+        </div>
+        <div class="infoget">
+          {{goodsPrice}}
+        </div>
+      </div>
+      <div class="bodyinfo">
+        <div class="infoword">
+          单日限额
+        </div>
+        <div class="infoget">
+          {{goodsPrice}}
         </div>
       </div>
       <div class="bodyinfo">
@@ -74,7 +82,8 @@
         </div>
       </div>
     </div>
-    <div v-show="isLoading" class="loading">加载中……</div>
+    <div v-show="isLoading"
+         class="loading">加载中……</div>
   </div>
 </template>
 
@@ -84,16 +93,16 @@ export default {
   name: 'GoodsDetail',
   data () {
     return {
-      GoodsId: '',
-      goodsName: '',
+      GoodsId: '1',
+      goodsName: '2',
       goodsImg: 'https://aecpm.alicdn.com/simba/img/TB13xKuLVXXXXcHapXXSutbFXXX.jpg',
-      goodsPrice: '',
-      Price: '',
-      stockCount: '',
-      startDate: '',
-      endDate: '',
-      showstartDate: '',
-      showendDate: '',
+      goodsPrice: '3',
+      Price: '4',
+      stockCount: '5',
+      startDate: '6',
+      endDate: '7',
+      showstartDate: '8',
+      showendDate: '9',
       isSale: '',
       infomessage: '',
       isLoading: true
@@ -149,9 +158,10 @@ export default {
     if (!this.GoodsId) {
       this.$router.replace("./")
     }
+    this.isLoading = false
 
     // 发送get请求
-    this.$http.get("goods/detail",
+    /* this.$http.get("goods/detail",
       {
         params: {
           userId: sessionStorage.getItem("username"),
@@ -183,7 +193,7 @@ export default {
           console.log('请求失败了', error.message)
           this.$message.error("网络错误")
         }
-      )
+      ) */
 
     console.log("与后端交互得到商品信息")
   }
@@ -244,7 +254,7 @@ export default {
 }
 
 .bodyinfo {
-  margin-bottom: 45px;
+  margin-bottom: 30px;
 }
 
 .infoword {
@@ -287,7 +297,7 @@ export default {
   cursor: not-allowed;
 }
 
-.loading{
+.loading {
   width: 100%;
   text-align: center;
   margin-top: 50px;

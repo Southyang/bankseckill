@@ -36,7 +36,7 @@ export default {
   },
   created () {
     // 初筛
-    if (sessionStorage.getItem("userallowed") === false) {
+    if (sessionStorage.getItem("userallowed") === false || !sessionStorage.getItem("userallowed")) {
       // 发送get请求
       this.$http.get("apply/toApply",
         {

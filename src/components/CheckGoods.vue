@@ -5,8 +5,8 @@
     </div>
     <div class="checkbody">
       <div class="bodybanner">
+        <span class="spancontent"> 商品序号 </span>
         <span class="spancontent"> 商品标题 </span>
-        <span class="spancontent"> 商品信息 </span>
         <span class="spancontent"> 商品图片 </span>
         <span class="spancontent"> 商品价格 </span>
         <span class="spancontent"> 商品库存 </span>
@@ -16,8 +16,8 @@
            v-for="(log,index) in checklogs"
            :key="index">
         <div class="resultcontent">
+          <span class="spancontent"> {{index}} </span>
           <span class="spancontent"> {{log.goodsTitle}} </span>
-          <span class="spancontent"> {{log.goodsName}} </span>
           <img class="spancontent goodspicture"
                :src="log.goodsImg">
           <span class="spancontent"> {{log.goodsPrice}} </span>
@@ -59,19 +59,11 @@ export default {
       console.log("查看ID为" + e.currentTarget.parentElement.firstElementChild.innerHTML + "的商品详情")
       let nowname = sessionStorage.getItem("username")
       if (!nowname) {
-        nowname = sessionStorage.getItem("managername")
-        if (nowname) {
-          this.$router.push({
-            name: 'managergoodsdetail',
-            params: {
-              id: id
-            }
-          })
-        }
+        return
       }
       else {
         this.$router.push({
-          name: 'usergoodsdetail',
+          name: 'goodsdetail',
           params: {
             id: id
           }
@@ -113,7 +105,7 @@ export default {
           if (response.data.code === 200) {
             this.$message.success("成功获取商品信息")
             this.checklogs = response.data.obj
-            for(let i = 0 ; i < this.checklogs.length ; i ++){
+            for (let i = 0; i < this.checklogs.length; i++) {
               this.checklogs[i].goodsImg = "http://code.southyang.cn:8080/goods/image/" + this.checklogs[i].goodsImg
             }
             console.log(response.data.obj)
@@ -197,8 +189,8 @@ export default {
 
 .goodspicture {
   display: inline-block;
-  background-size: 200px 100px;
-  width: 200px;
+  background-size: 16.6% 100px;
+  width: 16.6%;
   height: 100px;
   overflow: hidden;
 }

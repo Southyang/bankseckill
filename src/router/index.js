@@ -6,6 +6,7 @@ import User from '../components/User'
 import Manager from '../components/Manager'
 import CheckGoods from '../components/CheckGoods'
 import Checkseckill from '../components/Checkseckill'
+import GoodsDetail from '../components/GoodsDetail'
 import SeckillGoodsDetail from '../components/SeckillGoodsDetail'
 
 //引入路由组件
@@ -98,6 +99,11 @@ export default new VueRouter({
 								{
 									path: 'checkseckillgoods',
 									component: Checkseckill
+								},
+								{
+									name: 'goodsdetail',
+									path: 'goodsdetail',
+									component: GoodsDetail
 								},
 								{
 									name: 'seckillgoodsdetail',
