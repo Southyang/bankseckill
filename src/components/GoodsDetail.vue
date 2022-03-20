@@ -15,7 +15,7 @@
           商品名称
         </div>
         <div class="infoget">
-          {{goodsName}}
+          {{GoodsVo.goodsName}}
         </div>
       </div>
       <div class="bodyinfo">
@@ -23,14 +23,14 @@
           商品图片
         </div>
         <img class="goodspicture"
-             :src="goodsImg">
+             :src="GoodsVo.goodsImg">
       </div>
       <div class="bodyinfo">
         <div class="infoword">
           商品简介
         </div>
         <div class="infoget">
-          {{goodsPrice}}
+          {{GoodsVo.goodsDetail}}
         </div>
       </div>
       <div class="bodyinfo">
@@ -38,39 +38,7 @@
           商品价格
         </div>
         <div class="infoget">
-          {{goodsPrice}}
-        </div>
-      </div>
-      <div class="bodyinfo">
-        <div class="infoword">
-          起存金额
-        </div>
-        <div class="infoget">
-          {{goodsPrice}}
-        </div>
-      </div>
-      <div class="bodyinfo">
-        <div class="infoword">
-          存款年限
-        </div>
-        <div class="infoget">
-          {{goodsPrice}}
-        </div>
-      </div>
-      <div class="bodyinfo">
-        <div class="infoword">
-          商品利率
-        </div>
-        <div class="infoget">
-          {{goodsPrice}}
-        </div>
-      </div>
-      <div class="bodyinfo">
-        <div class="infoword">
-          单日限额
-        </div>
-        <div class="infoget">
-          {{goodsPrice}}
+          {{GoodsVo.goodsPrice}}
         </div>
       </div>
       <div class="bodyinfo">
@@ -78,7 +46,57 @@
           库存数量
         </div>
         <div class="infoget">
-          {{stockCount}}
+          {{GoodsVo.goodsStock}}
+        </div>
+      </div>
+      <div class="bodyinfo">
+        <div class="infoword">
+          起存金额
+        </div>
+        <div class="infoget">
+          {{GoodsVo.minDeposit}}
+        </div>
+      </div>
+      <div class="bodyinfo">
+        <div class="infoword">
+          存款年限
+        </div>
+        <div class="infoget">
+          {{GoodsVo.depositDuration}}
+        </div>
+      </div>
+      <div class="bodyinfo">
+        <div class="infoword">
+          商品利率
+        </div>
+        <div class="infoget">
+          {{GoodsVo.interestRate}}
+        </div>
+      </div>
+      <div class="bodyinfo">
+        <div class="infoword">
+          单日限额
+        </div>
+        <div class="infoget">
+          {{GoodsVo.dayLimit}}
+        </div>
+      </div>
+      <div class="bodyinfo">
+        <div class="infoword">
+          到期是否自动赎回
+        </div>
+        <div class="infoget">
+          <input type="checkbox"
+                 v-model="autocheck" /> <span>{{autoinfo}}</span>
+        </div>
+      </div>
+      <div class="bodyinfo">
+        <div class="infoword">
+          是否可以提前支取
+        </div>
+        <div class="infoget">
+          <input type="checkbox"
+                 v-model="beforecheck" /> <span>{{beforeinfo}}</span>
         </div>
       </div>
     </div>
@@ -93,59 +111,43 @@ export default {
   name: 'GoodsDetail',
   data () {
     return {
-      GoodsId: '1',
-      goodsName: '2',
-      goodsImg: 'https://aecpm.alicdn.com/simba/img/TB13xKuLVXXXXcHapXXSutbFXXX.jpg',
-      goodsPrice: '3',
-      Price: '4',
-      stockCount: '5',
-      startDate: '6',
-      endDate: '7',
-      showstartDate: '8',
-      showendDate: '9',
-      isSale: '',
-      infomessage: '',
-      isLoading: true
+      GoodsVo: [],
+      isLoading: true,
+      autocheck: false,
+      autoinfo: '',
+      beforecheck: false,
+      beforeinfo: '',
+      array: ["autoRedeem", "dayLimit", "interestRate", "goodsStock", "dayLimit", "minDeposit", "withdrawEarly", "depositDuration"]
     }
   },
   methods: {
     goback () {
       this.$router.back() //后退
     },
-    purchase () {
-      console.log("购买" + this.GoodsId)
-    },
-    computevalue () {
-      /* let starttime = new Date(this.StartTime).getTime()
-      let endtime = new Date(this.EndTime).getTime() */
-      let starttime = this.startDate
-      let endtime = this.endDate
-      let nowtime = new Date().getTime()
-      if (nowtime >= starttime && nowtime <= endtime) {
-        this.isSale = true
-        this.infomessage = ""
+    formatGoodsVo () {
+      this.GoodsVo.goodsImg = "http://code.southyang.cn:8080/goods/image/" + this.GoodsVo.goodsImg
+      if (this.GoodsVo.autoRedeem === 0) {
+        this.autocheck = false
+        this.autoinfo = "否"
       }
       else {
-        this.isSale = false
-        if (!this.isSale) {
-          if (nowtime > endtime) {
-            this.infomessage = "秒杀已结束"
-          }
-          else if (nowtime < starttime) {
-            this.infomessage = "秒杀未开始"
-          }
+        this.autocheck = true
+        this.autoinfo = "是"
+      }
+      if (this.GoodsVo.withdrawEarly === 0) {
+        this.beforecheck = false
+        this.beforeinfo = "否"
+      }
+      else {
+        this.beforecheck = true
+        this.beforeinfo = "是"
+      }
+      for (let i = 0; i < this.array.length; i++) {
+        if (!this.GoodsVo[this.array[i]]) {
+          this.GoodsVo[this.array[i]] = "暂未设定"
         }
       }
     }
-  },
-  created () {
-    const timer = setInterval(() => {
-      this.computevalue()
-    }, 1000);
-    // 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
-    this.$once('hook:beforeDestroy', () => {
-      clearInterval(timer);
-    })
   },
   mounted () {
     this.GoodsId = this.$route.params.id
@@ -158,31 +160,22 @@ export default {
     if (!this.GoodsId) {
       this.$router.replace("./")
     }
-    this.isLoading = false
 
     // 发送get请求
-    /* this.$http.get("goods/detail",
+    this.$http.get("goods/goodsDetail",
       {
         params: {
           userId: sessionStorage.getItem("username"),
-          GoodsId: this.GoodsId
+          goodsId: this.GoodsId
         }
       }).then(
         response => {
           console.log('请求成功了', response.data)
           if (response.data.code === 200) {
             this.$message.success("成功获取秒杀商品信息")
-            this.goodsName = response.data.obj.GoodsVo.goodsName
-            this.goodsImg = "http://code.southyang.cn:8080/goods/image/" + response.data.obj.GoodsVo.goodsImg
-            this.startDate = response.data.obj.GoodsVo.startDate
-            this.endDate = response.data.obj.GoodsVo.endDate
-            this.goodsPrice = response.data.obj.GoodsVo.goodsPrice
-            this.Price = response.data.obj.GoodsVo.Price
-            this.stockCount = response.data.obj.GoodsVo.stockCount
-
-            this.showstartDate = new Date(this.startDate).Format("yyyy-MM-dd hh:mm:ss")
-            this.showendDate = new Date(this.endDate).Format("yyyy-MM-dd hh:mm:ss")
-
+            this.GoodsVo = response.data.obj
+            this.formatGoodsVo()
+            console.log(this.GoodsVo)
             this.isLoading = false
           }
           else {
@@ -193,7 +186,7 @@ export default {
           console.log('请求失败了', error.message)
           this.$message.error("网络错误")
         }
-      ) */
+      )
 
     console.log("与后端交互得到商品信息")
   }
@@ -202,10 +195,10 @@ export default {
 
 <style scoped>
 .goodsdetail {
-  width: 1200px;
-  height: 600px;
-  margin-left: 60px;
-  margin-top: 50px;
+  width: 80%;
+  height: 630px;
+  margin-left: 10%;
+  margin-top: 100px;
   background: #ffffff;
   border-radius: 5px;
 
@@ -232,7 +225,7 @@ export default {
 
 .goback {
   position: absolute;
-  margin-right: 1160px;
+  margin-right: 78%;
   width: 35px;
   height: 30px;
   cursor: pointer;
@@ -245,22 +238,22 @@ export default {
 
 .bodyline {
   margin-top: -30px;
-  margin-left: 140px;
+  margin-left: 180px;
   position: absolute;
   width: 0px;
   border: 1px solid #c4c4c4;
   background-color: #c4c4c4;
-  height: 560px;
+  height: 590px;
 }
 
 .bodyinfo {
-  margin-bottom: 30px;
+  margin-bottom: 23px;
 }
 
 .infoword {
   float: left;
   color: #858585;
-  width: 120px;
+  width: 160px;
   text-align: left;
   margin-right: 80px;
 }
@@ -301,5 +294,12 @@ export default {
   width: 100%;
   text-align: center;
   margin-top: 50px;
+}
+
+input[type='checkbox'] {
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+  cursor: pointer;
 }
 </style>

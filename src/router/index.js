@@ -99,7 +99,7 @@ export default new VueRouter({
 								{
 									path: 'checkseckillgoods',
 									component: Checkseckill
-								},
+								}/* ,
 								{
 									name: 'goodsdetail',
 									path: 'goodsdetail',
@@ -109,7 +109,7 @@ export default new VueRouter({
 									name: 'seckillgoodsdetail',
 									path: 'seckillgoodsdetail',
 									component: SeckillGoodsDetail
-								},
+								}, */
 							]
 						},
 						{
@@ -157,7 +157,17 @@ export default new VueRouter({
 							]
 						}
 					]
-				}
+				},
+				{
+					name: 'seckillgoodsdetail',
+					path: 'seckillgoodsdetail',
+					component: SeckillGoodsDetail
+				},
+				{
+					name: 'goodsdetail',
+					path: 'goodsdetail',
+					component: GoodsDetail
+				},
 			]
 		},
 		{

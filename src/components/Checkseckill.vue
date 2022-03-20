@@ -33,28 +33,28 @@
       </div>
     </div>
     <div class="checkseckillfooter">
-      <span @click="beforepage"
-            class="spanbutton"> 上一页&nbsp;&nbsp; </span>
-      <span v-for="index in pages"
-            :key="index"
-            @click="changepage"
-            class="spanbutton"> {{index}}&nbsp;&nbsp; </span>
-      <span @click="afterpage"
-            class="spanbutton"> 下一页 </span>
+      <pager :pageSize="pageSize"
+             v-model="pageNow"
+             @on-jump="jump"></pager>
     </div>
-    <div v-show="isLoading" class="loading">加载中……</div>
+    <div v-show="isLoading"
+         class="loading">加载中……</div>
   </div>
 </template>
 
 <script>
+import pager from '../components/pager.vue'
 export default {
   name: 'Checkseckill',
+  components: { pager },
   data () {
     return {
       detail: '详情',
-      checklogs: [
-      ],
-      isLoading:true
+      checklogs: [],
+      showchecklogs: [],
+      isLoading: true,
+      pageSize: 30,
+      pageNow: 1,
     }
   },
   methods: {
@@ -74,26 +74,22 @@ export default {
         })
       }
     },
-    beforepage () {
-      console.log("上一页")
+    jump (pageid) {
+      this.isLoading = false
+      this.showchecklogs = this.checklogs.slice((pageid - 1) * 4, pageid * 4)
+      this.isLoading = false
     },
-    changepage (e) {
-      console.log("当前页为:" + e.target.innerText)
-    },
-    afterpage () {
-      console.log("下一页")
-    }
-  },
-  computed: {
-    pagenumber () {
-      return Math.ceil(this.checklogs.length / 15)
-    },
-    pages () {
-      let temp = []
-      for (let i = 1; i <= this.pagenumber; i++) {
-        temp.push(i)
+    formatdata () {
+      for (let i = 0; i < this.checklogs.length; i++) {
+        this.checklogs[i].goodsImg = "http://code.southyang.cn:8080/goods/image/" + this.checklogs[i].goodsImg
       }
-      return temp
+      this.pageSize = Math.ceil(this.checklogs.length / 4)
+      if (this.checklogs.length > 4) {
+        this.showchecklogs = this.checklogs.slice(0, 4)
+      }
+      else {
+        this.showchecklogs = this.checklogs
+      }
     }
   },
   created () {
@@ -109,9 +105,7 @@ export default {
           if (response.data.code === 200) {
             this.$message.success("成功获取秒杀商品信息")
             this.checklogs = response.data.obj
-            for(let i = 0 ; i < this.checklogs.length ; i ++){
-              this.checklogs[i].goodsImg = "http://code.southyang.cn:8080/goods/image/" + this.checklogs[i].goodsImg
-            }
+            this.formatdata()
             this.isLoading = false
           }
           else {
@@ -217,7 +211,7 @@ export default {
   cursor: pointer;
 }
 
-.loading{
+.loading {
   width: 100%;
   text-align: center;
   margin-top: 50px;

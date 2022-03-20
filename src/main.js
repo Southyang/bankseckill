@@ -19,7 +19,7 @@ import qs from 'qs';
 Vue.prototype.$qs = qs;  //其中$xx为新命的名。
 //引入element-ui
 import './assets/js/message'
-import { DatePicker } from 'element-ui'
+import { DatePicker , MessageBox} from 'element-ui'
 Vue.component('el-date-picker', DatePicker);
 
 //关闭Vue的生产提示
