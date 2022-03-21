@@ -25,6 +25,7 @@ import SettingPerson from '../pages/user/SettingPerson'
 import SettingAccount from '../pages/user/SettingAccount'
 import SettingArticle from '../pages/user/SettingArticle'
 import HomeActivity from '../pages/user/HomeActivity'
+import OrderDetail from '../pages/user/OrderDetail'
 
 import ManagerLogin from '../pages/manager/ManagerLogin'
 import ManagerInterface from '../pages/manager/ManagerInterface'
@@ -168,6 +169,11 @@ export default new VueRouter({
 					path: 'goodsdetail',
 					component: GoodsDetail
 				},
+				{
+					name: 'orderdetail',
+					path: 'orderdetail',
+					component: OrderDetail
+				}
 			]
 		},
 		{

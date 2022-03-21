@@ -1,6 +1,7 @@
 <template>
   <div class="interfaceaccount">
-    <div class="accountbox">
+    <div class="accountbox"
+         v-show="!isLoading">
       <div class="accountbox-header">
         <div class="userimage"
              :style="{backgroundImage: 'url(' + user.imageurl + ')'}"
@@ -30,6 +31,8 @@
       <div class="accountbox-footer">
       </div>
     </div>
+    <div v-show="isLoading"
+         class="loading">加载中……</div>
   </div>
 </template>
 
@@ -44,8 +47,7 @@ export default {
       cardkind: '证件类型',
       cardnumber: '证件号码',
       phone: '账号关联手机号',
-      // imageurl: 'https://store.southyang.cn/1.png',
-
+      isLoading: true,
       user: {
         imageurl: 'https://mail.csu.edu.cn/coremail/s?func=lp:getImg&org_id=&img_id=logo_001',
         // userid: '3874-2674-2268-3146',
@@ -61,6 +63,12 @@ export default {
   methods: {
     changeimage () {
       console.log("用户修改图片")
+    },
+    initdata (data) {
+      this.user['name'] = data.name
+      this.user.nickname = data.nickname
+      this.user.cardnumber = data.idNumber
+      this.user.phone = data.id
     }
   },
   mounted () {
@@ -77,10 +85,8 @@ export default {
         }
         else {
           this.$message.success("信息获取成功")
-          this.user['name'] = response.data.obj.name
-          this.user.nickname = response.data.obj.nickname
-          this.user.cardnumber =  response.data.obj.idNumber
-          this.user.phone = response.data.obj.id
+          this.initdata(response.data.obj)
+          this.isLoading = false
         }
       },
       error => {
@@ -132,6 +138,7 @@ export default {
   margin-right: 20px;
   overflow: hidden;
   float: left;
+  z-index: 9999;
 }
 
 .userimage:hover::after {
@@ -147,7 +154,8 @@ export default {
 }
 
 .userimage:hover {
-  opacity: 0.8;
+  background-color: #ffffff;
+  opacity: 1;
 }
 
 .accountbox-body {
@@ -195,5 +203,11 @@ export default {
 .accountbox-footer {
   width: 100%;
   height: 10%;
+}
+
+.loading {
+  width: 100%;
+  text-align: center;
+  margin-top: 300px;
 }
 </style>

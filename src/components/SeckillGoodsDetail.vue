@@ -138,8 +138,18 @@ export default {
     },
     purchase () { //购买
       console.log("购买" + this.seckillGoodsId)
-      this.getcaptchaImg()
-      this.ShowDiv()
+      this.$messagebox("秒杀成功,是否查看订单", "success").then(() => {
+        this.$router.push({
+          name: 'orderdetail',
+          /* params: {
+            id: id
+          } */
+        })
+      }).catch(() => {
+        this.$message.warning("取消查看订单")
+      });
+      /* this.getcaptchaImg()
+      this.ShowDiv() */
     },
     computevalue () { //计算秒杀按钮是否生效
       let starttime = this.startDate
@@ -271,7 +281,13 @@ export default {
               else { //成功
                 loading.close()
                 this.$messagebox("秒杀成功,是否查看订单", "success").then(() => {
-                  this.$message.success("查看订单成功")
+                  this.$router.push({
+                    name: 'orderdetail',
+                    params: {
+                      userId: sessionStorage.getItem("username"),
+                      seckillOrderId: seckillresult,
+                    }
+                  })
                 }).catch(() => {
                   this.$message.warning("取消查看订单")
                 });
