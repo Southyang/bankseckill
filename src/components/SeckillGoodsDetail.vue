@@ -105,6 +105,7 @@
 </template>
 
 <script>
+import qs from 'qs'
 import '../assets/js/dateformat'
 export default {
   name: 'SeckillGoodsDetail',
@@ -209,6 +210,7 @@ export default {
             if (response.data.code === 200) {
               this.$message.success("验证成功")
               let path = response.data.obj
+              this.CloseDiv()
               this.doSeckill(path)
             }
             else {
@@ -245,6 +247,7 @@ export default {
     },
     getResult (seckillGoodsId) { //获取秒杀结果
       // 发送get请求
+      const loading = this.$loading("秒杀中……")
       this.$http.get("/seckill/result",
         {
           params: {
@@ -260,16 +263,18 @@ export default {
                 this.$message.warning("秒杀失败")
               }
               else if (seckillresult === 0) { //排队中
-                const timer1 = setInterval(() => {
+                loading.close()
+                setTimeout(() => {
                   this.getResult(seckillGoodsId)
                 }, 50);
-                // 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
-                this.$once('hook:beforeDestroy', () => {
-                  clearInterval(timer1);
-                })
               }
               else { //成功
-                this.$messagebox("秒杀成功", "success")
+                loading.close()
+                this.$messagebox("秒杀成功,是否查看订单", "success").then(() => {
+                  this.$message.success("查看订单成功")
+                }).catch(() => {
+                  this.$message.warning("取消查看订单")
+                });
               }
             }
             else {
