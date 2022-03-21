@@ -84,7 +84,7 @@ export default {
       //正式数据
       userId: '',
       seckillOrderId: '',
-      ispay: false,
+      ispay: true,
       infomessage: '',
       GoodsVo: [],
       isLoading: true,
@@ -157,18 +157,19 @@ export default {
       let goods = data.seckillGoodsVo
       let order = data.order
       this.goodsName = goods.goodsName
-      this.goodsImg = "http://code.southyang.cn:8080/goods/image" + goods.goodsImg
+      this.goodsImg = "http://code.southyang.cn:8080/goods/image/" + goods.goodsImg
       this.goodsPrice = order.goodsPrice
       this.createDate = new Date(order.createDate).Format("yyyy-MM-dd hh:mm:ss")
       this.status = order.status
+      console.log(this.status)
       this.person = "测试人"
       this.checkstatus()
     }
   },
   mounted () {
-    this.userId = this.$route.params.userid
+    this.userId = this.$route.params.userId
     this.seckillOrderId = this.$route.params.seckillOrderId
-    this.$message.success("查看订单成功")
+    console.log("查看秒杀订单",this.userId,this.seckillOrderId)
     this.$http.get("order/detail",
       {
         params: {
@@ -193,7 +194,6 @@ export default {
           this.$message.error("网络错误")
         }
       )
-    console.log("与后端交互得到订单信息")
   }
 }
 </script>

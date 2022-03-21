@@ -138,18 +138,18 @@ export default {
     },
     purchase () { //购买
       console.log("购买" + this.seckillGoodsId)
-      this.$messagebox("秒杀成功,是否查看订单", "success").then(() => {
-        this.$router.push({
-          name: 'orderdetail',
-          /* params: {
-            id: id
-          } */
-        })
-      }).catch(() => {
-        this.$message.warning("取消查看订单")
-      });
-      /* this.getcaptchaImg()
-      this.ShowDiv() */
+      // this.$messagebox("秒杀成功,是否查看订单", "success").then(() => {
+      //   this.$router.push({
+      //     name: 'orderdetail',
+      //     /* params: {
+      //       id: id
+      //     } */
+      //   })
+      // }).catch(() => {
+      //   this.$message.warning("取消查看订单")
+      // });
+      this.getcaptchaImg()
+      this.ShowDiv()
     },
     computevalue () { //计算秒杀按钮是否生效
       let starttime = this.startDate
@@ -202,11 +202,12 @@ export default {
         this.$message.warning("验证码不能为空")
         return
       }
-      // console.log("提交验证码", this.captcha)
+      console.log("提交验证码", this.captcha)
       this.getSeckillPath();
     },
     getSeckillPath () { //获取秒杀路径
       // 发送get请求
+      console.log("获取秒杀路径")
       this.$http.get("seckill/path",
         {
           params: {
@@ -224,7 +225,7 @@ export default {
               this.doSeckill(path)
             }
             else {
-              this.$message.warning("验证失败")
+              this.$message.warning("验证码错误,请重新输入")
             }
           },
           error => {
@@ -234,6 +235,7 @@ export default {
         )
     },
     doSeckill (path) { //进行秒杀
+      console.log("进行秒杀")
       let data = {
         userId: sessionStorage.getItem("username"),
         seckillGoodsId: this.seckillGoodsId
@@ -257,6 +259,7 @@ export default {
     },
     getResult (seckillGoodsId) { //获取秒杀结果
       // 发送get请求
+      console.log("获取秒杀结果")
       const loading = this.$loading("秒杀中……")
       this.$http.get("/seckill/result",
         {

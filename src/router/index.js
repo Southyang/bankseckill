@@ -87,7 +87,7 @@ export default new VueRouter({
 							children: [
 								{ //InterfaceHome的默认路由
 									path: '',
-									redirect: 'homeactivity'
+									redirect: 'checkgoods'
 								},
 								{
 									path: 'checkgoods',
@@ -100,17 +100,7 @@ export default new VueRouter({
 								{
 									path: 'checkseckillgoods',
 									component: Checkseckill
-								}/* ,
-								{
-									name: 'goodsdetail',
-									path: 'goodsdetail',
-									component: GoodsDetail
-								},
-								{
-									name: 'seckillgoodsdetail',
-									path: 'seckillgoodsdetail',
-									component: SeckillGoodsDetail
-								}, */
+								}
 							]
 						},
 						{
