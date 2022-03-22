@@ -27,6 +27,9 @@ export default {
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
 .interfacesetting{
   display: flex;
   flex-direction: row;

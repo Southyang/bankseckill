@@ -77,6 +77,9 @@ export default {
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
 .interfacehomelist {
   display: flex;
   flex-direction: row;

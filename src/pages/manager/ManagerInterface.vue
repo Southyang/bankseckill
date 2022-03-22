@@ -80,6 +80,9 @@ export default {
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
 .managerinterface {
   margin-top: 66px;
 }

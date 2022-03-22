@@ -116,17 +116,14 @@ export default {
           response => {
             console.log('请求成功了', response.data)
             if (response.data.code === 200) {
-              // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
               this.$message.info("验证码为:" + response.data.obj)
             }
             else {
-              // this.$bus.$emit('Toast', "该手机未注册", "info")
               this.$message.warning("该手机未注册")
             }
           },
           error => {
             console.log('请求失败了', error.message)
-            // this.$bus.$emit('Toast', "网络错误", "failed")
             this.$message.error("网络错误")
           }
         )
@@ -137,8 +134,10 @@ export default {
     },
     userlogin () {
       console.log("用户登录，与后端交互验证信息正误")
-
-      if (this.status === true) { //账号密码登录
+      sessionStorage.setItem("username", this.username)
+      this.$message.success("登录成功")
+      this.$router.push('/bankuser/interface')
+      /* if (this.status === true) { //账号密码登录
         if (!this.username === "" || !this.password.trim())
           return alert("用户名和密码不能为空")
 
@@ -158,11 +157,9 @@ export default {
             this.password = ''
             console.log('请求成功了', response.data)
             if (response.data.code !== 200) {
-              // this.$bus.$emit('Toast', "账号或密码错误", "failed")
               this.$message.warning("账号或密码错误")
             }
             else {
-              // this.$bus.$emit('Toast', "登录成功", "success")
               sessionStorage.setItem("username", this.username)
               this.$message.success("登录成功")
               this.$router.push('/bankuser/interface')
@@ -170,12 +167,9 @@ export default {
           },
           error => {
             console.log('请求失败了', error.message)
-            // this.$bus.$emit('Toast', "网络错误", "info")
             this.$message.error("网络错误")
           }
         )
-        /* this.password = ''
-        this.$router.push('/bankuser/interface') */
       }
       else { //验证码登录
         if (!this.username === "" || !this.code.trim())
@@ -209,9 +203,7 @@ export default {
             this.$message.error("网络错误")
           }
         )
-        /* this.code = ''
-        this.$router.push('/bankuser/interface') */
-      }
+      } */
     },
     userregister () {
       this.$router.push('/bankuser/register')

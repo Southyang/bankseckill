@@ -33,6 +33,9 @@ export default {
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
 .userinterface {
   margin-top: 66px;
   background-color: #ffffff;

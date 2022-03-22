@@ -26,7 +26,6 @@ Vue.prototype.$message = $message;
 
 //定义Messagebox方法
 const $messagebox = (message, option) => {
-  console.log(message, option)
   return MessageBox.confirm(message, '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',

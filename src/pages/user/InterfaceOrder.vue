@@ -27,6 +27,9 @@ export default {
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
 .interfaceorder{
  display: flex;
  flex-direction: row;

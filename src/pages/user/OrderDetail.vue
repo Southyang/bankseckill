@@ -101,7 +101,12 @@ export default {
     },
     topay () {
       console.log("支付订单")
-      this.pay()
+      this.$messagebox("是否确认支付", "success")
+        .then(() => {
+          this.pay()
+        }).catch(() => {
+          this.$message.warning("取消支付")
+        });
     },
     pay () { //支付函数
       const loading = this.$loading("支付中……")
@@ -132,6 +137,7 @@ export default {
         )
     },
     checkstatus () { //判断当前状态
+      this.ispay = true
       switch (this.status) {
         case 0:
           this.ispay = false
@@ -169,7 +175,7 @@ export default {
   mounted () {
     this.userId = this.$route.params.userId
     this.seckillOrderId = this.$route.params.seckillOrderId
-    console.log("查看秒杀订单",this.userId,this.seckillOrderId)
+    console.log("查看秒杀订单", this.userId, this.seckillOrderId)
     this.$http.get("order/detail",
       {
         params: {

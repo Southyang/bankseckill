@@ -23,10 +23,13 @@
         </div>
         <div class="inputbox">
           <div class="userregisterinput">账号密码</div>
-          <input class="userinput"
-                 type="password"
-                 placeholder="请输入密码"
-                 v-model="password" />
+          <form>
+            <input class="userinput"
+                   type="password"
+                   placeholder="请输入密码"
+                   v-model="password"
+                   autocomplete="off" />
+          </form>
         </div>
         <div class="inputbox">
           <span class="userregisterinput">证件类型</span>
@@ -48,34 +51,21 @@
                  placeholder="请输入证件号码"
                  v-model="cardid" />
         </div>
-        <!-- <div class="inputbox">
-          <span class="userregisterinput">账(卡)号</span>
-          <input class="userinput"
-                 placeholder="请输入绑定卡卡号"
-                 v-model="bankcard" />
-        </div> -->
         <div class="inputbox">
           <span class="userregisterinput">手机号码</span>
           <input class="userinput"
                  placeholder="请输入手机号码"
                  v-model="phone" />
         </div>
-        <!-- <div class="inputbox">
-          <span class="userregisterinput">短信验证码</span>
-          <input class="userinput vcode"
-                 placeholder="请输入手机验证码"
-                 v-model="vcode" />
-          <button class="getvcode"
-                  @click="getvcode"> 获取验证码 </button>
-        </div> -->
       </div>
       <div class="userregisterconfirmbox">
         <input type="checkbox"
                v-model="checked"
                class="userregisterconfirm" />
         <span> 阅读并同意
-          <a style="color: #0578FF;"
-             href="#">《三湘银行个人网银开户协议》</a></span>
+          <a style="color: #0578FF;text-decoration: none;"
+             href="#"
+             @click="DialogVisible=true">《三湘银行个人网银开户协议》</a></span>
       </div>
 
       <span class="userregisterbuttonbox">
@@ -85,14 +75,30 @@
                 @click="goback"> 返回 </button>
       </span>
     </div>
+
+    <el-dialog title="《三湘银行个人网银开户协议》"
+    :visible.sync="DialogVisible"
+               width="80%"
+               align="center"
+               modal="false"
+               :before-close="handleClose">
+      <Agreements />
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button type="primary"
+                   @click="DialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import qs from 'qs'
 import md5 from '../../assets/js/md5.min.js'
+import Agreements from '../../components/Agreements.vue'
 export default {
   name: 'Userregister',
+  components: { Agreements },
   data () {
     return {
       checked: false,
@@ -101,23 +107,19 @@ export default {
       password: '',
       selected: '第二代居民身份证',
       cardid: '',
-      // bankcard: '',
       phone: '',
-      // vcode: ''
+      DialogVisible: false,
     }
   },
   methods: {
-    getvcode () {
-      console.log("用户注册获取验证码")
-    },
-    confirm () {
+    confirm () { //确认注册
       console.log("用户注册确认")
 
-      if(this.checked === false){
+      if (this.checked === false) {
         this.$message.warning("请勾选协议框");
         return false;
       }
-      if(!this.username.trim() || !this.nickname.trim() || !this.password.trim() || !this.cardid.trim() || !this.phone.trim()){
+      if (!this.username.trim() || !this.nickname.trim() || !this.password.trim() || !this.cardid.trim() || !this.phone.trim()) {
         this.$message.warning("输入不能为空");
         return false;
       }
@@ -130,7 +132,7 @@ export default {
         id: this.phone,
         nickname: this.nickname,
         password: passwordsalt,
-        salt:"",
+        salt: "",
         name: this.username,
         idNumber: this.cardid
       }
@@ -139,31 +141,30 @@ export default {
         response => {
           console.log(data)
           console.log(response.data)
-          if(response.data.code !== 200){
+          if (response.data.code !== 200) {
             this.$message.warning(response.data.message)
           }
-          else{
+          else {
             this.$message.success("注册成功")
             this.$router.push('/bankuser/')
           }
         },
         error => {
-          console.log('请求失败了',error.message)
+          console.log('请求失败了', error.message)
           this.$message.error("网络错误")
         }
       )
-      /* if (temp === true) {
-        // this.$bus.$emit('Toast', "注册成功", "success")
-        this.$message.success("注册成功")
-      }
-      else {
-        // this.$bus.$emit('Toast', "注册失败", "failed")
-        this.$message.error("注册失败")
-      } */
     },
-    goback () {
+    goback () { //返回
       console.log("用户注册返回")
       this.$router.replace('/bankuser')
+    },
+    handleClose (done) {
+      this.$messagebox("确认关闭？", "info")
+        .then(_ => {
+          done();
+        })
+        .catch(_ => { });
     }
   }
 }
@@ -383,5 +384,20 @@ input:-ms-input-placeholder {
   line-height: 18px;
   /* or 67% */
   color: #b8b8b8;
+}
+
+.agreement-txt {
+  text-align: left;
+  line-height: 25px;
+  white-space: break-spaces; /* pre-line、pre-wrap 也可以 */
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  width: 100%;
+  height: auto;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow: hidden;
+  font-size: 28px;
+  color: #323232;
+  font-family: '微软雅黑';
 }
 </style>

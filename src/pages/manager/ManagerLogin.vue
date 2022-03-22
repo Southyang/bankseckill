@@ -1,7 +1,7 @@
 <template>
   <div class="managerlogin">
     <button class="gotoother"
-            @click="gotomanager">用户端</button>
+            @click="gotouser">用户端</button>
     <img class="managerloginimg"
          src="../../assets/image/userloginimg.png">
     <div class="managerloginbox">
@@ -10,8 +10,7 @@
       </div>
       <div class="managerloginline">
       </div>
-      <div v-if="status === true"
-           class="managerlogininputbox">
+      <div class="managerlogininputbox">
         <div class="managerlogininput managername">
           <img src="../../assets/image/usernameicon.png"
                class="managericon">
@@ -32,34 +31,6 @@
           </form>
         </div>
       </div>
-      <div v-else
-           class="managerlogininputbox">
-        <div class="managerlogininput managername">
-          <img src="../../assets/image/usernameicon.png"
-               class="managericon">
-          <input class="managerinput"
-                 type="text"
-                 placeholder="输入手机号"
-                 v-model="managername">
-        </div>
-        <div class="flex1">
-          <div class="managerlogininput vcode">
-            <img src="../../assets/image/passwordicon.png"
-                 class="managericon">
-            <input class="managerinput vcode"
-                   placeholder="输入验证码"
-                   v-model="code">
-          </div>
-          <button class="getvcode"
-                  @click="getvcode"> 获取验证码 </button>
-        </div>
-      </div>
-      <div class="managerlogininfotext">
-        <!-- <div class="usephonevcode"
-             @click="usephonevcode"> {{text}} </div> -->
-        <div class="managerloginforget"
-             @click="modifymanagerpassowrd"> 忘记密码 </div>
-      </div>
       <div class="managerloginbuttonbox">
         <button class="managerlogin managerloginbutton"
                 @click="managerlogin">登录</button>
@@ -77,15 +48,12 @@ export default {
     return {
       managername: '',
       password: '',
-      code: '',
-      status: true,
-      text: '验证码登录'
     }
   },
   methods: {
-    gotomanager () {
+    gotouser () {
       this.$router.replace('/bankuser');
-      console.log('跳转到manager')
+      console.log('跳转到user')
     },
     usephonevcode () {
       if (this.status === true) {
@@ -99,34 +67,6 @@ export default {
         this.status = true
       }
     },
-    getvcode () {
-      if (!this.managername === "")
-        return alert("用户名不能为空")
-      console.log("用户" + this.managername + "登录获取验证码")
-      this.$http.get("user/sendCode",
-        {
-          params: {
-            id: this.managername
-          }
-        }).then(
-          response => {
-            console.log('请求成功了', response.data)
-            if (response.data.code === 200) {
-              // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
-              this.$message.info("验证码为:" + response.data.obj)
-            }
-            else {
-              // this.$bus.$emit('Toast', "该手机未注册", "info")
-              this.$message.warning("该手机未注册")
-            }
-          },
-          error => {
-            console.log('请求失败了', error.message)
-            // this.$bus.$emit('Toast', "网络错误", "failed")
-            this.$message.error("网络错误")
-          }
-        )
-    },
     modifymanagerpassowrd () {
       this.$router.push('/bankmanager/forget')
       console.log('跳转到用户修改密码界面')
@@ -134,80 +74,39 @@ export default {
     managerlogin () {
       console.log("用户登录，与后端交互验证信息正误")
 
-      if (this.status === true) { //账号密码登录
-        if (!this.managername === "" || !this.password.trim())
-          return alert("用户名和密码不能为空")
 
-        console.log("用户名:" + this.managername + " 密码:" + this.password)
-        let salt = "1a2b3c4d"
-        let inputPass = this.password
-        let str = "" + salt.charAt(0) + salt.charAt(2) + inputPass + salt.charAt(5) + salt.charAt(4);
-        let passwordsalt = md5(str);
-        let data = {
-          id: this.managername,
-          password: passwordsalt
-        }
-        //发送post请求登录
-        this.$http.post('manage/toLogin', qs.stringify(data)).then(
-          response => {
-            console.log(data)
-            this.password = ''
-            console.log('请求成功了', response.data)
-            if (response.data.code !== 200) {
-              // this.$bus.$emit('Toast', "账号或密码错误", "failed")
-              this.$message.warning("账号或密码错误")
-            }
-            else {
-              // this.$bus.$emit('Toast', "登录成功", "success")
-              sessionStorage.setItem("managername", this.managername)
-              this.$message.success("登录成功")
-              this.$router.push('/bankmanager/interface')
-            }
-          },
-          error => {
-            console.log('请求失败了', error.message)
-            // this.$bus.$emit('Toast', "网络错误", "info")
-            this.$message.error("网络错误")
-          }
-        )
-        /* this.password = ''
-        this.$router.push('/bankmanager/interface') */
-      }
-      else { //验证码登录
-        if (!this.managername === "" || !this.code.trim())
-          return alert("用户名和验证码不能为空")
+      if (!this.managername === "" || !this.password.trim())
+        return alert("用户名和密码不能为空")
 
-        let data = {
-          id: this.managername,
-          code: this.code
-        }
-        console.log("用户名:" + this.managername + " 验证码:" + this.code)
-        //发送post请求登录
-        this.$http.post('user/toLogin2', qs.stringify(data)).then(
-          response => {
-            console.log(data)
-            this.code = ''
-            console.log('请求成功了', response.data)
-            if (response.data.code !== 200) {
-              // this.$bus.$emit('Toast', response.data.message, "failed")
-              this.$message.warning(response.data.message)
-            }
-            else {
-              // this.$bus.$emit('Toast', "登录成功", "success")
-              sessionStorage.setItem("managername", this.managername)
-              this.$message.success("登录成功")
-              this.$router.push('/bankmanager/interface')
-            }
-          },
-          error => {
-            console.log('请求失败了', error.message)
-            // this.$bus.$emit('Toast', "网络错误", "info")
-            this.$message.error("网络错误")
-          }
-        )
-        /* this.code = ''
-        this.$router.push('/bankmanager/interface') */
+      console.log("用户名:" + this.managername + " 密码:" + this.password)
+      let salt = "1a2b3c4d"
+      let inputPass = this.password
+      let str = "" + salt.charAt(0) + salt.charAt(2) + inputPass + salt.charAt(5) + salt.charAt(4);
+      let passwordsalt = md5(str);
+      let data = {
+        id: this.managername,
+        password: passwordsalt
       }
+      //发送post请求登录
+      this.$http.post('manage/toLogin', qs.stringify(data)).then(
+        response => {
+          console.log(data)
+          this.password = ''
+          console.log('请求成功了', response.data)
+          if (response.data.code !== 200) {
+            this.$message.warning("账号或密码错误")
+          }
+          else {
+            sessionStorage.setItem("managername", this.managername)
+            this.$message.success("登录成功")
+            this.$router.push('/bankmanager/interface')
+          }
+        },
+        error => {
+          console.log('请求失败了', error.message)
+          this.$message.error("网络错误")
+        }
+      )
     }
   }
 }
@@ -323,8 +222,8 @@ export default {
   margin-left: 5%;
   margin-top: 30px;
   cursor: pointer;
-  background: #FFFFFF;
-  border: 2px solid #EA0437;
+  background: #ffffff;
+  border: 2px solid #ea0437;
   box-sizing: border-box;
   border-radius: 5px;
 }
