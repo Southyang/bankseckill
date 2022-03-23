@@ -75,37 +75,6 @@ export default {
         )
     },
   },
-  mounted () {
-    /* this.$http.get("manage/result",
-      {
-        params: {
-          id: sessionStorage.getItem('managername')
-        }
-      }).then(
-        response => {
-          console.log(response.data)
-          if (response.data.code === 200) {
-            this.$message.success("成功获取秒杀结果")
-            this.isloading = false
-            this.getlogs = response.data.obj
-
-            this.pageSize = Math.ceil(this.getlogs.length / 15);
-            if (this.getlogs.length >= 15) {
-              this.filgetlogs = this.getlogs.slice(0, 15)
-            }else{
-              this.filgetlogs = this.getlogs
-            }
-          }
-          else {
-            this.$message.warning("获取秒杀结果失败")
-          }
-        },
-        error => {
-          console.log('请求失败了', error.message)
-          this.$message.error("网络错误")
-        }
-      ) */
-  },
   created () {
     // 获取总页数
     this.$http.get("manage/resultCount",
@@ -117,7 +86,7 @@ export default {
         response => {
           console.log(response.data)
           if (response.data.code === 200) {
-            this.pageSize = response.data.obj
+            this.pageSize = Math.ceil(response.data.obj / 15)
           }
           else {
             this.$message.warning("获取秒杀结果失败")
@@ -222,9 +191,5 @@ export default {
   width: 1200px;
   text-align: center;
   color: #494949;
-}
-
-.spanbutton {
-  cursor: pointer;
 }
 </style>

@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import qs from 'qs'
+import md5 from '../../assets/js/md5.min.js'
 export default {
   name: 'Userforget',
   data () {
@@ -67,20 +69,80 @@ export default {
     }
   },
   methods: {
-    getvcode () {
-      console.log("用户修改密码获取验证码")
-    },
-    confirm () {
-      console.log("用户修改密码确认,与后端交互")
-      let temp = true
-      if (temp === true) {
-        this.$bus.$emit('Toast',"修改成功" , "success")
+    getvcode () { //获取验证码
+      if (!this.phone.trim()) {
+        this.$message.warning("手机号不能为空");
+        return false;
       }
-			else{
-				this.$bus.$emit('Toast',"修改失败" , "failed")
-			}
+      console.log("用户" + this.phone + "修改密码 获取验证码")
+      this.$http.get("user/sendCode2",
+        {
+          params: {
+            id: this.phone
+          }
+        }).then(
+          response => {
+            console.log('请求成功了', response.data)
+            if (response.data.code === 200) {
+              this.$message.info("验证码为:" + response.data.obj)
+            }
+            else {
+              this.$message.warning("该手机未注册")
+            }
+          },
+          error => {
+            console.log('请求失败了', error.message)
+            this.$message.error("网络错误")
+          }
+        )
     },
-    goback () {
+    confirm () { //确认
+      console.log("用户修改密码确认,与后端交互")
+      if (!this.password.trim() || !this.repassword.trim() || !this.phone.trim() || !this.vcode.trim()) {
+        this.$message.warning("输入不能为空")
+        return
+      }
+      if (this.password !== this.repassword) {
+        this.$message.warning("两次输入密码不一致")
+        return
+      }
+      this.modify()
+    },
+    modify () { //修改密码
+      let salt = "27ae1gh9"
+      let inputPass = this.password
+      let str = "" + salt.charAt(0) + salt.charAt(2) + inputPass + salt.charAt(5) + salt.charAt(4);
+      let passwordsalt = md5(str);
+      let data = {
+        id: this.phone,
+        code: this.vcode,
+        password: passwordsalt
+      }
+      /* console.log("未加密",inputPass)
+      console.log("第一次加密",passwordsalt)
+      str = "" + salt.charAt(0) + salt.charAt(2) + passwordsalt + salt.charAt(5) + salt.charAt(4);
+      passwordsalt = md5(str);
+      console.log("第二次加密",passwordsalt) */
+
+      //发送post请求登录
+      this.$http.post('user/updatePassword', qs.stringify(data)).then(
+        response => {
+          console.log(data)
+          console.log('请求成功了', response.data)
+          if (response.data.code !== 200) {
+            this.$message.warning("修改密码失败")
+          }
+          else {
+            this.$message.success("修改密码成功")
+          }
+        },
+        error => {
+          console.log('请求失败了', error.message)
+          this.$message.error("网络错误")
+        }
+      )
+    },
+    goback () { //返回
       console.log("用户修改密码返回")
       this.$router.replace('/bankuser')
     },
@@ -208,6 +270,7 @@ export default {
   box-sizing: border-box;
   color: #ea0437;
   margin-left: 15px;
+  cursor: pointer;
 }
 
 .userforgetbuttonbox {
