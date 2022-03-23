@@ -7,23 +7,17 @@
       <form id="goods"
             enctype="multipart/form-data">
         <div class="modifyinfo">
-          <div class="infoword">商品ID</div>
+          <div class="infoword">商品id</div>
           <input class="infoinput"
-                 style="width:280px"
-                 v-model="id" 
+                 type="text"
                  name="id"/>
         </div>
         <div class="modifyinfo">
           <div class="infoword">商品名称</div>
           <input class="infoinput"
-                 v-model="goodsName" 
-                 name="goodsName"/>
-        </div>
-        <div class="modifyinfo">
-          <div class="infoword">商品标题</div>
-          <input class="infoinput"
-                 v-model="goodsTitle" 
-                 name="goodsTitle"/>
+                 type="text"
+                 name="name"
+                 v-model="goodsName" />
         </div>
         <div class="modifyinfo">
           <div class="infoword">商品图片</div>
@@ -41,26 +35,65 @@
         <div class="modifyinfo">
           <div class="infoword">商品描述</div>
           <textarea class="infoinput longinput"
-                    v-model="goodsDetail" 
-                    name="goodsDetail" />
+                    v-model="goodsDetail"
+                    type="text"
+                    name="description" />
         </div>
         <div class="modifyinfo">
           <div class="infoword">商品价格</div>
           <input class="infoinput shortinput"
-                 v-model="goodsPrice" 
-                 name="goodsPrice"/>
+                 v-model="goodsPrice"
+                 type="text"
+                 name="price" />
         </div>
         <div class="modifyinfo">
           <div class="infoword">商品库存</div>
           <input class="infoinput shortinput"
-                 v-model="goodsStock" 
-                 name="goodsStock"/>
+                 v-model="goodsStock"
+                 type="text"
+                 name="stock" />
+        </div>
+        <div class="modifyinfo">
+          <div class="infoword">起存金额</div>
+          <input class="infoinput shortinput"
+                 type="text"
+                 name="minDeposit" />
+        </div>
+        <div class="modifyinfo">
+          <div class="infoword">存款期限</div>
+          <input class="infoinput shortinput"
+                 type="text"
+                 name="depositDuration" />
+        </div>
+        <div class="modifyinfo">
+          <div class="infoword">利率</div>
+          <input class="infoinput shortinput"
+                 type="text"
+                 name="interestRate" />
+        </div>
+        <div class="modifyinfo">
+          <div class="infoword">每日限额</div>
+          <input class="infoinput shortinput"
+                 type="text"
+                 name="dayLimit" />
+        </div>
+        <div class="modifyinfo">
+          <div class="infoword">到期是否自动赎回</div>
+          <input class="infoinput shortinput"
+                 type="text"
+                 name="autoRedeem" />
+        </div>
+        <div class="modifyinfo">
+          <div class="infoword">是否支持提前支取</div>
+          <input class="infoinput shortinput"
+                 type="text"
+                 name="withdrawEarly" />
         </div>
       </form>
     </div>
     <div class="modifyfooter">
       <button class="modifybutton"
-              @click="modify">提交</button>
+              @click="submit">提交</button>
     </div>
   </div>
 </template>
@@ -72,9 +105,7 @@ export default {
   name: 'InterfaceModify',
   data () {
     return {
-      id: '',
       goodsName: '',
-      goodsTitle: '',
       goodsDetail: '',
       goodsPrice: '',
       goodsStock: '',
@@ -98,8 +129,8 @@ export default {
         _this.imgurl = this.result
       }
     },
-    modify () {
-      console.log("修改商品信息")
+    submit () {
+      console.log("添加商品");
       let formData = new FormData($("#goods")[0]);
       this.$http({
         headers: {
@@ -116,17 +147,14 @@ export default {
         response => {
           console.log('请求成功了', response.data)
           if (response.data.code === 200) {
-            // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
-            this.$message.success("修改商品成功")
+            this.$message.success("修改商品信息成功")
           }
           else {
-            // this.$bus.$emit('Toast', "该手机未注册", "info")
-            this.$message.warning("修改商品失败")
+            this.$message.warning("修改商品信息失败")
           }
         },
         error => {
           console.log('请求失败了', error.message)
-          // this.$bus.$emit('Toast', "网络错误", "failed")
           this.$message.error("网络错误")
         }
       )
@@ -138,10 +166,10 @@ export default {
 <style scoped>
 .interfacemodify {
   /* 登录背景栏 */
-  margin-top: 15px;
+  margin-top: 45px;
   margin-left: 55px;
   width: 1200px;
-  height: 670px;
+  height: 630px;
 
   background: #ffffff;
   border-radius: 5px;
@@ -170,10 +198,11 @@ export default {
 }
 
 .modifybody {
-  width: 800px;
-  height: 550px;
-  margin-left: 200px;
+  width: 1000px;
+  height: 500px;
   margin-top: 35px;
+  margin-left: 200px;
+  overflow: auto;
 }
 
 .modifyinfo {
@@ -184,8 +213,7 @@ export default {
   float: left;
   text-align: center;
   line-height: 35px;
-  width: 100px;
-  text-align: left;
+  width: 160px;
 }
 
 .infoinput {
@@ -205,7 +233,7 @@ export default {
 }
 
 .shortinput {
-  width: 130px;
+  width: 150px;
 }
 
 .choosebutton {
@@ -237,20 +265,22 @@ export default {
 }
 
 .choosepicture {
-  background-size: auto 100px;
+  background-size: auto 110px;
   width: auto;
-  height: 100px;
+  height: 110px;
   overflow: hidden;
 }
 
 .modifyfooter {
   display: flex;
   justify-content: center;
+  margin-top: 15px;
 }
 
 .modifybutton {
   width: 120px;
   height: 40px;
+
   background: #ea0437;
   border-radius: 5px;
   border: none;
@@ -259,5 +289,9 @@ export default {
   /* or 99% */
 
   color: #ffffff;
+}
+
+a {
+  text-decoration: none;
 }
 </style>

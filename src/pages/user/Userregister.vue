@@ -10,16 +10,28 @@
       </div>
       <div class="userregisterinputbox">
         <div class="inputbox">
+          <div class="userregisterinput">客户昵称</div>
+          <input class="userinput"
+                 placeholder="请输入昵称"
+                 v-model="nickname" />
+        </div>
+        <div class="inputbox">
           <div class="userregisterinput">客户姓名</div>
           <input class="userinput"
                  placeholder="请输入客户姓名"
                  v-model="username" />
         </div>
         <div class="inputbox">
-          <div class="userregisterinput">客户昵称</div>
+          <span class="userregisterinput">身份证号</span>
           <input class="userinput"
-                 placeholder="请输入昵称"
-                 v-model="nickname" />
+                 placeholder="请输入证件号码"
+                 v-model="cardid" />
+        </div>
+        <div class="inputbox">
+          <span class="userregisterinput">手机号码</span>
+          <input class="userinput"
+                 placeholder="请输入手机号码"
+                 v-model="phone" />
         </div>
         <div class="inputbox">
           <div class="userregisterinput">账号密码</div>
@@ -32,30 +44,14 @@
           </form>
         </div>
         <div class="inputbox">
-          <span class="userregisterinput">证件类型</span>
-          <select class="userinput usercardkind"
-                  v-model="selected">
-            <option value="第二代居民身份证"
-                    style="font-size:15px">第二代居民身份证</option>
-            <option value="第二代居民身份证1"
-                    style="font-size:15px">第二代居民身份证1</option>
-            <option value="第二代居民身份证2"
-                    style="font-size:15px">第二代居民身份证2</option>
-            <option value="第二代居民身份证3"
-                    style="font-size:15px">第二代居民身份证3</option>
-          </select>
-        </div>
-        <div class="inputbox">
-          <span class="userregisterinput">证件号码</span>
-          <input class="userinput"
-                 placeholder="请输入证件号码"
-                 v-model="cardid" />
-        </div>
-        <div class="inputbox">
-          <span class="userregisterinput">手机号码</span>
-          <input class="userinput"
-                 placeholder="请输入手机号码"
-                 v-model="phone" />
+          <div class="userregisterinput">确认密码</div>
+          <form>
+            <input class="userinput"
+                   type="password"
+                   placeholder="请再次输入密码"
+                   v-model="repassword"
+                   autocomplete="off" />
+          </form>
         </div>
       </div>
       <div class="userregisterconfirmbox">
@@ -77,10 +73,10 @@
     </div>
 
     <el-dialog title="《三湘银行个人网银开户协议》"
-    :visible.sync="DialogVisible"
+               :visible.sync="DialogVisible"
                width="80%"
                align="center"
-               modal="false"
+               model="false"
                :before-close="handleClose">
       <Agreements />
       <span slot="footer"
@@ -105,13 +101,30 @@ export default {
       username: '',
       nickname: '',
       password: '',
-      selected: '第二代居民身份证',
+      repassword: '',
       cardid: '',
       phone: '',
+      sex: '',
+      age: '',
       DialogVisible: false,
     }
   },
   methods: {
+    computedata (data) {
+      if (parseInt(data.substr(16, 1)) % 2 == 1) {
+        this.sex = "男";
+      } else {
+        this.sex = "女";
+      }
+      let myDate = new Date();
+      let month = myDate.getMonth() + 1;
+      let day = myDate.getDate();
+      let age = myDate.getFullYear() - data.substring(6, 10) - 1;
+      if (data.substring(10, 12) < month || data.substring(10, 12) == month && data.substring(12, 14) <= day) {
+        age++;
+      }
+      this.age = age
+    },
     confirm () { //确认注册
       console.log("用户注册确认")
 
@@ -119,23 +132,33 @@ export default {
         this.$message.warning("请勾选协议框");
         return false;
       }
-      if (!this.username.trim() || !this.nickname.trim() || !this.password.trim() || !this.cardid.trim() || !this.phone.trim()) {
+      if (!this.username.trim() || !this.nickname.trim() || !this.password.trim() || !this.repassword.trim() || !this.cardid.trim() || !this.phone.trim()) {
         this.$message.warning("输入不能为空");
         return false;
       }
+      if (this.password !== this.repassword) {
+        this.$message.warning("两次密码不一致");
+        return false;
+      }
 
-      let salt = "1a2b3c4d"
+      let salt = "27ae1gh9"
       let password = this.password
       let str = "" + salt.charAt(0) + salt.charAt(2) + password + salt.charAt(5) + salt.charAt(4)
       let passwordsalt = md5(str)
+      let bankCardNumber = this.generateCard(19)
+      this.computedata(this.cardid)
       let data = {
         id: this.phone,
         nickname: this.nickname,
         password: passwordsalt,
-        salt: "",
+        salt: salt,
         name: this.username,
-        idNumber: this.cardid
+        idNumber: this.cardid,
+        sex: this.sex,
+        age: this.age,
+        bankCardNumber: bankCardNumber
       }
+      console.log(data)
       //发送post请求
       this.$http.post('user/toRegister', qs.stringify(data)).then(
         response => {
@@ -145,8 +168,9 @@ export default {
             this.$message.warning(response.data.message)
           }
           else {
-            this.$message.success("注册成功")
-            this.$router.push('/bankuser/')
+            this.$messagebox1("请保管好您的银行卡号:" + bankCardNumber, "注册成功", "success").then(() => {
+              this.$router.push('/bankuser/')
+            })
           }
         },
         error => {
@@ -165,6 +189,13 @@ export default {
           done();
         })
         .catch(_ => { });
+    },
+    generateCard (len) {
+      let res = '';
+      for (let i = 0; i < len; i++) {
+        res += Math.floor(Math.random() * 10);
+      }
+      return res;
     }
   }
 }

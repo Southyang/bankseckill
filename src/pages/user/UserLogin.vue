@@ -17,7 +17,7 @@
                class="usericon">
           <input class="userinput"
                  type="text"
-                 placeholder="输入手机号/身份证号"
+                 placeholder="输入手机号"
                  v-model="username">
         </div>
         <div class="userlogininput password">
@@ -107,7 +107,7 @@ export default {
         return false;
       }
       console.log("用户" + this.username + "登录获取验证码")
-      this.$http.get("user/sendCode",
+      this.$http.get("user/sendCode1",
         {
           params: {
             id: this.username
@@ -134,20 +134,18 @@ export default {
     },
     userlogin () {
       console.log("用户登录，与后端交互验证信息正误")
-      sessionStorage.setItem("username", this.username)
-      this.$message.success("登录成功")
-      this.$router.push('/bankuser/interface')
-      /* if (this.status === true) { //账号密码登录
+
+      if (this.status === true) { //账号密码登录
         if (!this.username === "" || !this.password.trim())
           return alert("用户名和密码不能为空")
 
         console.log("用户名:" + this.username + " 密码:" + this.password)
-        let salt = "1a2b3c4d"
+        let salt = "27ae1gh9"
         let inputPass = this.password
         let str = "" + salt.charAt(0) + salt.charAt(2) + inputPass + salt.charAt(5) + salt.charAt(4);
         let passwordsalt = md5(str);
         let data = {
-          mobile: this.username,
+          id: this.username,
           password: passwordsalt
         }
         //发送post请求登录
@@ -203,7 +201,7 @@ export default {
             this.$message.error("网络错误")
           }
         )
-      } */
+      }
     },
     userregister () {
       this.$router.push('/bankuser/register')

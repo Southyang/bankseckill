@@ -15,7 +15,7 @@
           商品名称
         </div>
         <div class="infoget">
-          {{GoodsVo.goodsName}}
+          {{GoodsVo.name}}
         </div>
       </div>
       <div class="bodyinfo">
@@ -30,7 +30,7 @@
           商品简介
         </div>
         <div class="infoget">
-          {{GoodsVo.goodsDetail}}
+          {{GoodsVo.description}}
         </div>
       </div>
       <div class="bodyinfo">
@@ -38,7 +38,7 @@
           商品价格
         </div>
         <div class="infoget">
-          {{GoodsVo.goodsPrice}}
+          {{GoodsVo.price}}
         </div>
       </div>
       <div class="bodyinfo">
@@ -46,7 +46,7 @@
           库存数量
         </div>
         <div class="infoget">
-          {{GoodsVo.goodsStock}}
+          {{GoodsVo.stock}}
         </div>
       </div>
       <div class="bodyinfo">
@@ -117,7 +117,7 @@ export default {
       autoinfo: '',
       beforecheck: false,
       beforeinfo: '',
-      array: ["autoRedeem", "dayLimit", "interestRate", "goodsStock", "dayLimit", "minDeposit", "withdrawEarly", "depositDuration"]
+      array: ["autoRedeem", "dayLimit", "interestRate", "goodsStock", "minDeposit", "withdrawEarly", "depositDuration"]
     }
   },
   methods: {
@@ -125,7 +125,7 @@ export default {
       this.$router.back() //后退
     },
     formatGoodsVo () {
-      this.GoodsVo.goodsImg = "http://code.southyang.cn:8080/goods/image/" + this.GoodsVo.goodsImg
+      this.GoodsVo.goodsImg = "http://code.southyang.cn:8080/goods/image/" + this.GoodsVo.id
       if (this.GoodsVo.autoRedeem === 0) {
         this.autocheck = false
         this.autoinfo = "否"

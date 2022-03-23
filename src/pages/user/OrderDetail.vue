@@ -162,8 +162,8 @@ export default {
     initdata (data) { //数据初始化
       let goods = data.seckillGoodsVo
       let order = data.order
-      this.goodsName = goods.goodsName
-      this.goodsImg = "http://code.southyang.cn:8080/goods/image/" + goods.goodsImg
+      this.goodsName = goods.name
+      this.goodsImg = "http://code.southyang.cn:8080/goods/image/" + goods.id + ".png"
       this.goodsPrice = order.goodsPrice
       this.createDate = new Date(order.createDate).Format("yyyy-MM-dd hh:mm:ss")
       this.status = order.status

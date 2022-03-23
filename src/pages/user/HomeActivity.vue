@@ -12,10 +12,10 @@ export default {
     applyactivity () {
       console.log("申请活动")
       // 发送get请求
-      this.$http.get("apply/toApply",
+      this.$http.get("user/toApply",
         {
           params: {
-            userId: sessionStorage.getItem("username")
+            id: sessionStorage.getItem("username")
           }
         }).then(
           response => {

@@ -138,16 +138,6 @@ export default {
     },
     purchase () { //购买
       console.log("购买" + this.seckillGoodsId)
-      // this.$messagebox("秒杀成功,是否查看订单", "success").then(() => {
-      //   this.$router.push({
-      //     name: 'orderdetail',
-      //     /* params: {
-      //       id: id
-      //     } */
-      //   })
-      // }).catch(() => {
-      //   this.$message.warning("取消查看订单")
-      // });
       this.getcaptchaImg()
       this.ShowDiv()
     },
@@ -172,11 +162,11 @@ export default {
       }
     },
     formatSeckillGoodsVo (data) { //格式化数据
-      this.goodsName = data.goodsName
-      this.goodsImg = "http://code.southyang.cn:8080/goods/image/" + data.goodsImg
+      this.goodsName = data.name
+      this.goodsImg = "http://code.southyang.cn:8080/goods/image/" + data
       this.startDate = data.startDate
       this.endDate = data.endDate
-      this.goodsPrice = data.goodsPrice
+      this.goodsPrice = data.price
       this.seckillPrice = data.seckillPrice
       this.stockCount = data.stockCount
 

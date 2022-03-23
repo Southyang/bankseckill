@@ -17,11 +17,11 @@
            :key="index">
         <div class="resultcontent">
           <span class="spancontent"> {{log.id}} </span>
-          <span class="spancontent"> {{log.goodsTitle}} </span>
+          <span class="spancontent"> {{log.name}} </span>
           <img class="spancontent goodspicture"
                :src="log.goodsImg">
-          <span class="spancontent"> {{log.goodsPrice}} </span>
-          <span class="spancontent"> {{log.goodsStock}} </span>
+          <span class="spancontent"> {{log.price}} </span>
+          <span class="spancontent"> {{log.stock}} </span>
           <span class="spancontent"
                 style="color:#EA0437;cursor:pointer"
                 @click="checkdetail"> {{detail}} </span>
@@ -79,7 +79,8 @@ export default {
     },
     formatdata () {
       for (let i = 0; i < this.checklogs.length; i++) {
-        this.checklogs[i].goodsImg = "http://code.southyang.cn:8080/goods/image/" + this.checklogs[i].goodsImg
+        this.checklogs[i].goodsImg = "http://code.southyang.cn:8080/goods/image/" + this.checklogs[i].id
+        console.log(this.checklogs[i].goodsImg)
       }
       this.pageSize = Math.ceil(this.checklogs.length / 4)
       if (this.checklogs.length > 4) {

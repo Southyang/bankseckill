@@ -79,7 +79,7 @@ export default {
         return alert("用户名和密码不能为空")
 
       console.log("用户名:" + this.managername + " 密码:" + this.password)
-      let salt = "1a2b3c4d"
+      let salt = "27ae1gh9"
       let inputPass = this.password
       let str = "" + salt.charAt(0) + salt.charAt(2) + inputPass + salt.charAt(5) + salt.charAt(4);
       let passwordsalt = md5(str);

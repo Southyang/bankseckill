@@ -38,10 +38,10 @@ export default {
     // 初筛
     if (sessionStorage.getItem("userallowed") === false || !sessionStorage.getItem("userallowed")) {
       // 发送get请求
-      this.$http.get("apply/toApply",
+      this.$http.get("user/toApply",
         {
           params: {
-            userId: sessionStorage.getItem("username")
+            id: sessionStorage.getItem("username")
           }
         }).then(
           response => {

@@ -23,6 +23,9 @@ export default {
   padding: 5px 5px;
   cursor: pointer;
   color: black;
+  height: 30px;
+  line-height: 18px;
+  text-align: center;
 }
 a {
   text-decoration: none;

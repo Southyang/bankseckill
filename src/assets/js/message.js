@@ -27,13 +27,21 @@ Vue.prototype.$message = $message;
 //定义Messagebox方法
 const $messagebox = (message, option) => {
   return MessageBox.confirm(message, '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
     type: option
   })
 }
 //将$messagebox挂载到this上
 Vue.prototype.$messagebox = $messagebox;
+
+//定义Messagebox方法
+const $messagebox1 = (message, title, option) => {
+  return MessageBox.confirm(message, title, {
+    showCancelButton:false,
+    type: option
+  })
+}
+//将$messagebox挂载到this上
+Vue.prototype.$messagebox1 = $messagebox1;
 
 //定义Loading方法
 const $loading = (message) => {

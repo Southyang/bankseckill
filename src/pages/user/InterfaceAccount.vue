@@ -4,28 +4,29 @@
          v-show="!isLoading">
       <div class="accountbox-header">
         <div class="userimage"
-             :style="{backgroundImage: 'url(' + user.imageurl + ')'}"
-             @click="changeimage"></div>
+             :style="{backgroundImage: 'url(' + user.imageurl + ')'}"></div>
         <div>
           {{user.nickname}} <br>
-          <!-- {{user.userid}}(账户) -->
+          {{user.banknumber}}(账户)
         </div>
       </div>
       <div class="accountbox-body">
         <div class="accountboxtitle">
           {{name}} <br>
           {{nickname}} <br>
-          {{cardkind}} <br>
+          {{phone}} <br>
+          {{banknumber}} <br>
           {{cardnumber}} <br>
-          {{phone}}
+          {{overdueNum}}
         </div>
         <div class="accountboxline"></div>
         <div class="accountboxcontent">
           {{user.name}} <br>
           {{user.nickname}} <br>
-          {{user.cardkind}} <br>
+          {{user.phone}} <br>
+          {{user.banknumber}} <br>
           {{user.cardnumber}} <br>
-          {{user.phone}}
+          {{user.overdueNum}}
         </div>
       </div>
       <div class="accountbox-footer">
@@ -44,36 +45,41 @@ export default {
     return {
       name: '姓名',
       nickname: '昵称',
-      cardkind: '证件类型',
-      cardnumber: '证件号码',
+      banknumber: '银行卡号',
+      cardnumber: '身份证号',
       phone: '账号关联手机号',
+      overdueNum: '逾期次数',
       isLoading: true,
       user: {
         imageurl: 'https://mail.csu.edu.cn/coremail/s?func=lp:getImg&org_id=&img_id=logo_001',
-        // userid: '3874-2674-2268-3146',
         name: '',
         nickname: '',
-        cardkind: '第二代居民身份证',
         cardnumber: '',
         phone: '',
+        banknumber: '',
+        overdueNum: ''
       }
-
     }
   },
   methods: {
-    changeimage () {
-      console.log("用户修改图片")
-    },
     initdata (data) {
       this.user['name'] = data.name
       this.user.nickname = data.nickname
       this.user.cardnumber = data.idNumber
       this.user.phone = data.id
+      this.user.banknumber = data.bankCardNumber
+      this.user.overdueNum = data.overdueNum
+      if (data.sex === "男") {
+        this.user.imageurl = "https://store.southyang.cn/project/bankseckill/boy.png"
+      }
+      else {
+        this.user.imageurl = "https://store.southyang.cn/project/bankseckill/girl.png"
+      }
     }
   },
   mounted () {
     let data = {
-      userId: sessionStorage.getItem("username")
+      id: sessionStorage.getItem("username")
     }
     // 发送post请求
     this.$http.post('user/info', qs.stringify(data)).then(
@@ -141,7 +147,7 @@ export default {
   z-index: 9999;
 }
 
-.userimage:hover::after {
+/* .userimage:hover::after {
   height: inherit;
   content: '编辑';
   color: #000000;
@@ -151,12 +157,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
-.userimage:hover {
+/* .userimage:hover {
   background-color: #ffffff;
   opacity: 1;
-}
+} */
 
 .accountbox-body {
   width: 100%;

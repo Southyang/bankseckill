@@ -4,20 +4,14 @@
       添加商品
     </div>
     <div class="addbody">
-      <form id="goods" enctype="multipart/form-data">
+      <form id="goods"
+            enctype="multipart/form-data">
         <div class="addinfo">
           <div class="infoword">商品名称</div>
           <input class="infoinput"
                  type="text"
-                 name="goodsName"
+                 name="name"
                  v-model="goodsName" />
-        </div>
-        <div class="addinfo">
-          <div class="infoword">商品标题</div>
-          <input class="infoinput"
-                 type="text"
-                 name="goodsTitle"
-                 v-model="goodsTile" />
         </div>
         <div class="addinfo">
           <div class="infoword">商品图片</div>
@@ -37,21 +31,57 @@
           <textarea class="infoinput longinput"
                     v-model="goodsDetail"
                     type="text"
-                    name="goodsDetail" />
+                    name="description" />
         </div>
         <div class="addinfo">
           <div class="infoword">商品价格</div>
           <input class="infoinput shortinput"
                  v-model="goodsPrice"
                  type="text"
-                 name="goodsPrice" />
+                 name="price" />
         </div>
         <div class="addinfo">
           <div class="infoword">商品库存</div>
           <input class="infoinput shortinput"
                  v-model="goodsStock"
                  type="text"
-                 name="goodsStock" />
+                 name="stock" />
+        </div>
+        <div class="addinfo">
+          <div class="infoword">起存金额</div>
+          <input class="infoinput shortinput"
+                 type="text"
+                 name="minDeposit" />
+        </div>
+        <div class="addinfo">
+          <div class="infoword">存款期限</div>
+          <input class="infoinput shortinput"
+                 type="text"
+                 name="depositDuration" />
+        </div>
+        <div class="addinfo">
+          <div class="infoword">利率</div>
+          <input class="infoinput shortinput"
+                 type="text"
+                 name="interestRate" />
+        </div>
+        <div class="addinfo">
+          <div class="infoword">每日限额</div>
+          <input class="infoinput shortinput"
+                 type="text"
+                 name="dayLimit" />
+        </div>
+        <div class="addinfo">
+          <div class="infoword">到期是否自动赎回</div>
+          <input class="infoinput shortinput"
+                 type="text"
+                 name="autoRedeem" />
+        </div>
+        <div class="addinfo">
+          <div class="infoword">是否支持提前支取</div>
+          <input class="infoinput shortinput"
+                 type="text"
+                 name="withdrawEarly" />
         </div>
       </form>
     </div>
@@ -70,7 +100,6 @@ export default {
   data () {
     return {
       goodsName: '',
-      goodsTile: '',
       goodsDetail: '',
       goodsPrice: '',
       goodsStock: '',
@@ -112,17 +141,14 @@ export default {
         response => {
           console.log('请求成功了', response.data)
           if (response.data.code === 200) {
-            // this.$bus.$emit('Toast', "验证码为:" + response.data.obj, "success")
             this.$message.success("增加商品成功")
           }
           else {
-            // this.$bus.$emit('Toast', "该手机未注册", "info")
             this.$message.warning("增加商品失败")
           }
         },
         error => {
           console.log('请求失败了', error.message)
-          // this.$bus.$emit('Toast', "网络错误", "failed")
           this.$message.error("网络错误")
         }
       )
@@ -137,7 +163,7 @@ export default {
   margin-top: 45px;
   margin-left: 55px;
   width: 1200px;
-  height: 650px;
+  height: 630px;
 
   background: #ffffff;
   border-radius: 5px;
@@ -166,10 +192,11 @@ export default {
 }
 
 .addbody {
-  width: 800px;
+  width: 1000px;
   height: 500px;
   margin-top: 35px;
   margin-left: 200px;
+  overflow: auto;
 }
 
 .addinfo {
@@ -180,7 +207,7 @@ export default {
   float: left;
   text-align: center;
   line-height: 35px;
-  width: 100px;
+  width: 160px;
 }
 
 .infoinput {
@@ -200,7 +227,7 @@ export default {
 }
 
 .shortinput {
-  width: 130px;
+  width: 150px;
 }
 
 .choosebutton {
@@ -224,11 +251,11 @@ export default {
 }
 
 .choosebutton input {
-    position: absolute;
-    font-size: 0px;
-    right: 0;
-    top: 0;
-    opacity: 0;
+  position: absolute;
+  font-size: 0px;
+  right: 0;
+  top: 0;
+  opacity: 0;
 }
 
 .choosepicture {
@@ -256,5 +283,9 @@ export default {
   /* or 99% */
 
   color: #ffffff;
+}
+
+a {
+  text-decoration: none;
 }
 </style>
