@@ -17,9 +17,6 @@ import Userinterface from '../pages/user/Userinterface'
 import InterfaceAccount from '../pages/user/InterfaceAccount'
 import InterfaceHome from '../pages/user/InterfaceHome'
 import InterfaceOrder from '../pages/user/InterfaceOrder'
-import OrderAll from '../pages/user/OrderAll'
-import OrderBook from '../pages/user/OrderBook'
-import OrderFinish from '../pages/user/OrderFinish'
 import InterfaceSetting from '../pages/user/InterfaceSetting'
 import SettingPerson from '../pages/user/SettingPerson'
 import SettingAccount from '../pages/user/SettingAccount'
@@ -38,8 +35,6 @@ import InterfaceDelete from '../pages/manager/InterfaceDelete'
 import InterfaceAddseckill from '../pages/manager/InterfaceAddseckill'
 import InterfaceModifyseckill from '../pages/manager/InterfaceModifyseckill'
 import InterfaceDeleteseckill from '../pages/manager/InterfaceDeleteseckill'
-import InterfaceAddDetail from '../pages/manager/InterfaceAddDetail'
-import InterfaceModifyDetail from '../pages/manager/InterfaceModifyDetail'
 
 //创建并暴露路由
 export default new VueRouter({
@@ -66,6 +61,7 @@ export default new VueRouter({
 					component: Userregister
 				},
 				{
+					name: 'forget',
 					path: 'forget',
 					component: Userforget
 				},
@@ -106,24 +102,6 @@ export default new VueRouter({
 						{
 							path: 'order',
 							component: InterfaceOrder,
-							children: [
-								{ //order的默认路由
-									path: '',
-									redirect: 'orderall'
-								},
-								{
-									path: 'orderall',
-									component: OrderAll
-								},
-								{
-									path: 'orderbook',
-									component: OrderBook
-								},
-								{
-									path: 'orderfinish',
-									component: OrderFinish
-								}
-							]
 						},
 						{
 							path: 'setting',
@@ -221,14 +199,6 @@ export default new VueRouter({
 						{
 							path: 'deleteseckillgoods',
 							component: InterfaceDeleteseckill
-						},
-						{
-							path: 'addgoodsdetail',
-							component: InterfaceAddDetail
-						},
-						{
-							path: 'modifygoodsdetail',
-							component: InterfaceModifyDetail
 						}
 					]
 				}

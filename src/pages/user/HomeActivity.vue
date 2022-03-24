@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="homeactivity">
     <h1 @click="applyactivity"
-        style="cursor:pointer">申请活动</h1>
+        style="cursor:pointer"
+        class="applyactivity">申请参加现有秒杀活动</h1>
   </div>
 </template>
 
@@ -40,4 +41,28 @@ export default {
 </script>
 
 <style>
+.homeactivity{
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+.applyactivity{
+  width: 260px;
+  height: 40px;
+  font-family: Arial;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 40px;
+  letter-spacing: 0.15em;
+  /* or 61% */
+  letter-spacing: 4px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 10px;
+  background-color: #ea0437;
+  color: #ffffff;
+  border: none;
+}
 </style>

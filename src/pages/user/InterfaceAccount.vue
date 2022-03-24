@@ -147,23 +147,6 @@ export default {
   z-index: 9999;
 }
 
-/* .userimage:hover::after {
-  height: inherit;
-  content: '编辑';
-  color: #000000;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
-
-/* .userimage:hover {
-  background-color: #ffffff;
-  opacity: 1;
-} */
-
 .accountbox-body {
   width: 100%;
   height: 70%;

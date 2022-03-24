@@ -144,9 +144,8 @@ export default {
     },
     goback () { //返回
       console.log("用户修改密码返回")
-      this.$router.replace('/bankuser')
+      this.$router.back() //后退
     },
-
   }
 }
 </script>

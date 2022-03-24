@@ -32,16 +32,6 @@
         <div class="list-group-item">
           <router-link class="routerlink"
                        active-class="active"
-                       to="/bankmanager/interface/addgoodsdetail">增加商品配置</router-link>
-        </div>
-        <div class="list-group-item">
-          <router-link class="routerlink"
-                       active-class="active"
-                       to="/bankmanager/interface/modifygoodsdetail">修改商品配置</router-link>
-        </div>
-        <div class="list-group-item">
-          <router-link class="routerlink"
-                       active-class="active"
                        to="/bankmanager/interface/deletegoods">删除商品</router-link>
         </div>
         <div class="list-group-item">

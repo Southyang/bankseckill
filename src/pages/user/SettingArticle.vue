@@ -3,7 +3,7 @@
     <div class="articleheader">
       协议与条款
     </div>
-    <div class="articlebody>">
+    <div class="articlebody">
 			<agreements/>
 		</div>
     <div class="articlefooter">
@@ -50,7 +50,8 @@ export default {
 }
 
 .articlebody{
-	background-color: #494949;
+  width: 1075px;
+  margin-left: 25px;
 }
 
 .articlefooter{
