@@ -72,7 +72,7 @@
 
 <script>
 import qs from 'qs'
-import md5 from '../../assets/js/md5.min.js'
+import { SM4Util } from '../../assets/js/sm4'
 export default {
   name: 'UserLogin',
   data () {
@@ -140,13 +140,11 @@ export default {
           return alert("用户名和密码不能为空")
 
         console.log("用户名:" + this.username + " 密码:" + this.password)
-        let salt = "27ae1gh9"
-        let inputPass = this.password
-        let str = "" + salt.charAt(0) + salt.charAt(2) + inputPass + salt.charAt(5) + salt.charAt(4);
-        let passwordsalt = md5(str);
+        const sm4 = new SM4Util();
+        const passwordtrans = sm4.encryptData_CBC(this.password)
         let data = {
           id: this.username,
-          password: passwordsalt
+          password: passwordtrans
         }
         //发送post请求登录
         this.$http.post('user/toLogin1', qs.stringify(data)).then(

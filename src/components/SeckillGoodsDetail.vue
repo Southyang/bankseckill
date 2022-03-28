@@ -163,7 +163,7 @@ export default {
     },
     formatSeckillGoodsVo (data) { //格式化数据
       this.goodsName = data.name
-      this.goodsImg = "http://code.southyang.cn:8080/goods/image/" + data
+      this.goodsImg = "http://code.southyang.cn:8080/goods/image/" + data.goodsId
       this.startDate = data.startDate
       this.endDate = data.endDate
       this.goodsPrice = data.price

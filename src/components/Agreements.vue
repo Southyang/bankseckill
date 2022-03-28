@@ -98,5 +98,6 @@ export default {
 	height: 500px;
 	overflow:auto;
   user-select: none;
+  line-height: 30px;
 }
 </style>

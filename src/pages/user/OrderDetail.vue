@@ -163,7 +163,7 @@ export default {
       let goods = data.seckillGoodsVo
       let order = data.order
       this.goodsName = goods.name
-      this.goodsImg = "http://code.southyang.cn:8080/goods/image/" + goods.id + ".png"
+      this.goodsImg = "http://code.southyang.cn:8080/goods/image/" + goods.goodsId
       this.goodsPrice = order.goodsPrice
       this.createDate = new Date(order.createDate).Format("yyyy-MM-dd hh:mm:ss")
       this.status = order.status

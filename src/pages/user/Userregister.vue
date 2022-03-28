@@ -90,7 +90,7 @@
 
 <script>
 import qs from 'qs'
-import md5 from '../../assets/js/md5.min.js'
+import { SM4Util } from '../../assets/js/sm4'
 import Agreements from '../../components/Agreements.vue'
 export default {
   name: 'Userregister',
@@ -141,17 +141,14 @@ export default {
         return false;
       }
 
-      let salt = "27ae1gh9"
-      let password = this.password
-      let str = "" + salt.charAt(0) + salt.charAt(2) + password + salt.charAt(5) + salt.charAt(4)
-      let passwordsalt = md5(str)
+      const sm4 = new SM4Util();
+      const passwordtrans = sm4.encryptData_CBC(this.password)
       let bankCardNumber = this.generateCard(19)
       this.computedata(this.cardid)
       let data = {
         id: this.phone,
         nickname: this.nickname,
-        password: passwordsalt,
-        salt: salt,
+        password: passwordtrans,
         name: this.username,
         idNumber: this.cardid,
         sex: this.sex,

@@ -57,7 +57,7 @@
 
 <script>
 import qs from 'qs'
-import md5 from '../../assets/js/md5.min.js'
+import { SM4Util } from '../../assets/js/sm4'
 export default {
   name: 'Userforget',
   data () {
@@ -109,20 +109,13 @@ export default {
       this.modify()
     },
     modify () { //修改密码
-      let salt = "27ae1gh9"
-      let inputPass = this.password
-      let str = "" + salt.charAt(0) + salt.charAt(2) + inputPass + salt.charAt(5) + salt.charAt(4);
-      let passwordsalt = md5(str);
+      const sm4 = new SM4Util();
+      const passwordtrans = sm4.encryptData_CBC(this.password)
       let data = {
         id: this.phone,
         code: this.vcode,
-        password: passwordsalt
+        password: passwordtrans
       }
-      /* console.log("未加密",inputPass)
-      console.log("第一次加密",passwordsalt)
-      str = "" + salt.charAt(0) + salt.charAt(2) + passwordsalt + salt.charAt(5) + salt.charAt(4);
-      passwordsalt = md5(str);
-      console.log("第二次加密",passwordsalt) */
 
       //发送post请求登录
       this.$http.post('user/updatePassword', qs.stringify(data)).then(
