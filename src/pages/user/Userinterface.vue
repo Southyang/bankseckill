@@ -24,7 +24,7 @@
 export default {
   name: 'Userinterface',
   mounted () {
-    if (!sessionStorage.getItem('username')) {
+    if (!sessionStorage.getItem('username') || sessionStorage.getItem('username') === "undefined") {
       this.$message.warning("请先登录")
       this.$router.replace("/bankuser/login")
     }

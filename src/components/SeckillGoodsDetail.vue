@@ -208,14 +208,23 @@ export default {
         }).then(
           response => {
             console.log('请求成功了', response.data)
-            if (response.data.code === 200) {
-              this.$message.success("验证成功")
-              let path = response.data.obj
-              this.CloseDiv()
-              this.doSeckill(path)
+            if (response.data == "LoginError") {
+              this.$message.warning("您还没有登录，请登录");
+            }
+            else if (response.data == "VerifyCodeError") {
+              this.$message.warning("验证码错误,请重新输入")
+            }
+            else if (response.data == "LimitError") {
+              this.$message.warning("当前访问人数较多，请稍后再试");
+            }
+            else if (response.data == "SystemError") {
+              this.$message.warning("系统错误");
             }
             else {
-              this.$message.warning("验证码错误,请重新输入")
+              this.$message.success("验证成功")
+              let path = response.data
+              this.CloseDiv()
+              this.doSeckill(path)
             }
           },
           error => {
