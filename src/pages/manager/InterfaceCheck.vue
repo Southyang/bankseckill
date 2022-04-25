@@ -88,6 +88,11 @@ export default {
     }
   },
   methods: {
+    initdata(){
+      this.prechecklogs = [],
+      this.filprechecklogs = [],
+      this.showchecklogs = []
+    },
     check () {
       console.log("查询申请记录 " + this.inputname + " " + this.inputdate + "天前")
       if (this.inputname.trim() && this.inputdate.trim()) {
@@ -104,6 +109,7 @@ export default {
             response => {
               console.log(response.data)
               if (response.data.code === 200) {
+                this.initdata()
                 this.prechecklogs = response.data.obj
                 for (let i = 0; i < this.prechecklogs.length; i++) {
                   if (this.prechecklogs[i].applyResult === 1) {

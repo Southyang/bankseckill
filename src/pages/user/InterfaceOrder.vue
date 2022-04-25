@@ -11,6 +11,8 @@
       <span class="spancontent"> 订单状态 </span>
     </div>
     <div class="orderbody">
+      <div v-show="isnoorder"
+           style="margin: 50px 650px; width:200px">暂无订单</div>
       <div class="orderresult"
            v-for="(log,index) in showorderlogs"
            :key="index">
@@ -29,7 +31,7 @@
         </div>
       </div>
       <div v-show="isloading"
-           style="margin: 50px 500px"> 加载中…… </div>
+           style="margin: 50px 650px; width:200px"> 加载中…… </div>
     </div>
     <div class="orderfooter">
       <pager :pageSize="pageSize"
@@ -49,6 +51,7 @@ export default {
       orderlogs: [],
       showorderlogs: [],
       isloading: true,
+      isnoorder: false,
       pageSize: 30,
       pageNow: 1
     }
@@ -63,21 +66,27 @@ export default {
     initdata (data) {
       this.pageSize = Math.ceil(data.length / 4)
       this.orderlogs = data
-      for (let i = 0; i < this.orderlogs.length; i++) {
-        if (this.orderlogs[i].status === 1) {
-          this.orderlogs[i].status = "支付成功"
-        } else {
-          this.orderlogs[i].status = "未支付"
-        }
-        this.orderlogs[i].createDate = new Date(this.orderlogs[i].createDate).Format("yyyy-MM-dd hh:mm:ss")
-        this.orderlogs[i].payDate = new Date(this.orderlogs[i].payDate).Format("yyyy-MM-dd hh:mm:ss")
-        this.orderlogs[i].goodsImg = "http://code.southyang.cn:8080/goods/image/" + this.orderlogs[i].goodsId
-      }
-      if (this.orderlogs.length >= 4) {
-        this.showorderlogs = this.orderlogs.slice(0, 4)
+      if (this.orderlogs.length === 0) {
+        console.log("123")
+        this.isnoorder = true
       }
       else {
-        this.showorderlogs = this.orderlogs
+        for (let i = 0; i < this.orderlogs.length; i++) {
+          if (this.orderlogs[i].status === 1) {
+            this.orderlogs[i].status = "支付成功"
+          } else {
+            this.orderlogs[i].status = "未支付"
+          }
+          this.orderlogs[i].createDate = new Date(this.orderlogs[i].createDate).Format("yyyy-MM-dd hh:mm:ss")
+          this.orderlogs[i].payDate = new Date(this.orderlogs[i].payDate).Format("yyyy-MM-dd hh:mm:ss")
+          this.orderlogs[i].goodsImg = "http://code.southyang.cn:8080/goods/image/" + this.orderlogs[i].goodsId
+        }
+        if (this.orderlogs.length >= 4) {
+          this.showorderlogs = this.orderlogs.slice(0, 4)
+        }
+        else {
+          this.showorderlogs = this.orderlogs
+        }
       }
     }
   },

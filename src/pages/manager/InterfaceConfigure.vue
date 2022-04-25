@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="configurefooter">
-      <button class="footerbutton"
+      <button class="footerbutton" style="cursor:pointer"
               @click="commit">提交</button>
     </div>
     <div id="fade"
